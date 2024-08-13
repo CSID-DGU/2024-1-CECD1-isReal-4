@@ -10,7 +10,11 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+coverage
 *.local
+package-lock.json
+bun.lockb
+.DS_Store
 
 # Editor directories and files
 .vscode/*
