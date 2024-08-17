@@ -12,21 +12,19 @@ export const Footer = styled.footer`
   width: 100%;
 `;
 
-export const NavItem = styled.div`
+export const NavItem = styled.div<{ isActive: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: 12px;
-  color: #6c757d;
+    color: ${({ isActive }) => (isActive ? '#007bff' : '#6c757d')}; // 활성 상태에 따라 색상 변경
 
-  & > svg {
+    & > svg {
     margin-bottom: 5px;
     width: 24px;
     height: 24px;
   }
+    
 
-  &.active {
-    color: #007bff;
-  }
 `;
