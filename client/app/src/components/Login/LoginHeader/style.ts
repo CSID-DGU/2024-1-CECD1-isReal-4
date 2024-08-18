@@ -12,5 +12,5 @@ export const Container = styled.div`
 
 export const RightButton = styled.div`
     position: absolute;
-    right: 20px;
+    right: 40px;
 `;

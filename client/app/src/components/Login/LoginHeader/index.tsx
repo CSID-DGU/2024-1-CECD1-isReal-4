@@ -16,7 +16,7 @@ export default function index() {
         <Styled.Container>
             <H1 text='로그인' />
             <Styled.RightButton>
-                <SvgButton src={Home} height={"36px"} width={"36px"} onClick={handleHomeClick} />
+                <SvgButton src={Home} height={"32px"} width={"32px"} onClick={handleHomeClick} />
             </Styled.RightButton>
         </Styled.Container>
     );
