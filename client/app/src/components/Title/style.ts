@@ -2,14 +2,14 @@ import styled from "styled-components";
 
 export const Container = styled.div`
     display: flex;
+    flex-direction: row;
     align-items: center;
-    width: auto;
-    height: 50px;
+    min-width: 100vw;
+    height: 70px;
     //padding-top: 20px; // 상태 바를 위한 여유 공간
     background-color: #fff;
     position: relative;
-    border-bottom: 1px solid #ddd;
-    padding: 8px 12px;
+    //padding: 8px 12px;
 `
 export const CenterTitleContainer = styled.div`
     position: absolute;
