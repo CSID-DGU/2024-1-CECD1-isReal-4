@@ -8,11 +8,13 @@ import RegisterIcon from "@/assets/icons/Register.svg";
 import CheckListIcon from "@/assets/icons/CheckList.svg";
 import QnAIcon from "@/assets/icons/QnA.svg";
 import AnnouncementIcon from "@/assets/icons/Announcement.svg";
+import {useNavigate} from "react-router-dom";
 
 export default function Category() {
     function handleCardClick() {
         alert("Card Clicked!");
     }
+    const navigate = useNavigate()
 
     return (
         <Styled.CategoryContainer>
@@ -30,11 +32,11 @@ export default function Category() {
                     <SvgButton src={CheckListIcon} height={"28px"} width={"28px"} />
                     <Sub1 text={"체크리스트 보기"} />
                 </Styled.CategoryCard>
-                <Styled.CategoryCard onClick={handleCardClick}>
+                <Styled.CategoryCard onClick={() => navigate("/question")}>
                     <SvgButton src={QnAIcon} height={"28px"} width={"28px"} />
                     <Sub1 text={"Q&A"} />
                 </Styled.CategoryCard>
-                <Styled.CategoryCard onClick={handleCardClick}>
+                <Styled.CategoryCard onClick={() => navigate("/announcement")}>
                     <SvgButton src={AnnouncementIcon} height={"28px"} width={"28px"} />
                     <Sub1 text={"공지사항"} />
                 </Styled.CategoryCard>

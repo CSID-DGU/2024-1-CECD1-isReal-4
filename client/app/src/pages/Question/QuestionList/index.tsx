@@ -6,7 +6,15 @@ import ContentList from "@/components/Contents";
 import WriteQuestionButton from "@/components/Question/FloatButton";
 
 export default function QnA() {
-    const items = [
+    interface itemType {
+        id: number;
+        title: string;
+        description: string;
+        time: string;
+        comments: number;
+    }
+
+    const items: itemType[] = [
         {
             id: 1,
             title: 'Header',

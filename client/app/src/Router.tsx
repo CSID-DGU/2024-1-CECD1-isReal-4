@@ -4,7 +4,8 @@ import Home from "@/pages/Home";
 import Register from "@/pages/Register";
 import MyPage from "@/pages/MyPage";
 import Login from "@/pages/Login";
-import QnA from "@/pages/QnA";
+import QnA from "@/pages/Question/QuestionList";
+import QuestionWrite from "@/pages/Question/QuestionWrite";
 
 export default function Router() {
     return (
@@ -15,6 +16,7 @@ export default function Router() {
             <Route path='/register' element={<Register />} />
             <Route path='/myPage' element={<MyPage />} />
             <Route path='/question' element={<QnA />} />
+            <Route path='/question/write' element={<QuestionWrite/>} />
         </Routes>
     );
 }

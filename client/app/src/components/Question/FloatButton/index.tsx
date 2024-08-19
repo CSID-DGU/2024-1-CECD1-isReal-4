@@ -1,9 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
+import {useNavigate} from "react-router-dom";
 
 const WriteQuestionButton: React.FC = () => {
+    const navigate = useNavigate();
+    function handleButtonClick() {
+        navigate("/question/write");
+    }
+
     return (
-        <ButtonContainer>
+        <ButtonContainer onClick={handleButtonClick}>
             <Button>
                 질문 작성하기
                 {/*<NotificationBadge>5</NotificationBadge>*/}
