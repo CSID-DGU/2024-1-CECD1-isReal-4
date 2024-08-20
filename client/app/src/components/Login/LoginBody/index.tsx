@@ -5,7 +5,7 @@ import H4 from "@/components/Common/Font/Heading/H4/index.tsx";
 import H6 from "@/components/Common/Font/Heading/H6/index.tsx";
 import { useNavigate } from "react-router-dom";
 
-export default function index() {
+export default function LoginBody() {
     const navigate = useNavigate();
 
     const [showPassword, setShowPassword] = useState(false);
