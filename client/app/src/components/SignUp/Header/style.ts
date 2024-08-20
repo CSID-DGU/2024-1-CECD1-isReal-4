@@ -12,23 +12,16 @@ export const Container = styled.div`
 
 export const LeftButton = styled.div`
     position: absolute;
-    left: 40px;
+    left: 20px;
 `;
 
 export const RightButton = styled.div`
     position: absolute;
-    right: 40px;
+    right: 20px;
+    margin-top: 10px;
 `;
 
-export const BackButton = styled.button`
-    color: black;
-    cursor: pointer;
-    border: none;
-    background: none;
-    margin-top: -2px;
-`;
-
-export const LoginButton = styled.button`
+export const Button = styled.button`
     color: black;
     cursor: pointer;
     border: none;
