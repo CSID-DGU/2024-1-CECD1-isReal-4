@@ -5,6 +5,7 @@ import Register from "@/pages/Register";
 import MyPage from "@/pages/MyPage";
 import LogIn from "@/pages/LogIn";
 import SignUp from "@/pages/SignUp";
+import SignUpBody from "./components/SignUp/SignUpBody";
 import UploadDoc from "./pages/UploadDoc";
 
 export default function Router() {
@@ -14,6 +15,7 @@ export default function Router() {
             <Route path='/home' element={<Home />} />
             <Route path='/login' element={<LogIn />} />
             <Route path='/signup' element={<SignUp />}>
+                <Route index element={<SignUpBody />} />
                 <Route path='uploadDoc' element={<UploadDoc />} />
             </Route>
             <Route path='/register' element={<Register />} />
