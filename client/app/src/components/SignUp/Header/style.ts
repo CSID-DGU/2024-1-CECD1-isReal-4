@@ -12,12 +12,12 @@ export const Container = styled.div`
 
 export const LeftButton = styled.div`
     position: absolute;
-    left: 20px;
+    left: 30px;
 `;
 
 export const RightButton = styled.div`
     position: absolute;
-    right: 20px;
+    right: 30px;
     margin-top: 10px;
 `;
 
