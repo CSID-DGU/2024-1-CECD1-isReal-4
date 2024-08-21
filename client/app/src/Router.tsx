@@ -5,8 +5,8 @@ import Register from "@/pages/Register";
 import MyPage from "@/pages/MyPage";
 import LogIn from "@/pages/LogIn";
 import SignUp from "@/pages/SignUp";
+import UploadDoc from "@/pages/UploadDoc";
 import SignUpBody from "./components/SignUp/SignUpBody";
-import UploadDoc from "./pages/UploadDoc";
 
 export default function Router() {
     return (
