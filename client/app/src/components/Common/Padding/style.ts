@@ -22,5 +22,5 @@ const calculatePadding = (props: PaddingProps) => {
 
 export const Padding = styled.div<PaddingProps>`
     padding: ${(props) => calculatePadding(props)};
-    width: 100%;
+    width: auto;
 `;

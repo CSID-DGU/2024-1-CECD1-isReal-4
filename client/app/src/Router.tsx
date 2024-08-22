@@ -7,8 +7,14 @@ import LogIn from "@/pages/LogIn";
 import SignUp from "@/pages/SignUp";
 import UploadDoc from "@/pages/UploadDoc";
 import SignUpBody from "./components/SignUp/SignUpBody";
+import QnA from "@/pages/Question/QuestionList";
+import QuestionWrite from "@/pages/Question/QuestionWrite";
+import QuestionDetail from "@/pages/Question/QuestionDetail";
+
 
 export default function Router() {
+
+
     return (
         <Routes>
             <Route path='/' element={<Entry />} />
@@ -20,6 +26,9 @@ export default function Router() {
             </Route>
             <Route path='/register' element={<Register />} />
             <Route path='/myPage' element={<MyPage />} />
+            <Route path='/question' element={<QnA />} />
+            <Route path='/question/write' element={<QuestionWrite/>} />
+            <Route path='/question/:id' element={<QuestionDetail/>} />
         </Routes>
     );
 }
