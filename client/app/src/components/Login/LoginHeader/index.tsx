@@ -4,7 +4,7 @@ import H1 from "@/components/Common/Font/Heading/H1/index.tsx";
 import SvgButton from "@/components/Common/SvgButton";
 import { useNavigate } from "react-router-dom";
 
-export default function index() {
+export default function LoginHeader() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const navigate = useNavigate();
 

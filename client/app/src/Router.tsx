@@ -3,10 +3,14 @@ import Entry from "@/pages/Entry";
 import Home from "@/pages/Home";
 import Register from "@/pages/Register";
 import MyPage from "@/pages/MyPage";
-import Login from "@/pages/Login";
+import LogIn from "@/pages/LogIn";
+import SignUp from "@/pages/SignUp";
+import UploadDoc from "@/pages/UploadDoc";
+import SignUpBody from "./components/SignUp/SignUpBody";
 import QnA from "@/pages/Question/QuestionList";
 import QuestionWrite from "@/pages/Question/QuestionWrite";
 import QuestionDetail from "@/pages/Question/QuestionDetail";
+
 
 export default function Router() {
 
@@ -15,7 +19,11 @@ export default function Router() {
         <Routes>
             <Route path='/' element={<Entry />} />
             <Route path='/home' element={<Home />} />
-            <Route path='/login' element={<Login />} />
+            <Route path='/login' element={<LogIn />} />
+            <Route path='/signup' element={<SignUp />}>
+                <Route index element={<SignUpBody />} />
+                <Route path='uploadDoc' element={<UploadDoc />} />
+            </Route>
             <Route path='/register' element={<Register />} />
             <Route path='/myPage' element={<MyPage />} />
             <Route path='/question' element={<QnA />} />
