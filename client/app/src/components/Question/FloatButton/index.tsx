@@ -1,66 +1,55 @@
-import React from 'react';
-import styled from 'styled-components';
-import {useNavigate} from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import * as Styled from "./style";
+import { useNavigate, useLocation } from "react-router-dom";
+
+interface userRoleType {
+    role: "admin" | "client";
+}
 
 const WriteQuestionButton: React.FC = () => {
+    const [isQuestion, setIsQuestion] = useState(true);
+    const [isVisible, setIsVisible] = useState(false);
     const navigate = useNavigate();
-    function handleButtonClick() {
+    const location = useLocation();
+
+    const role: userRoleType = { role: "admin" }; // 또는 { role: "client" };
+
+    useEffect(() => {
+        if (location.pathname.includes("/question")) {
+            setIsQuestion(true);
+        } else if (location.pathname.includes("/announcement")) {
+            setIsQuestion(false);
+        }
+    }, [location.pathname]);
+
+    // role과 URL을 기반으로 버튼 표시 여부 결정
+    useEffect(() => {
+        if (role.role === "client" && location.pathname.includes("/question")) {
+            setIsVisible(true);
+        } else if (role.role === "admin" && location.pathname.includes("/announcement")) {
+            setIsVisible(true);
+        } else {
+            setIsVisible(false);
+        }
+    }, [role, location.pathname]);
+
+    function goToQuestionWrite() {
         navigate("/question/write");
     }
 
+    function goToAnnouncementWrite() {
+        navigate("/announcement/write");
+    }
+
     return (
-        <ButtonContainer onClick={handleButtonClick}>
-            <Button>
-                질문 작성하기
-                {/*<NotificationBadge>5</NotificationBadge>*/}
-            </Button>
-        </ButtonContainer>
+        isVisible && (
+            <Styled.ButtonContainer onClick={isQuestion ? goToQuestionWrite : goToAnnouncementWrite}>
+                <Styled.Button>
+                    {isQuestion ? "질문 작성하기" : "공지사항 작성하기"}
+                </Styled.Button>
+            </Styled.ButtonContainer>
+        )
     );
 };
 
 export default WriteQuestionButton;
-
-// Styled Components
-const ButtonContainer = styled.div`
-  position: fixed;
-  bottom: 90px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 100;
-`;
-
-const Button = styled.button`
-  background-color: #f0f0f0;
-  color: #333;
-  border: none;
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 24px;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  position: relative;
-
-  &:hover {
-    background-color: #e0e0e0;
-  }
-`;
-
-// const NotificationBadge = styled.span`
-//   background-color: #ff3b30;
-//   color: white;
-//   font-size: 14px;
-//   font-weight: bold;
-//   width: 24px;
-//   height: 24px;
-//   border-radius: 50%;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   margin-left: 8px;
-//   position: absolute;
-//   right: -12px;
-//   top: -12px;
-// `;
