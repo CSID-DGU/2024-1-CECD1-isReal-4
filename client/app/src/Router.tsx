@@ -11,24 +11,21 @@ import QnA from "@/pages/Question/QuestionList";
 import QuestionWrite from "@/pages/Question/QuestionWrite";
 import QuestionDetail from "@/pages/Question/QuestionDetail";
 
-
 export default function Router() {
-
-
     return (
         <Routes>
-            <Route path='/' element={<Entry />} />
-            <Route path='/home' element={<Home />} />
-            <Route path='/login' element={<LogIn />} />
+            <Route path='/entry' element={<Entry />} />
+            <Route path='/' element={<LogIn />} />
             <Route path='/signup' element={<SignUp />}>
                 <Route index element={<SignUpBody />} />
                 <Route path='uploadDoc' element={<UploadDoc />} />
             </Route>
+            <Route path='/home' element={<Home />} />
             <Route path='/register' element={<Register />} />
             <Route path='/myPage' element={<MyPage />} />
             <Route path='/question' element={<QnA />} />
-            <Route path='/question/write' element={<QuestionWrite/>} />
-            <Route path='/question/:id' element={<QuestionDetail/>} />
+            <Route path='/question/write' element={<QuestionWrite />} />
+            <Route path='/question/:id' element={<QuestionDetail />} />
         </Routes>
     );
 }
