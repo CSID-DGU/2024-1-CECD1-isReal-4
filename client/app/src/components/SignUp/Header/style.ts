@@ -18,7 +18,7 @@ export const LeftButton = styled.div`
 export const RightButton = styled.div`
     position: absolute;
     right: 30px;
-    margin-top: 10px;
+    margin-top: 5px;
 `;
 
 export const Button = styled.button`

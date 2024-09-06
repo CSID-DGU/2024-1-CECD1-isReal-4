@@ -1,16 +1,23 @@
 import { useState, ChangeEvent } from "react";
 import * as Styled from "./style.ts";
 import { useNavigate } from "react-router-dom";
+import { convertKoreanToEnglish } from "@/utils/convertKoreanToEnglish.ts";
 
 export default function SignUpBody() {
     const navigate = useNavigate();
 
-    const [showPassword, setShowPassword] = useState<boolean>(false);
     const [ID, setID] = useState<string>("");
+    const [idMessage, setIdMessage] = useState<string>("");
+    const [idValid, setIdValid] = useState<boolean>(false);
     const [password, setPassword] = useState<string>("");
-    const [confirmPassword, setConfirmPassword] = useState<string>("");
+    const [showPassword, setShowPassword] = useState<boolean>(false);
     const [passwordMessage, setPasswordMessage] = useState<string>("");
+    const [confirmPassword, setConfirmPassword] = useState<string>("");
+    const [passwordConfirmMessage, setPasswordConfirmMessage] = useState<string>("");
+    const [passwordValid, setPasswordValid] = useState<boolean>(false); // 비밀번호 유효성 여부
     const [email, setEmail] = useState<string>("");
+    const [emailMessage, setEmailMessage] = useState<string>("");
+    const [emailValid, setEmailValid] = useState<boolean>(false);
     const [phoneNumber, setPhoneNumber] = useState<string>("");
     const [apartmentName, setApartmentName] = useState<string>("");
     const [selectedDong, setSelectedDong] = useState<string>("");
@@ -20,10 +27,13 @@ export default function SignUpBody() {
     const isFormCompleted = (): boolean => {
         return (
             ID !== "" &&
+            idValid &&
             password !== "" &&
             confirmPassword !== "" &&
-            passwordMessage === "비밀번호가 일치합니다." &&
+            passwordConfirmMessage === "비밀번호가 일치합니다." &&
+            passwordValid &&
             email !== "" &&
+            emailValid &&
             phoneNumber !== "" &&
             apartmentName !== "" &&
             selectedDong !== "" &&
@@ -36,15 +46,63 @@ export default function SignUpBody() {
         alert("중복 확인 버튼 클릭");
     }
 
+    const handleIDChange = (e: ChangeEvent<HTMLInputElement>) => {
+        let value = e.target.value;
+        value = convertKoreanToEnglish(value);
+
+        setID(value);
+
+        // 아이디 유효성 검사: 영어 소문자, 숫자만 허용, 5~15자
+        const idPattern = /^[a-z0-9]+$/;
+        if (value.length < 5 || value.length > 15 || !idPattern.test(value)) {
+            setIdMessage("사용할 수 없는 아이디입니다.");
+            setIdValid(false);
+        } else {
+            setIdMessage("사용 가능한 아이디입니다.");
+            setIdValid(true);
+        }
+    };
+
+    const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+        let value = e.target.value;
+        value = convertKoreanToEnglish(value);
+
+        setPassword(value);
+
+        const passwordPattern = /^(?=.*[!@#$%^&*])(?=.*[a-zA-Z0-9])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
+        if (!passwordPattern.test(value)) {
+            setPasswordMessage("비밀번호는 숫자, 영어, 특수문자를 포함한 8~20자여야 합니다.");
+            setPasswordValid(false);
+        } else {
+            setPasswordMessage("사용할 수 있는 비밀번호입니다.");
+            setPasswordValid(true);
+        }
+    };
     function handleConfirmPasswordChange(e: ChangeEvent<HTMLInputElement>) {
-        const value = e.target.value;
+        let value = e.target.value;
+        value = convertKoreanToEnglish(value);
         setConfirmPassword(value);
         if (value === password) {
-            setPasswordMessage("비밀번호가 일치합니다.");
+            setPasswordConfirmMessage("비밀번호가 일치합니다.");
         } else {
-            setPasswordMessage("비밀번호가 다릅니다.");
+            setPasswordConfirmMessage("비밀번호가 다릅니다.");
         }
     }
+
+    const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setEmail(value);
+
+        // 이메일 유효성 검사: @를 무조건 포함하고 . 뒤에 최소 2글자 이상이어야 함
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+        if (!emailPattern.test(value)) {
+            setEmailMessage("유효하지 않은 이메일입니다.");
+            setEmailValid(false);
+        } else {
+            setEmailMessage("사용할 수 있는 이메일입니다.");
+            setEmailValid(true);
+        }
+    };
 
     function handlePhoneNumberChange(e: ChangeEvent<HTMLInputElement>) {
         const value = e.target.value.replace(/[^0-9]/g, ""); // 숫자 이외의 문자는 제거
@@ -77,10 +135,11 @@ export default function SignUpBody() {
                         type='text'
                         placeholder='사용하실 아이디를 입력해주세요'
                         value={ID}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setID(e.target.value)}
+                        onChange={handleIDChange}
                     />
                     <Styled.CheckButton onClick={handleDuplicateCheckClick}>중복 확인</Styled.CheckButton>
                 </Styled.SideButtonWrapper>
+                {idMessage && <Styled.MessageText match={idValid}>{idMessage}</Styled.MessageText>}
             </Styled.InputContainer>
             <Styled.InputContainer>
                 <Styled.Label>비밀번호</Styled.Label>
@@ -89,12 +148,13 @@ export default function SignUpBody() {
                         type={showPassword ? "text" : "password"}
                         placeholder='사용하실 비밀번호를 입력해주세요'
                         value={password}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                        onChange={handlePasswordChange}
                     />
                     <Styled.ShowPasswordButton onClick={() => setShowPassword(!showPassword)}>
                         {showPassword ? "Hide" : "Show"}
                     </Styled.ShowPasswordButton>
                 </Styled.CommonWrapper>
+                {passwordMessage && <Styled.MessageText match={passwordValid}>{passwordMessage}</Styled.MessageText>}
             </Styled.InputContainer>
             <Styled.InputContainer>
                 <Styled.Label>비밀번호 확인</Styled.Label>
@@ -106,8 +166,10 @@ export default function SignUpBody() {
                         onChange={handleConfirmPasswordChange}
                     />
                 </Styled.CommonWrapper>
-                {passwordMessage && (
-                    <Styled.MessageText match={confirmPassword === password}>{passwordMessage}</Styled.MessageText>
+                {passwordConfirmMessage && (
+                    <Styled.MessageText match={confirmPassword === password}>
+                        {passwordConfirmMessage}
+                    </Styled.MessageText>
                 )}
             </Styled.InputContainer>
             <Styled.InputContainer>
@@ -117,9 +179,10 @@ export default function SignUpBody() {
                         type='text'
                         placeholder='이메일을 입력해주세요'
                         value={email}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                        onChange={handleEmailChange}
                     />
                 </Styled.CommonWrapper>
+                {emailMessage && <Styled.MessageText match={emailValid}>{emailMessage}</Styled.MessageText>}
             </Styled.InputContainer>
             <Styled.InputContainer>
                 <Styled.Label>휴대전화</Styled.Label>
