@@ -8,6 +8,12 @@ export const Container = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+
+    -ms-overflow-style: none; // IE and Edge
+    scrollbar-width: none; // Firefox
+    &::-webkit-scrollbar {
+        display: none; // Chrome, Safari, Opera
+    }
 `;
 
 export const LeftButton = styled.div`
@@ -18,13 +24,4 @@ export const LeftButton = styled.div`
 export const RightButton = styled.div`
     position: absolute;
     right: 30px;
-    margin-top: 5px;
-`;
-
-export const Button = styled.button`
-    color: black;
-    cursor: pointer;
-    border: none;
-    background: none;
-    margin-top: -2px;
 `;

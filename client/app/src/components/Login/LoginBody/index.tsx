@@ -1,9 +1,9 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from "react";
 import * as Styled from "./style.ts";
 import H4 from "@/components/Common/Font/Heading/H4/index.tsx";
 import H6 from "@/components/Common/Font/Heading/H6/index.tsx";
 import { useNavigate } from "react-router-dom";
+import { convertKoreanToEnglish } from "@/utils/convertKoreanToEnglish.ts";
 
 export default function LoginBody() {
     const navigate = useNavigate();
@@ -11,27 +11,39 @@ export default function LoginBody() {
     const [showPassword, setShowPassword] = useState(false);
     const [ID, setID] = useState("");
     const [password, setPassword] = useState("");
+    const isLoginDisabled = ID === "" || password === "";
 
     function handleLoginClick() {
-        alert("Login Button Clicked");
+        console.log(ID, password);
+        navigate("/home");
     }
 
     function handleSignUpClick() {
         navigate("/signup");
     }
 
+    const handleIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const convertedValue = convertKoreanToEnglish(e.target.value);
+        setID(convertedValue);
+    };
+
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const convertedValue = convertKoreanToEnglish(e.target.value);
+        setPassword(convertedValue);
+    };
+
     return (
         <Styled.Container>
             <Styled.InputContainer>
                 <Styled.Wrapper>
-                    <Styled.Input type='text' placeholder='아이디' value={ID} onChange={(e) => setID(e.target.value)} />
+                    <Styled.Input type='text' placeholder='아이디' value={ID} onChange={handleIDChange} />
                 </Styled.Wrapper>
                 <Styled.Wrapper>
                     <Styled.Input
                         type={showPassword ? "text" : "password"}
                         placeholder='비밀번호'
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={handlePasswordChange}
                     />
                     <Styled.ShowPasswordButton onClick={() => setShowPassword(!showPassword)}>
                         {showPassword ? "Hide" : "Show"}
@@ -39,7 +51,7 @@ export default function LoginBody() {
                 </Styled.Wrapper>
             </Styled.InputContainer>
             <Styled.ButtonContainer>
-                <Styled.LoginButton onClick={handleLoginClick}>
+                <Styled.LoginButton disabled={isLoginDisabled} onClick={handleLoginClick} isDisabled={isLoginDisabled}>
                     <H4 text='로그인 하기' />
                 </Styled.LoginButton>
             </Styled.ButtonContainer>

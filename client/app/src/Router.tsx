@@ -14,19 +14,16 @@ import AnnouncementList from "@/pages/Announcement/AnnouncementList";
 import AnnouncementWrite from "@/pages/Announcement/AnnouncementWrite";
 import AnnouncementDetail from "@/pages/Announcement/AnnouncementDetail";
 
-
 export default function Router() {
-
-
     return (
         <Routes>
-            <Route path='/' element={<Entry />} />
-            <Route path='/home' element={<Home />} />
-            <Route path='/login' element={<LogIn />} />
+            <Route path='/entry' element={<Entry />} />
+            <Route path='/' element={<LogIn />} />
             <Route path='/signup' element={<SignUp />}>
                 <Route index element={<SignUpBody />} />
                 <Route path='uploadDoc' element={<UploadDoc />} />
             </Route>
+            <Route path='/home' element={<Home />} />
             <Route path='/register' element={<Register />} />
             <Route path='/myPage' element={<MyPage />} />
             <Route path='/question' element={<QnA />} />

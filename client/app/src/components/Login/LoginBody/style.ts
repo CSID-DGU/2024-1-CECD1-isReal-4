@@ -58,20 +58,27 @@ export const ButtonContainer = styled.div`
     margin-top: 10px;
 `;
 
-export const LoginButton = styled.button`
+export const LoginButton = styled.button<{ isDisabled: boolean }>`
     width: 80%;
     height: 50px;
+    background-color: ${(props) => (props.isDisabled ? "#ccc" : "#fff")};
+    color: ${(props) => (props.isDisabled ? "#666" : "white")};
     border: 1px solid #ccc;
-    background-color: #fff;
     border-radius: 25px;
-    cursor: pointer;
+    cursor: ${(props) => (props.isDisabled ? "not-allowed" : "pointer")};
+    opacity: ${(props) => (props.isDisabled ? 0.5 : 1)};
+    transition: background-color 0.3s, color 0.3s;
+
+    &:hover {
+        background-color: ${(props) => (props.isDisabled ? "#ccc" : "#fff")};
+    }
 `;
 
 export const SignUpContainer = styled.div`
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 30px;
+    margin-top: 25px;
     align-items: column;
 `;
 
