@@ -28,7 +28,7 @@ export default function Category() {
                     <SvgButton src={RegisterIcon} height={"28px"} width={"28px"} />
                     <Sub1 text={"체크리스트 작성하기"} />
                 </Styled.CategoryCard>
-                <Styled.CategoryCard onClick={handleCardClick}>
+                <Styled.CategoryCard onClick={() => navigate("/listSelection")}>
                     <SvgButton src={CheckListIcon} height={"28px"} width={"28px"} />
                     <Sub1 text={"체크리스트 보기"} />
                 </Styled.CategoryCard>

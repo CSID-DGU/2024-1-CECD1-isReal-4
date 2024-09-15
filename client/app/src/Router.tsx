@@ -12,6 +12,7 @@ import QuestionDetail from "@/pages/Question/QuestionDetail";
 import AnnouncementList from "@/pages/Announcement/AnnouncementList";
 import AnnouncementWrite from "@/pages/Announcement/AnnouncementWrite";
 import AnnouncementDetail from "@/pages/Announcement/AnnouncementDetail";
+import ListSelection from "@/pages/CheckList/ListSelection";
 
 export default function Router() {
     return (
@@ -23,7 +24,6 @@ export default function Router() {
                 <Route path='uploadDoc' element={<UploadDoc />} />
             </Route>
             <Route path='/home' element={<Home />} />
-            <Route path='/register' element={<Register />} />
             <Route path='/myPage' element={<MyPage />} />
             <Route path='/question' element={<QnA />} />
             <Route path='/question/write' element={<QuestionWrite/>} />
@@ -31,6 +31,8 @@ export default function Router() {
             <Route path='/announcement' element={<AnnouncementList />} />
             <Route path='/announcement/write' element={<AnnouncementWrite/>} />
             <Route path='/announcement/:id' element={<AnnouncementDetail/>} />
+
+            <Route path='/listSelection' element={<ListSelection />} />
         </Routes>
     );
 }
