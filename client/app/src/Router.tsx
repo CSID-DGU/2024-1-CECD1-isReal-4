@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Entry from "@/pages/Entry";
 import Home from "@/pages/Home";
-import Register from "@/pages/Register";
 import MyPage from "@/pages/MyPage";
 import LogIn from "@/pages/LogIn";
 import SignUp from "@/pages/SignUp";
