@@ -13,6 +13,7 @@ import AnnouncementList from "@/pages/Announcement/AnnouncementList";
 import AnnouncementWrite from "@/pages/Announcement/AnnouncementWrite";
 import AnnouncementDetail from "@/pages/Announcement/AnnouncementDetail";
 import ListSelection from "@/pages/CheckList/ListSelection";
+import RegisteredCheckList from "@/pages/CheckList/RegisteredCheckList";
 
 export default function Router() {
     return (
@@ -33,6 +34,7 @@ export default function Router() {
             <Route path='/announcement/:id' element={<AnnouncementDetail/>} />
 
             <Route path='/listSelection' element={<ListSelection />} />
+            <Route path='/registeredCheckList' element={<RegisteredCheckList />} />
         </Routes>
     );
 }

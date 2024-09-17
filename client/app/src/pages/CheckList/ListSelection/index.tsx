@@ -4,14 +4,17 @@ import H1 from "@/components/Common/Font/Body/Sub1";
 import SvgButton from "@/components/Common/SvgButton";
 import CheckListIcon from "@/assets/icons/CheckList.svg";
 import RegisterIcon from "@/assets/icons/Register.svg";
+import { useNavigate} from "react-router-dom";
 
 export default function CheckListSelection() {
+    const navigate = useNavigate();
+
     return (
         <>
             <Title title={"체크리스트 선택"}/>
             <Styled.CategoryContainer>
                 <Styled.CategoryGrid>
-                    <Styled.CategoryCard>
+                    <Styled.CategoryCard onClick={() => navigate('/registeredCheckList')}>
                         <SvgButton src={CheckListIcon} height={"28px"} width={"28px"} marginBottom={"20px"}/>
                         <H1 text={"등록된 하자"} />
                         <H1 text={"체크리스트 보기"} />
