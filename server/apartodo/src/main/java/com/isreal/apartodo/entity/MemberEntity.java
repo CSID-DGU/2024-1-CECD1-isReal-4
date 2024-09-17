@@ -1,5 +1,6 @@
 package com.isreal.apartodo.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -21,8 +22,6 @@ public class MemberEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-    private Long apartmentId;
-
     private String username;
     private String password;
 
@@ -31,6 +30,9 @@ public class MemberEntity {
 
     private String memberName;
     private String phoneNumber;
+    private String apartmentName;
     private String apartmentBuildingNumber;
+
+    @Column(columnDefinition = "TEXT")
     private String authDocument;
 }

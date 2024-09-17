@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class TempService {
+public class AllService {
 }

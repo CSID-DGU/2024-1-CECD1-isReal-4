@@ -30,15 +30,25 @@ public class JWTUtil {
         return Role.valueOf(Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class));
     }
 
+    public String getApartmentName(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("apartmentName", String.class);
+    }
+
+    public String getMemberName(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("memberName", String.class);
+    }
+
     public Boolean isExpired(String token) {
 
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
-    public String createJwt(String username, Role role, Long expiredMs) {
+    public String createJwt(String username, Role role, String apartmentName, String memberName, Long expiredMs) {
         return Jwts.builder()
                 .claim("username", username)
                 .claim("role", role.name())
+                .claim("apartmentName", apartmentName)
+                .claim("memberName", memberName)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiredMs))
                 .signWith(secretKey)

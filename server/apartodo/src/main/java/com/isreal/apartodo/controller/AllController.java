@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/api/user")
-public class TempController {
+@RequestMapping("/all")
+public class AllController {
 }

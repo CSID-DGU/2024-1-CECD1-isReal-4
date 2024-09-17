@@ -57,4 +57,12 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public String getApartmentName() {
+        return memberEntity.getApartmentName();
+    }
+
+    public String getMemberName() {
+        return memberEntity.getMemberName();
+    }
 }

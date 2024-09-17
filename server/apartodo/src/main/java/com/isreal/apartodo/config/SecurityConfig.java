@@ -65,7 +65,7 @@ public class SecurityConfig {
         http.httpBasic((httpBasic) -> httpBasic.disable());
 
         http.authorizeHttpRequests((auth) -> auth
-                .requestMatchers("/", "/all/**").permitAll()
+                .requestMatchers("/", "/login", "/all/**").permitAll()
                 .requestMatchers("/wait/**").hasRole(Role.WAIT.name())
                 .requestMatchers("/deny/**").hasRole(Role.DENY.name())
                 .requestMatchers("/member/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name(), Role.SUPER_ADMIN.name())
