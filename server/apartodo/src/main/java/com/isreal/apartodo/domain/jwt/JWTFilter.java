@@ -1,8 +1,7 @@
-package com.isreal.apartodo.jwt;
+package com.isreal.apartodo.domain.jwt;
 
-import com.isreal.apartodo.dto.CustomUserDetails;
-import com.isreal.apartodo.entity.MemberEntity;
-import com.isreal.apartodo.entity.Role;
+import com.isreal.apartodo.domain.member.MemberDocument;
+import com.isreal.apartodo.domain.member.dto.Role;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,15 +41,15 @@ public class JWTFilter extends OncePerRequestFilter {
         String apartmentName = jwtUtil.getApartmentName(token);
         String memberName = jwtUtil.getMemberName(token);
 
-        MemberEntity memberEntity = new MemberEntity();
-        memberEntity.setUsername(username);
-        memberEntity.setPassword("temppassword");
-        memberEntity.setRole(role);
-        memberEntity.setApartmentName(apartmentName);
-        memberEntity.setMemberName(memberName);
+        MemberDocument memberDocument = new MemberDocument();
+        memberDocument.setUsername(username);
+        memberDocument.setPassword("temppassword");
+        memberDocument.setRole(role);
+        memberDocument.setApartmentName(apartmentName);
+        memberDocument.setMemberName(memberName);
 
 
-        CustomUserDetails customUserDetails = new CustomUserDetails(memberEntity);
+        CustomUserDetails customUserDetails = new CustomUserDetails(memberDocument);
 
         Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authToken);

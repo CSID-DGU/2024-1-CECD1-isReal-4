@@ -1,6 +1,6 @@
-package com.isreal.apartodo.jwt;
+package com.isreal.apartodo.domain.jwt;
 
-import com.isreal.apartodo.entity.Role;
+import com.isreal.apartodo.domain.member.dto.Role;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

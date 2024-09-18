@@ -1,6 +1,6 @@
-package com.isreal.apartodo.dto;
+package com.isreal.apartodo.domain.jwt;
 
-import com.isreal.apartodo.entity.MemberEntity;
+import com.isreal.apartodo.domain.member.MemberDocument;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +11,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
-    private final MemberEntity memberEntity;
+    private final MemberDocument memberDocument;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -21,7 +21,7 @@ public class CustomUserDetails implements UserDetails {
 
             @Override
             public String getAuthority() {
-                return "ROLE_" + memberEntity.getRole().name();
+                return "ROLE_" + memberDocument.getRole().name();
             }
         });
 
@@ -30,12 +30,12 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return memberEntity.getPassword();
+        return memberDocument.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return memberEntity.getUsername();
+        return memberDocument.getUsername();
     }
 
     @Override
@@ -59,10 +59,10 @@ public class CustomUserDetails implements UserDetails {
     }
 
     public String getApartmentName() {
-        return memberEntity.getApartmentName();
+        return memberDocument.getApartmentName();
     }
 
     public String getMemberName() {
-        return memberEntity.getMemberName();
+        return memberDocument.getMemberName();
     }
 }

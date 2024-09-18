@@ -1,7 +1,6 @@
-package com.isreal.apartodo.jwt;
+package com.isreal.apartodo.domain.jwt;
 
-import com.isreal.apartodo.dto.CustomUserDetails;
-import com.isreal.apartodo.entity.Role;
+import com.isreal.apartodo.domain.member.dto.Role;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

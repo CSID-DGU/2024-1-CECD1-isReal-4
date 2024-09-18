@@ -1,9 +1,6 @@
-package com.isreal.apartodo.config;
+package com.isreal.apartodo.domain.jwt;
 
-import com.isreal.apartodo.jwt.JWTFilter;
-import com.isreal.apartodo.jwt.JWTUtil;
-import com.isreal.apartodo.jwt.LoginFilter;
-import com.isreal.apartodo.entity.Role;
+import com.isreal.apartodo.domain.member.dto.Role;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

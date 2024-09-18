@@ -1,4 +1,4 @@
-package com.isreal.apartodo.controller;
+package com.isreal.apartodo.domain.member;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,5 +9,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/all")
-public class AllController {
+public class MemberController {
 }

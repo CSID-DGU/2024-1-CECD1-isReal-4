@@ -1,8 +1,7 @@
-package com.isreal.apartodo.service;
+package com.isreal.apartodo.domain.jwt;
 
-import com.isreal.apartodo.dto.CustomUserDetails;
-import com.isreal.apartodo.entity.MemberEntity;
-import com.isreal.apartodo.repository.MemberRepository;
+import com.isreal.apartodo.domain.member.MemberDocument;
+import com.isreal.apartodo.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,12 +12,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final MemberRepository userRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        MemberEntity userData = userRepository.findByUsername(username);
+        MemberDocument userData = memberRepository.findByUsername(username);
 
         if (userData != null) {
 

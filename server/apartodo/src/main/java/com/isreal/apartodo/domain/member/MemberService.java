@@ -1,4 +1,4 @@
-package com.isreal.apartodo.service;
+package com.isreal.apartodo.domain.member;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AllService {
+public class MemberService {
 }

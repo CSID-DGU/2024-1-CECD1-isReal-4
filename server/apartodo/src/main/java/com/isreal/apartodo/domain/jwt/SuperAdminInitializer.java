@@ -1,8 +1,8 @@
-package com.isreal.apartodo;
+package com.isreal.apartodo.domain.jwt;
 
-import com.isreal.apartodo.entity.MemberEntity;
-import com.isreal.apartodo.entity.Role;
-import com.isreal.apartodo.repository.MemberRepository;
+import com.isreal.apartodo.domain.member.MemberDocument;
+import com.isreal.apartodo.domain.member.dto.Role;
+import com.isreal.apartodo.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -25,7 +25,7 @@ public class SuperAdminInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if (memberRepository.count() == 0) {
-            MemberEntity member = MemberEntity.builder()
+            MemberDocument memberDocument = MemberDocument.builder()
                     .username(superAdminUsername)
                     .password(passwordEncoder.encode(superAdminPassword))
                     .role(Role.SUPER_ADMIN)
@@ -36,7 +36,7 @@ public class SuperAdminInitializer implements CommandLineRunner {
                     .authDocument("authDocument")
                     .build();
 
-            memberRepository.save(member);
+            memberRepository.save(memberDocument);
         }
     }
 }

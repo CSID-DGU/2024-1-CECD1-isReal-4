@@ -1,4 +1,4 @@
-package com.isreal.apartodo.dto;
+package com.isreal.apartodo.domain.member.dto;
 
 import lombok.Data;
 
