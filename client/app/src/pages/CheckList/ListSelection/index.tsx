@@ -19,7 +19,7 @@ export default function CheckListSelection() {
                         <H1 text={"등록된 하자"} />
                         <H1 text={"체크리스트 보기"} />
                     </Styled.CategoryCard>
-                    <Styled.CategoryCard>
+                    <Styled.CategoryCard onClick={() => navigate('/myCheckList')}>
                         <SvgButton src={RegisterIcon} height={"28px"} width={"28px"} marginBottom={"20px"}/>
                         <H1 text={"내가 작성한"} />
                         <H1 text={"하자 체크리스트 보기"} />

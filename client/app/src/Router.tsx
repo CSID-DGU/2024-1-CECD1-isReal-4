@@ -14,6 +14,7 @@ import AnnouncementWrite from "@/pages/Announcement/AnnouncementWrite";
 import AnnouncementDetail from "@/pages/Announcement/AnnouncementDetail";
 import ListSelection from "@/pages/CheckList/ListSelection";
 import RegisteredCheckList from "@/pages/CheckList/RegisteredCheckList";
+import MyCheckLists from "@/pages/CheckList/MyCheckLists";
 
 export default function Router() {
     return (
@@ -35,6 +36,7 @@ export default function Router() {
 
             <Route path='/listSelection' element={<ListSelection />} />
             <Route path='/registeredCheckList' element={<RegisteredCheckList />} />
+            <Route path='/myCheckList' element={<MyCheckLists />} />
         </Routes>
     );
 }

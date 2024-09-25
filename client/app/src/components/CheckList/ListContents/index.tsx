@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import * as Styled from './style';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import ListItem from '../ListItem';
 import DateSeparator from '../DateSeparator';
+import Row from "@/components/Common/Row";
 
 interface ListContentItem {
     id: number;
@@ -21,6 +22,11 @@ const mockData: ListContentItem[] = [
 
 export default function ListContents() {
     const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+
+    }, []);
     const handleItemClick = (item: ListContentItem) => {
         navigate(`/registeredCheckListDetail/${item.id}`, { state: item });
     };
@@ -38,9 +44,14 @@ export default function ListContents() {
                 <React.Fragment key={date}>
                     <DateSeparator date={date} />
                     {groupedData[date].map((item) => (
+                        <Row alignItems={'center'} justifyContent={'center'}>
                         <ListItem key={item.id} item={item} onClick={handleItemClick} />
+                            {location.pathname ==='/myCheckList' && <button>신청됨</button>}
+                        </Row>
                     ))}
+
                 </React.Fragment>
+
             ))}
         </Styled.CheckListContentContainer>
     );
