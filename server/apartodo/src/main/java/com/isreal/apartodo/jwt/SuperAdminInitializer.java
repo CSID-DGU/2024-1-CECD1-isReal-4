@@ -29,11 +29,11 @@ public class SuperAdminInitializer implements CommandLineRunner {
                     .username(superAdminUsername)
                     .password(passwordEncoder.encode(superAdminPassword))
                     .role(Role.SUPER_ADMIN)
-                    .apartmentName("apartmentName")
-                    .memberName("memberName")
-                    .phoneNumber("phoneNumber")
-                    .apartmentBuildingNumber("apartmentBuildingNumber")
-                    .authDocument("authDocument")
+                    .apartmentName("")
+                    .memberName("총관리자")
+                    .phoneNumber("")
+                    .apartmentBuildingNumber("")
+                    .authDocument("")
                     .build();
 
             memberRepository.save(memberDocument);
