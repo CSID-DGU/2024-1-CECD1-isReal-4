@@ -1,7 +1,7 @@
-package com.isreal.apartodo.domain.jwt;
+package com.isreal.apartodo.jwt;
 
-import com.isreal.apartodo.domain.member.MemberDocument;
-import com.isreal.apartodo.domain.member.MemberRepository;
+import com.isreal.apartodo.document.MemberDocument;
+import com.isreal.apartodo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

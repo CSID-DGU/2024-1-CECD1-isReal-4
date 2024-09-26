@@ -1,4 +1,4 @@
-package com.isreal.apartodo.domain.member.dto;
+package com.isreal.apartodo.dto;
 
 public enum Role {
     USER,

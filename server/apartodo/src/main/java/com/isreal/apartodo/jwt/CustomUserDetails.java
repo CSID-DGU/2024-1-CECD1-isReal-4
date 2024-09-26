@@ -1,6 +1,6 @@
-package com.isreal.apartodo.domain.jwt;
+package com.isreal.apartodo.jwt;
 
-import com.isreal.apartodo.domain.member.MemberDocument;
+import com.isreal.apartodo.document.MemberDocument;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

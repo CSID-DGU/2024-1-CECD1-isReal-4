@@ -1,6 +1,6 @@
-package com.isreal.apartodo.domain.jwt;
+package com.isreal.apartodo.jwt;
 
-import com.isreal.apartodo.domain.member.dto.Role;
+import com.isreal.apartodo.dto.Role;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

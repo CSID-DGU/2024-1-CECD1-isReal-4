@@ -1,6 +1,6 @@
-package com.isreal.apartodo.domain.member;
+package com.isreal.apartodo.document;
 
-import com.isreal.apartodo.domain.member.dto.Role;
+import com.isreal.apartodo.dto.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +18,9 @@ public class MemberDocument {
     private String memberId;
 
     private String username;
+
     private String password;
+
 
     private Role role;
 

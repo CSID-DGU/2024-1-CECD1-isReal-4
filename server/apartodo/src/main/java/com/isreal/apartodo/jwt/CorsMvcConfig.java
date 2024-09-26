@@ -1,4 +1,4 @@
-package com.isreal.apartodo.domain.jwt;
+package com.isreal.apartodo.jwt;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
