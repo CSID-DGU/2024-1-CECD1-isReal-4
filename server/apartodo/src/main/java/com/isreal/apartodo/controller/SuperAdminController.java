@@ -21,4 +21,9 @@ public class SuperAdminController {
     public void makeAdmin(@RequestBody MakeAdminDTO makeAdminDTO) {
         superAdminService.makeAdmin(makeAdminDTO);
     }
+
+    @PostMapping("/is-super-admin")
+    public boolean isSuperAdmin() {
+        return true;
+    }
 }
