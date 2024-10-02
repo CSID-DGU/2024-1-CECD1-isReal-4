@@ -19,4 +19,10 @@ public class AdminService {
     public List<MemberDocument> findJoinRequests(String apartmentName) {
         return memberRepository.findByApartmentNameAndRole(apartmentName, Role.WAIT);
     }
+
+    public void approveJoinRequest(MemberDocument member) {
+        member.setRole(Role.USER);
+
+        memberRepository.save(member);
+    }
 }
