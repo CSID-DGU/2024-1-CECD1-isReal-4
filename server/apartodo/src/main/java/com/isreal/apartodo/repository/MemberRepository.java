@@ -11,4 +11,6 @@ public interface MemberRepository extends MongoRepository<MemberDocument, String
     MemberDocument findByUsername(String username);
 
     List<MemberDocument> findByApartmentNameAndRole(String apartmentName, Role role);
+
+    boolean existsByUsername(String username);
 }

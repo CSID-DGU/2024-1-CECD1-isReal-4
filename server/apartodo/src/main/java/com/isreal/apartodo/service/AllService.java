@@ -6,6 +6,8 @@ import com.isreal.apartodo.dto.Role;
 import com.isreal.apartodo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -15,7 +17,11 @@ public class AllService {
 
     private final MemberRepository memberRepository;
 
-    public void joinRequest(JoinRequestDTO joinRequestDTO) {
+    public ResponseEntity<String> joinRequest(JoinRequestDTO joinRequestDTO) {
+        if (memberRepository.existsByUsername(joinRequestDTO.getUsername())) {
+            return new ResponseEntity<>("Username already exists: " + joinRequestDTO.getUsername(), HttpStatus.CONFLICT);
+        }
+
         MemberDocument memberDocument = MemberDocument.builder()
                 .username(joinRequestDTO.getUsername())
                 .password(joinRequestDTO.getPassword())
@@ -28,5 +34,7 @@ public class AllService {
                 .build();
 
         memberRepository.save(memberDocument);
+
+        return new ResponseEntity<>("User created successfully", HttpStatus.CREATED);
     }
 }

@@ -4,6 +4,7 @@ import com.isreal.apartodo.dto.JoinRequestDTO;
 import com.isreal.apartodo.service.AllService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,7 @@ public class AllController {
     private final AllService allService;
 
     @PostMapping("/join-request")
-    public void joinRequest(@RequestBody JoinRequestDTO joinRequestDTO) {
-        allService.joinRequest(joinRequestDTO);
+    public ResponseEntity<String> joinRequest(@RequestBody JoinRequestDTO joinRequestDTO) {
+        return allService.joinRequest(joinRequestDTO);
     }
 }

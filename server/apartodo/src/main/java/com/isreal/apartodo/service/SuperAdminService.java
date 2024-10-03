@@ -8,6 +8,8 @@ import com.isreal.apartodo.repository.ApartmentRepository;
 import com.isreal.apartodo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +22,15 @@ public class SuperAdminService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public void makeAdmin(MakeAdminDTO makeAdminDTO) {
+    public ResponseEntity<String> makeAdmin(MakeAdminDTO makeAdminDTO) {
+        if (memberRepository.existsByUsername(makeAdminDTO.getUsername())) {
+            return new ResponseEntity<>("Username already exists: " + makeAdminDTO.getUsername(), HttpStatus.CONFLICT);
+        }
+
+        if (apartmentRepository.existsByApartmentName(makeAdminDTO.getApartmentName())) {
+            return new ResponseEntity<>("Apartment name already exists: " + makeAdminDTO.getApartmentName(), HttpStatus.CONFLICT);
+        }
+
         MemberDocument memberDocument = MemberDocument.builder()
                 .memberId(null)
                 .username(makeAdminDTO.getUsername())
@@ -41,5 +51,7 @@ public class SuperAdminService {
                 .partnersInformation(makeAdminDTO.getPartnersInformation())
                 .build();
         apartmentRepository.save(apartmentDocument);
+
+        return new ResponseEntity<>("Admin created successfully", HttpStatus.CREATED);
     }
 }
