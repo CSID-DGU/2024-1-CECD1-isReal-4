@@ -21,7 +21,7 @@ public class AdminService {
     }
 
     public void approveJoinRequest(MemberDocument member) {
-        member.setRole(Role.USER);
+        member.setRole(Role.MEMBER);
 
         memberRepository.save(member);
     }

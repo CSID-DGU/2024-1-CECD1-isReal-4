@@ -1,7 +1,7 @@
 package com.isreal.apartodo.dto;
 
 public enum Role {
-    USER,
+    MEMBER,
     WAIT,
     DENY,
     ADMIN,

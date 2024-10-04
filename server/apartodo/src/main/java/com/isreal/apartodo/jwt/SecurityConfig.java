@@ -65,7 +65,7 @@ public class SecurityConfig {
                 .requestMatchers("/", "/login", "/all/**").permitAll()
                 .requestMatchers("/wait/**").hasRole(Role.WAIT.name())
                 .requestMatchers("/deny/**").hasRole(Role.DENY.name())
-                .requestMatchers("/member/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name(), Role.SUPER_ADMIN.name())
+                .requestMatchers("/member/**").hasAnyRole(Role.MEMBER.name(), Role.ADMIN.name(), Role.SUPER_ADMIN.name())
                 .requestMatchers("/admin/**").hasAnyRole(Role.ADMIN.name(), Role.SUPER_ADMIN.name())
                 .requestMatchers("/super-admin/**").hasRole(Role.SUPER_ADMIN.name())
                 .anyRequest().authenticated());
