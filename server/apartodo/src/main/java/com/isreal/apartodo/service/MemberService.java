@@ -41,7 +41,7 @@ public class MemberService {
     }
 
     public List<ChecklistDocument> findChecklists(String username) {
-        return checklistRepository.findByUsername(username, Sort.by(Sort.Direction.ASC, "checklistId"));
+        return checklistRepository.findByUsername(username, Sort.by(Sort.Direction.DESC, "checklistId"));
     }
 
     public void faultRequest(FaultRequestDTO faultRequestDTO, String username) {
@@ -74,4 +74,7 @@ public class MemberService {
         }
     }
 
+    public List<FaultDocument> findFaults(String username) {
+        return faultRepository.findByUsername(username, Sort.by(Sort.Direction.DESC, "faultId"));
+    }
 }

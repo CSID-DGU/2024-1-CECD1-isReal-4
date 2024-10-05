@@ -1,6 +1,7 @@
 package com.isreal.apartodo.controller;
 
 import com.isreal.apartodo.document.ChecklistDocument;
+import com.isreal.apartodo.document.FaultDocument;
 import com.isreal.apartodo.dto.ChecklistDTO;
 import com.isreal.apartodo.dto.FaultRequestDTO;
 import com.isreal.apartodo.service.MemberService;
@@ -57,5 +58,17 @@ public class MemberController {
         String username = auth.getAuthority();
 
         memberService.faultRequest(faultRequestDTO, username);
+    }
+
+    @GetMapping("/find-faults")
+    public List<FaultDocument> findFaults() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        Iterator<? extends GrantedAuthority> iter = authorities.iterator();
+        GrantedAuthority auth = iter.next();
+        String username = auth.getAuthority();
+
+        return memberService.findFaults(username);
     }
 }

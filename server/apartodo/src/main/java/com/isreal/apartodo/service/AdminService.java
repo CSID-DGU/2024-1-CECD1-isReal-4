@@ -21,7 +21,7 @@ public class AdminService {
     private final FaultRepository faultRepository;
 
     public List<MemberDocument> findJoinRequests(String apartmentName) {
-        return memberRepository.findByApartmentNameAndRole(apartmentName, Role.WAIT, Sort.by(Sort.Direction.ASC, "memberId"));
+        return memberRepository.findByApartmentNameAndRole(apartmentName, Role.WAIT, Sort.by(Sort.Direction.DESC, "memberId"));
     }
 
     public void approveJoinRequest(MemberDocument member) {
@@ -31,6 +31,6 @@ public class AdminService {
     }
 
     public List<FaultDocument> findFaultRequests(String apartmentName) {
-        return faultRepository.findByApartmentNameAndApprovalStatus(apartmentName, "PENDING", Sort.by(Sort.Direction.ASC, "faultId"));
+        return faultRepository.findByApartmentNameAndApprovalStatus(apartmentName, "PENDING", Sort.by(Sort.Direction.DESC, "faultId"));
     }
 }
