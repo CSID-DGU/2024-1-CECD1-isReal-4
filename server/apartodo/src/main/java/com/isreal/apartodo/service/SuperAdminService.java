@@ -48,7 +48,6 @@ public class SuperAdminService {
                 .apartmentId(null)
                 .apartmentName(makeAdminDTO.getApartmentName())
                 .apartmentInformation(makeAdminDTO.getApartmentInformation())
-                .partnersInformation(makeAdminDTO.getPartnersInformation())
                 .build();
         apartmentRepository.save(apartmentDocument);
 

@@ -22,7 +22,4 @@ public class ApartmentDocument {
 
     @Field("apartment_information")
     private String apartmentInformation;
-
-    @Field("partners_information")
-    private String partnersInformation;
 }
