@@ -40,6 +40,9 @@ public class FaultDocument {
     @Field("member_name")
     private String memberName; // 입주예정자 이름
 
+    @Field("phone_number")
+    private String phoneNumber; // 입주예정자 핸드폰 번호
+
     @Field("apartment_name")
     private String apartmentName; // 아파트 이름
 

@@ -48,6 +48,7 @@ public class MemberService {
         // username으로 Member 정보 조회
         MemberDocument member = memberRepository.findByUsername(username);
         String memberName = member.getMemberName();
+        String phoneNumber = member.getPhoneNumber();
         String apartmentName = member.getApartmentName();
         String apartmentBuildingNumber = member.getApartmentBuildingNumber();
 
@@ -61,6 +62,7 @@ public class MemberService {
                     .appendImages(fault.getAppendImages())                 // 추가 이미지
                     .username(username)                                    // 입주 예정자 이메일
                     .memberName(memberName)                                // 입주 예정자 이름
+                    .phoneNumber(phoneNumber)                              // 입주 예정자 핸드폰 번호
                     .apartmentName(apartmentName)                          // 아파트 이름
                     .apartmentBuildingNumber(apartmentBuildingNumber)      // 동호수
                     .reviewer(null)                                        // 검토자 정보 없음
