@@ -7,10 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -24,8 +21,8 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    @PostMapping("/find-join-requests")
-    public List<MemberDocument> findJoinRequests(){
+    @GetMapping("/find-join-requests")
+    public List<MemberDocument> findJoinRequests() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -38,7 +35,7 @@ public class AdminController {
     }
 
     @PostMapping("/approve-join-request")
-    public void approveJoinRequest(@RequestBody MemberDocument member){
+    public void approveJoinRequest(@RequestBody MemberDocument member) {
         adminService.approveJoinRequest(member);
     }
 }

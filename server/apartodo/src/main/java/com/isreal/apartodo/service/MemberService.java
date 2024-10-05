@@ -7,7 +7,10 @@ import com.isreal.apartodo.repository.ChecklistRepository;
 import com.isreal.apartodo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -31,5 +34,9 @@ public class MemberService {
                 .build();
 
         return checklistRepository.save(checklistDocument);
+    }
+
+    public List<ChecklistDocument> findChecklists(String username) {
+        return checklistRepository.findByUsername(username, Sort.by(Sort.Direction.ASC, "checklistId"));
     }
 }

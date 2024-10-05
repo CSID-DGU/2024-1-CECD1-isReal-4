@@ -35,6 +35,6 @@ public class AllService {
 
         memberRepository.save(memberDocument);
 
-        return new ResponseEntity<>("User created successfully", HttpStatus.CREATED);
+        return new ResponseEntity<>("Join request successfully", HttpStatus.CREATED);
     }
 }

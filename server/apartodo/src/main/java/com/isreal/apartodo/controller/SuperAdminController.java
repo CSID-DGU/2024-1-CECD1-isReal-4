@@ -5,10 +5,7 @@ import com.isreal.apartodo.service.SuperAdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,7 +20,7 @@ public class SuperAdminController {
         return superAdminService.makeAdmin(makeAdminDTO);
     }
 
-    @PostMapping("/is-super-admin")
+    @GetMapping("/is-super-admin")
     public boolean isSuperAdmin() {
         return true;
     }
