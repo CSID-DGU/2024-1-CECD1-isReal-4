@@ -28,12 +28,4 @@ public class ChecklistDocument {
     private String memberName; // 입주예정자 이름
 
     private String apartmentName;
-
-    private String reviewer; // 관리자 이름
-
-    private String reviewComment; // 거절시 거절사유
-
-    private String reviewCompletionTime; // 검토한 시간
-
-    private String approvalStatus; // 승인 여부
 }

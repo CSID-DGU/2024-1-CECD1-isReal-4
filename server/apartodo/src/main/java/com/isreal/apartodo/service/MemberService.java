@@ -28,10 +28,6 @@ public class MemberService {
                 .username(username)
                 .memberName(memberName)
                 .apartmentName(apartmentName)
-                .reviewer(null)
-                .reviewComment(null)
-                .reviewCompletionTime(null)
-                .approvalStatus("PENDING")
                 .build();
 
         return checklistRepository.save(checklistDocument);
