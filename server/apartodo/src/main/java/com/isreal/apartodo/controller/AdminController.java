@@ -24,14 +24,7 @@ public class AdminController {
 
     @GetMapping("/find-join-requests")
     public List<MemberDocument> findJoinRequests() {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        Iterator<? extends GrantedAuthority> iter = authorities.iterator();
-        GrantedAuthority auth = iter.next();
-        String apartmentName = auth.getAuthority();
-
+        String apartmentName = getApartmentNameFromAuthentication();
         return adminService.findJoinRequests(apartmentName);
     }
 
@@ -40,15 +33,17 @@ public class AdminController {
         adminService.approveJoinRequest(member);
     }
 
-    @GetMapping("find-fault-requests")
+    @GetMapping("/find-fault-requests")
     public List<FaultDocument> findFaultRequests() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String apartmentName = getApartmentNameFromAuthentication();
+        return adminService.findFaultRequests(apartmentName);
+    }
 
+    private String getApartmentNameFromAuthentication() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iter = authorities.iterator();
         GrantedAuthority auth = iter.next();
-        String apartmentName = auth.getAuthority();
-
-        return adminService.findFaultRequests(apartmentName);
+        return auth.getAuthority();
     }
 }
