@@ -1,6 +1,5 @@
 package com.isreal.apartodo.document;
 
-import com.isreal.apartodo.dto.FaultRequestDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -21,8 +22,17 @@ public class FaultDocument {
     @Field("create_at")
     private String createAt; // 신청한 시간
 
-    @Field("fault")
-    private FaultRequestDTO.Fault fault; // 하자 내용
+    @Field("fault_name")
+    String faultName;
+
+    @Field("description")
+    String description; // 상태
+
+    @Field("append_text")
+    String appendText; // 추가 설명
+
+    @Field("append_images")
+    List<String> appendImages; // 추가 이미지
 
     @Field("username")
     private String username; // 입주예정자 이메일

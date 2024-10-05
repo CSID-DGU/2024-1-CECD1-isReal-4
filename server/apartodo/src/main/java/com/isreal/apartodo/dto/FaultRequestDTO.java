@@ -12,7 +12,9 @@ public class FaultRequestDTO {
 
     @Data
     public static class Fault {
-        String name;
-        ChecklistDTO.Items items;
+        String faultName;
+        String description; // 상태
+        String appendText; // 추가 설명
+        List<String> appendImages; // 추가 이미지
     }
 }
