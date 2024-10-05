@@ -1,5 +1,6 @@
 package com.isreal.apartodo.controller;
 
+import com.isreal.apartodo.document.FaultDocument;
 import com.isreal.apartodo.document.MemberDocument;
 import com.isreal.apartodo.service.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -37,5 +38,17 @@ public class AdminController {
     @PostMapping("/approve-join-request")
     public void approveJoinRequest(@RequestBody MemberDocument member) {
         adminService.approveJoinRequest(member);
+    }
+
+    @GetMapping("find-fault-requests")
+    public List<FaultDocument> findFaultRequests() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        Iterator<? extends GrantedAuthority> iter = authorities.iterator();
+        GrantedAuthority auth = iter.next();
+        String apartmentName = auth.getAuthority();
+
+        return adminService.findFaultRequests(apartmentName);
     }
 }
