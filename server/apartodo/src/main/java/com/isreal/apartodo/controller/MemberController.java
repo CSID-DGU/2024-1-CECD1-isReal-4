@@ -26,49 +26,33 @@ public class MemberController {
 
     @PostMapping("/add-checklist")
     public ChecklistDocument addChecklist(@RequestBody ChecklistDTO checklistDTO) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        Iterator<? extends GrantedAuthority> iter = authorities.iterator();
-        GrantedAuthority auth = iter.next();
-        String username = auth.getAuthority();
-
+        String username = getUsernameFromAuthentication();
         return memberService.addCheckList(checklistDTO, username);
     }
 
     @GetMapping("/find-checklists")
     public List<ChecklistDocument> findChecklists() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        Iterator<? extends GrantedAuthority> iter = authorities.iterator();
-        GrantedAuthority auth = iter.next();
-        String username = auth.getAuthority();
-
+        String username = getUsernameFromAuthentication();
         return memberService.findChecklists(username);
     }
 
     @PostMapping("/fault-request")
     public void faultRequest(@RequestBody FaultRequestDTO faultRequestDTO) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        Iterator<? extends GrantedAuthority> iter = authorities.iterator();
-        GrantedAuthority auth = iter.next();
-        String username = auth.getAuthority();
-
+        String username = getUsernameFromAuthentication();
         memberService.faultRequest(faultRequestDTO, username);
     }
 
     @GetMapping("/find-faults")
     public List<FaultDocument> findFaults() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = getUsernameFromAuthentication();
+        return memberService.findFaults(username);
+    }
 
+    private String getUsernameFromAuthentication() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iter = authorities.iterator();
         GrantedAuthority auth = iter.next();
-        String username = auth.getAuthority();
-
-        return memberService.findFaults(username);
+        return auth.getAuthority();
     }
 }
