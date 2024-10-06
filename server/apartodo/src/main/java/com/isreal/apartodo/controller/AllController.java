@@ -26,4 +26,9 @@ public class AllController {
     public List<ApartmentDocument> findApartments(@RequestParam(name = "apartment-name") String apartmentName) {
         return allService.findApartments(apartmentName);
     }
+
+    @GetMapping("/deny/is-deny")
+    public boolean isDeny() {
+        return true;
+    }
 }
