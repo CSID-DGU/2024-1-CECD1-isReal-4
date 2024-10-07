@@ -2,9 +2,12 @@ package com.isreal.apartodo.service;
 
 import com.isreal.apartodo.document.FaultDocument;
 import com.isreal.apartodo.document.MemberDocument;
+import com.isreal.apartodo.document.RejectionDocument;
+import com.isreal.apartodo.dto.JoinRejectDTO;
 import com.isreal.apartodo.dto.Role;
 import com.isreal.apartodo.repository.FaultRepository;
 import com.isreal.apartodo.repository.MemberRepository;
+import com.isreal.apartodo.repository.RejectionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -19,8 +22,10 @@ public class AdminService {
 
     private final MemberRepository memberRepository;
     private final FaultRepository faultRepository;
+    private final RejectionRepository rejectionRepository;
 
-    public List<MemberDocument> findJoinRequests(String apartmentName) {
+    public List<MemberDocument> findJoinRequests(String username) {
+        String apartmentName = memberRepository.findByUsername(username).getApartmentName();
         return memberRepository.findByApartmentNameAndRole(apartmentName, Role.WAIT, Sort.by(Sort.Direction.DESC, "memberId"));
     }
 
@@ -30,7 +35,33 @@ public class AdminService {
         memberRepository.save(member);
     }
 
-    public List<FaultDocument> findFaultRequests(String apartmentName) {
+    public List<FaultDocument> findFaultRequests(String username) {
+        String apartmentName = memberRepository.findByUsername(username).getApartmentName();
         return faultRepository.findByApartmentNameAndApprovalStatus(apartmentName, "PENDING", Sort.by(Sort.Direction.DESC, "faultId"));
     }
+
+    public void joinReject(JoinRejectDTO joinRejectDTO, String adminUsername) {
+        // 회원의 정보를 가져옴
+        MemberDocument member = joinRejectDTO.getMember();
+
+        // 관리자의 정보를 데이터베이스에서 조회
+        MemberDocument admin = memberRepository.findByUsername(adminUsername);
+
+        // 회원의 role을 DENY로 변경
+        member.setRole(Role.DENY);
+        memberRepository.save(member);  // 변경된 역할을 데이터베이스에 저장
+
+        // RejectionDocument 생성
+        RejectionDocument rejectionDocument = RejectionDocument.builder()
+                .username(member.getUsername())                   // 회원의 username (입주 예정자)
+                .adminName(admin.getMemberName())                 // 관리자의 이름
+                .adminPhoneNumber(admin.getPhoneNumber())         // 관리자의 전화번호
+                .adminMail(admin.getUsername())                   // 관리자의 이메일
+                .rejection(joinRejectDTO.getRejection())          // 거절 사유
+                .build();
+
+        // RejectionDocument 저장
+        rejectionRepository.save(rejectionDocument);
+    }
+
 }

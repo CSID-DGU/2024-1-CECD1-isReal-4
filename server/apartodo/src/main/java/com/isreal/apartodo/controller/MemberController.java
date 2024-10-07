@@ -26,33 +26,25 @@ public class MemberController {
 
     @PostMapping("/add-checklist")
     public ChecklistDocument addChecklist(@RequestBody ChecklistDTO checklistDTO) {
-        String username = getUsernameFromAuthentication();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.addCheckList(checklistDTO, username);
     }
 
     @GetMapping("/find-checklists")
     public List<ChecklistDocument> findChecklists() {
-        String username = getUsernameFromAuthentication();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.findChecklists(username);
     }
 
     @PostMapping("/fault-request")
     public void faultRequest(@RequestBody FaultRequestDTO faultRequestDTO) {
-        String username = getUsernameFromAuthentication();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         memberService.faultRequest(faultRequestDTO, username);
     }
 
     @GetMapping("/find-faults")
     public List<FaultDocument> findFaults() {
-        String username = getUsernameFromAuthentication();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.findFaults(username);
-    }
-
-    private String getUsernameFromAuthentication() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        Iterator<? extends GrantedAuthority> iter = authorities.iterator();
-        GrantedAuthority auth = iter.next();
-        return auth.getAuthority();
     }
 }

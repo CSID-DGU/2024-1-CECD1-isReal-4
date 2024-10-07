@@ -2,6 +2,8 @@ package com.isreal.apartodo.controller;
 
 import com.isreal.apartodo.document.FaultDocument;
 import com.isreal.apartodo.document.MemberDocument;
+import com.isreal.apartodo.dto.JoinRejectDTO;
+import com.isreal.apartodo.repository.MemberRepository;
 import com.isreal.apartodo.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +26,8 @@ public class AdminController {
 
     @GetMapping("/find-join-requests")
     public List<MemberDocument> findJoinRequests() {
-        String apartmentName = getApartmentNameFromAuthentication();
-        return adminService.findJoinRequests(apartmentName);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return adminService.findJoinRequests(username);
     }
 
     @PostMapping("/approve-join-request")
@@ -35,15 +37,13 @@ public class AdminController {
 
     @GetMapping("/find-fault-requests")
     public List<FaultDocument> findFaultRequests() {
-        String apartmentName = getApartmentNameFromAuthentication();
-        return adminService.findFaultRequests(apartmentName);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return adminService.findFaultRequests(username);
     }
 
-    private String getApartmentNameFromAuthentication() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        Iterator<? extends GrantedAuthority> iter = authorities.iterator();
-        GrantedAuthority auth = iter.next();
-        return auth.getAuthority();
+    @PostMapping("/join-reject")
+    public void joinReject(@RequestBody JoinRejectDTO joinRejectDTO) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        adminService.joinReject(joinRejectDTO, username);
     }
 }
