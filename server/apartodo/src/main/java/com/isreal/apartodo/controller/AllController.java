@@ -31,4 +31,9 @@ public class AllController {
     public boolean isDeny() {
         return true;
     }
+
+    @GetMapping("/wait/is-wait")
+    public boolean isWait() {
+        return true;
+    }
 }
