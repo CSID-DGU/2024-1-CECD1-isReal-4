@@ -20,6 +20,9 @@ public class RejectionDocument {
     @Field("username")
     private String username; // 입주예정자 이메일
 
+    @Field("create_at")
+    private String createAt; // 거절한 시간
+
     @Field("admin_name")
     private String adminName; // 거절한 관리자 이름
 

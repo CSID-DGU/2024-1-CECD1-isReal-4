@@ -7,4 +7,5 @@ import lombok.Data;
 public class JoinRejectDTO {
     MemberDocument member;
     String rejection;
+    String createAt;
 }

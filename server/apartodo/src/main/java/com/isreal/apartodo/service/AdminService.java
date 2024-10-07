@@ -58,10 +58,14 @@ public class AdminService {
                 .adminPhoneNumber(admin.getPhoneNumber())         // 관리자의 전화번호
                 .adminMail(admin.getUsername())                   // 관리자의 이메일
                 .rejection(joinRejectDTO.getRejection())          // 거절 사유
+                .createAt(joinRejectDTO.getCreateAt())            // 거절된 시간
                 .build();
 
         // RejectionDocument 저장
         rejectionRepository.save(rejectionDocument);
     }
 
+    public RejectionDocument showRejection(String username) {
+        return rejectionRepository.findByUsername(username);
+    }
 }

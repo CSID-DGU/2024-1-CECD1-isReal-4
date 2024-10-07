@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RejectionRepository extends MongoRepository<RejectionDocument, String> {
+    RejectionDocument findByUsername(String username);
 }

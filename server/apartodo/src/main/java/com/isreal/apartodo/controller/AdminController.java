@@ -2,6 +2,7 @@ package com.isreal.apartodo.controller;
 
 import com.isreal.apartodo.document.FaultDocument;
 import com.isreal.apartodo.document.MemberDocument;
+import com.isreal.apartodo.document.RejectionDocument;
 import com.isreal.apartodo.dto.JoinRejectDTO;
 import com.isreal.apartodo.repository.MemberRepository;
 import com.isreal.apartodo.service.AdminService;
@@ -45,5 +46,10 @@ public class AdminController {
     public void joinReject(@RequestBody JoinRejectDTO joinRejectDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         adminService.joinReject(joinRejectDTO, username);
+    }
+
+    @GetMapping("/show-rejection")
+    public RejectionDocument showRejection(@RequestParam(name = "username") String username) {
+        return adminService.showRejection(username);
     }
 }
