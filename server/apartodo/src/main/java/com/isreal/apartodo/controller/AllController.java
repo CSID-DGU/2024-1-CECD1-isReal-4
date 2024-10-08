@@ -1,6 +1,7 @@
 package com.isreal.apartodo.controller;
 
 import com.isreal.apartodo.document.ApartmentDocument;
+import com.isreal.apartodo.document.RejectionDocument;
 import com.isreal.apartodo.dto.JoinRequestDTO;
 import com.isreal.apartodo.service.AllService;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +36,10 @@ public class AllController {
     @GetMapping("/wait/is-wait")
     public boolean isWait() {
         return true;
+    }
+
+    @GetMapping("/deny/show-rejection")
+    public RejectionDocument showRejection(@RequestParam(name = "username") String username) {
+        return allService.showRejection(username);
     }
 }
