@@ -4,10 +4,7 @@ import com.isreal.apartodo.document.ChecklistDocument;
 import com.isreal.apartodo.document.FaultDocument;
 import com.isreal.apartodo.document.MemberDocument;
 import com.isreal.apartodo.document.QuestionDocument;
-import com.isreal.apartodo.dto.ChecklistDTO;
-import com.isreal.apartodo.dto.FaultRequestDTO;
-import com.isreal.apartodo.dto.PostDTO;
-import com.isreal.apartodo.dto.ProfileDTO;
+import com.isreal.apartodo.dto.*;
 import com.isreal.apartodo.repository.ChecklistRepository;
 import com.isreal.apartodo.repository.FaultRepository;
 import com.isreal.apartodo.repository.MemberRepository;
@@ -108,7 +105,35 @@ public class MemberService {
 
     public void updateProfile(ProfileDTO profileDTO, String username) {
         MemberDocument member = memberRepository.findByUsername(username);
-        member.setProfileImage(profileDTO.getProfile());
+        member.setProfileImage(profileDTO.getProfileImage());
         memberRepository.save(member);
     }
+
+    public MyPageDTO myPage(String username) {
+        // username을 통해 회원 정보를 가져옴
+        MemberDocument member = memberRepository.findByUsername(username);
+
+        // 질문글 리스트를 questionRepository에서 가져오고 questionId로 내림차순 정렬
+        List<QuestionDocument> questions = questionRepository.findByUsername(username, Sort.by(Sort.Direction.DESC, "questionId"));
+
+        // 질문글 갯수
+        int questionCount = questions.size();
+
+        // 하자 갯수를 faultRepository에서 count
+        int faultCount = faultRepository.countByUsername(username);
+
+        // MyPageDTO 빌드
+        MyPageDTO myPageDTO = new MyPageDTO();
+        myPageDTO.setUsername(member.getUsername());
+        myPageDTO.setMemberName(member.getMemberName());
+        myPageDTO.setApartmentName(member.getApartmentName());
+        myPageDTO.setApartmentBuildingNumber(member.getApartmentBuildingNumber());
+        myPageDTO.setProfileImage(member.getProfileImage());
+        myPageDTO.setFaultCount(faultCount);
+        myPageDTO.setQuestionCount(questionCount);
+        myPageDTO.setQuestions(questions);
+
+        return myPageDTO;
+    }
+
 }

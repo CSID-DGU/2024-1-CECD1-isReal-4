@@ -12,4 +12,6 @@ public interface FaultRepository extends MongoRepository<FaultDocument, String> 
     List<FaultDocument> findByApartmentNameAndApprovalStatus(String apartmentName, String approvalStatus, Sort sort);
 
     List<FaultDocument> findByUsername(String username, Sort sort);
+
+    int countByUsername(String username);
 }

@@ -3,10 +3,7 @@ package com.isreal.apartodo.controller;
 import com.isreal.apartodo.document.ChecklistDocument;
 import com.isreal.apartodo.document.FaultDocument;
 import com.isreal.apartodo.document.QuestionDocument;
-import com.isreal.apartodo.dto.ChecklistDTO;
-import com.isreal.apartodo.dto.FaultRequestDTO;
-import com.isreal.apartodo.dto.PostDTO;
-import com.isreal.apartodo.dto.ProfileDTO;
+import com.isreal.apartodo.dto.*;
 import com.isreal.apartodo.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,5 +54,11 @@ public class MemberController {
     public void updateProfile(ProfileDTO profileDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         memberService.updateProfile(profileDTO, username);
+    }
+
+    @GetMapping("/my-page")
+    public MyPageDTO myPage() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return memberService.myPage(username);
     }
 }
