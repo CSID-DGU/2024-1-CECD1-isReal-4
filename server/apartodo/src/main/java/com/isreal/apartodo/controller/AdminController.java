@@ -47,4 +47,10 @@ public class AdminController {
     public RejectionDocument showRejection(@RequestParam(name = "username") String username) {
         return adminService.showRejection(username);
     }
+
+    @PostMapping("/fault-reject")
+    public void faultReject(@RequestBody FaultDocument fault) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        adminService.faultReject(fault, username);
+    }
 }
