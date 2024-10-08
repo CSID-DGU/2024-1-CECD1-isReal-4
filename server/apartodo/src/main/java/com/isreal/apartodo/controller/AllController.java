@@ -1,12 +1,14 @@
 package com.isreal.apartodo.controller;
 
 import com.isreal.apartodo.document.ApartmentDocument;
+import com.isreal.apartodo.document.MemberDocument;
 import com.isreal.apartodo.document.RejectionDocument;
 import com.isreal.apartodo.dto.JoinRequestDTO;
 import com.isreal.apartodo.service.AllService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,7 +41,14 @@ public class AllController {
     }
 
     @GetMapping("/deny/show-rejection")
-    public RejectionDocument showRejection(@RequestParam(name = "username") String username) {
+    public RejectionDocument showRejection() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return allService.showRejection(username);
+    }
+
+    @GetMapping("/deny/find-deny-join-request")
+    public MemberDocument findDenyJoinRequest() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return allService.findDenyJoinRequest(username);
     }
 }

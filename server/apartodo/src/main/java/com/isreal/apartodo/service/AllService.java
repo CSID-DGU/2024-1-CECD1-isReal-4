@@ -53,4 +53,8 @@ public class AllService {
     public RejectionDocument showRejection(String username) {
         return rejectionRepository.findByUsername(username);
     }
+
+    public MemberDocument findDenyJoinRequest(String username) {
+        return memberRepository.findByUsername(username);
+    }
 }
