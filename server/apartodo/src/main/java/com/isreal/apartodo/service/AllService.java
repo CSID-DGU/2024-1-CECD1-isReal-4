@@ -57,4 +57,12 @@ public class AllService {
     public MemberDocument findDenyJoinRequest(String username) {
         return memberRepository.findByUsername(username);
     }
+
+    public void joinAgain(MemberDocument member) {
+        member.setRole(Role.WAIT);
+        memberRepository.save(member);
+
+        rejectionRepository.deleteByUsername(member.getUsername());
+    }
+
 }

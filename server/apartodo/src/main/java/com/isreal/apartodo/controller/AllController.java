@@ -51,4 +51,9 @@ public class AllController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return allService.findDenyJoinRequest(username);
     }
+
+    @PostMapping("/deny/join-again")
+    public void joinAgain(@RequestBody MemberDocument member) {
+        allService.joinAgain(member);
+    }
 }
