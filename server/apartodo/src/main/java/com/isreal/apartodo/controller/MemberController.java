@@ -2,6 +2,7 @@ package com.isreal.apartodo.controller;
 
 import com.isreal.apartodo.document.ChecklistDocument;
 import com.isreal.apartodo.document.FaultDocument;
+import com.isreal.apartodo.document.QuestionCommentDocument;
 import com.isreal.apartodo.document.QuestionDocument;
 import com.isreal.apartodo.dto.*;
 import com.isreal.apartodo.service.MemberService;
@@ -60,5 +61,11 @@ public class MemberController {
     public MyPageDTO myPage() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.myPage(username);
+    }
+
+    @PostMapping("/create-question-comment")
+    public QuestionCommentDocument createQuestionComment(CommentDTO commentDTO) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return memberService.createQuestionComment(commentDTO, username);
     }
 }

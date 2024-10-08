@@ -1,14 +1,8 @@
 package com.isreal.apartodo.service;
 
-import com.isreal.apartodo.document.ChecklistDocument;
-import com.isreal.apartodo.document.FaultDocument;
-import com.isreal.apartodo.document.MemberDocument;
-import com.isreal.apartodo.document.QuestionDocument;
+import com.isreal.apartodo.document.*;
 import com.isreal.apartodo.dto.*;
-import com.isreal.apartodo.repository.ChecklistRepository;
-import com.isreal.apartodo.repository.FaultRepository;
-import com.isreal.apartodo.repository.MemberRepository;
-import com.isreal.apartodo.repository.QuestionRepository;
+import com.isreal.apartodo.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -25,6 +19,7 @@ public class MemberService {
     private final ChecklistRepository checklistRepository;
     private final FaultRepository faultRepository;
     private final QuestionRepository questionRepository;
+    private final QuestionCommentRepository questionCommentRepository;
 
     public ChecklistDocument addCheckList(ChecklistDTO checklistDTO, String username) {
         MemberDocument member = memberRepository.findByUsername(username);
@@ -136,4 +131,22 @@ public class MemberService {
         return myPageDTO;
     }
 
+    public QuestionCommentDocument createQuestionComment(CommentDTO commentDTO, String username) {
+        // username을 통해 작성자의 정보를 가져옴
+        MemberDocument member = memberRepository.findByUsername(username);
+
+        // QuestionCommentDocument 생성
+        QuestionCommentDocument questionCommentDocument = QuestionCommentDocument.builder()
+                .username(username)                          // 작성자의 이메일
+                .memberName(member.getMemberName())           // 작성자의 이름
+                .role(member.getRole())                       // 작성자의 역할
+                .apartmentName(member.getApartmentName())     // 작성자가 속한 아파트 이름
+                .apartmentBuildingNumber(member.getApartmentBuildingNumber())  // 아파트 동호수
+                .createAt(commentDTO.getCreateAt())           // 작성 시간
+                .content(commentDTO.getContent())             // 댓글 내용
+                .build();
+
+        // 생성된 QuestionCommentDocument를 저장 후 return
+        return questionCommentRepository.save(questionCommentDocument);
+    }
 }
