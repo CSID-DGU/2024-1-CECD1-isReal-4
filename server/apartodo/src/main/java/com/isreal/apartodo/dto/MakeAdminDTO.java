@@ -17,6 +17,4 @@ public class MakeAdminDTO {
     private String apartmentName;
 
     private String apartmentInformation;
-
-    private String partnersInformation;
 }

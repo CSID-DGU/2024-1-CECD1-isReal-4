@@ -39,6 +39,9 @@ public class MemberDocument {
     @Field("apartment_building_number")
     private String apartmentBuildingNumber;
 
+    @Field("profile_image")
+    private String profileImage;
+
     @Field("auth_document")
     private String authDocument;
 }

@@ -40,6 +40,7 @@ public class SuperAdminService {
                 .phoneNumber(makeAdminDTO.getPhoneNumber())
                 .apartmentName(makeAdminDTO.getApartmentName())
                 .apartmentBuildingNumber("")
+                .profileImage(null)
                 .authDocument(makeAdminDTO.getAuthDocument())
                 .build();
         memberRepository.save(memberDocument);

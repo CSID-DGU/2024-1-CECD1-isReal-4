@@ -7,6 +7,7 @@ import com.isreal.apartodo.document.QuestionDocument;
 import com.isreal.apartodo.dto.ChecklistDTO;
 import com.isreal.apartodo.dto.FaultRequestDTO;
 import com.isreal.apartodo.dto.PostDTO;
+import com.isreal.apartodo.dto.ProfileDTO;
 import com.isreal.apartodo.repository.ChecklistRepository;
 import com.isreal.apartodo.repository.FaultRepository;
 import com.isreal.apartodo.repository.MemberRepository;
@@ -103,5 +104,11 @@ public class MemberService {
 
         // 생성된 QuestionDocument를 저장 후 return
         return questionRepository.save(questionDocument);
+    }
+
+    public void updateProfile(ProfileDTO profileDTO, String username) {
+        MemberDocument member = memberRepository.findByUsername(username);
+        member.setProfileImage(profileDTO.getProfile());
+        memberRepository.save(member);
     }
 }

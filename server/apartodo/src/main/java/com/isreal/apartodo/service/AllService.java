@@ -38,6 +38,7 @@ public class AllService {
                 .phoneNumber(joinRequestDTO.getPhoneNumber())
                 .apartmentName(joinRequestDTO.getApartmentName())
                 .apartmentBuildingNumber(joinRequestDTO.getApartmentBuildingNumber())
+                .profileImage(null)
                 .authDocument(joinRequestDTO.getAuthDocument())
                 .build();
 

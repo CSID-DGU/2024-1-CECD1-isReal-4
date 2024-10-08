@@ -6,6 +6,7 @@ import com.isreal.apartodo.document.QuestionDocument;
 import com.isreal.apartodo.dto.ChecklistDTO;
 import com.isreal.apartodo.dto.FaultRequestDTO;
 import com.isreal.apartodo.dto.PostDTO;
+import com.isreal.apartodo.dto.ProfileDTO;
 import com.isreal.apartodo.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,5 +51,11 @@ public class MemberController {
     public QuestionDocument createQuestion(PostDTO postDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.createQuestion(postDTO, username);
+    }
+
+    @PostMapping("/update-profile")
+    public void updateProfile(ProfileDTO profileDTO) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        memberService.updateProfile(profileDTO, username);
     }
 }
