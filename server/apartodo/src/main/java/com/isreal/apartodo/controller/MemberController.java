@@ -2,8 +2,10 @@ package com.isreal.apartodo.controller;
 
 import com.isreal.apartodo.document.ChecklistDocument;
 import com.isreal.apartodo.document.FaultDocument;
+import com.isreal.apartodo.document.QuestionDocument;
 import com.isreal.apartodo.dto.ChecklistDTO;
 import com.isreal.apartodo.dto.FaultRequestDTO;
+import com.isreal.apartodo.dto.PostDTO;
 import com.isreal.apartodo.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,5 +44,11 @@ public class MemberController {
     public List<FaultDocument> findFaults() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.findFaults(username);
+    }
+
+    @PostMapping("/create-question")
+    public QuestionDocument createQuestion(PostDTO postDTO) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return memberService.createQuestion(postDTO, username);
     }
 }

@@ -3,11 +3,14 @@ package com.isreal.apartodo.service;
 import com.isreal.apartodo.document.ChecklistDocument;
 import com.isreal.apartodo.document.FaultDocument;
 import com.isreal.apartodo.document.MemberDocument;
+import com.isreal.apartodo.document.QuestionDocument;
 import com.isreal.apartodo.dto.ChecklistDTO;
 import com.isreal.apartodo.dto.FaultRequestDTO;
+import com.isreal.apartodo.dto.PostDTO;
 import com.isreal.apartodo.repository.ChecklistRepository;
 import com.isreal.apartodo.repository.FaultRepository;
 import com.isreal.apartodo.repository.MemberRepository;
+import com.isreal.apartodo.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -23,6 +26,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final ChecklistRepository checklistRepository;
     private final FaultRepository faultRepository;
+    private final QuestionRepository questionRepository;
 
     public ChecklistDocument addCheckList(ChecklistDTO checklistDTO, String username) {
         MemberDocument member = memberRepository.findByUsername(username);
@@ -78,5 +82,26 @@ public class MemberService {
 
     public List<FaultDocument> findFaults(String username) {
         return faultRepository.findByUsername(username, Sort.by(Sort.Direction.DESC, "faultId"));
+    }
+
+    public QuestionDocument createQuestion(PostDTO postDTO, String username) {
+        // username을 통해 작성자의 정보를 가져옴
+        MemberDocument member = memberRepository.findByUsername(username);
+
+        // QuestionDocument 생성
+        QuestionDocument questionDocument = QuestionDocument.builder()
+                .username(username)                          // 작성자의 이메일
+                .memberName(member.getMemberName())           // 작성자의 이름
+                .role(member.getRole())                       // 작성자의 역할
+                .apartmentName(member.getApartmentName())     // 작성자가 속한 아파트 이름
+                .apartmentBuildingNumber(member.getApartmentBuildingNumber())  // 아파트 동호수
+                .createAt(postDTO.getCreateAt())              // 작성 시간
+                .title(postDTO.getTitle())                    // 게시물 제목
+                .content(postDTO.getContent())                // 게시물 내용
+                .appendImages(postDTO.getAppendImages())      // 게시물에 첨부된 이미지들
+                .build();
+
+        // 생성된 QuestionDocument를 저장 후 return
+        return questionRepository.save(questionDocument);
     }
 }

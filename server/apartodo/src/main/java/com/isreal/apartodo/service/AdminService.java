@@ -75,7 +75,7 @@ public class AdminService {
 
         // faultDocument의 reviewer와 approvalStatus 업데이트
         fault.setReviewer(reviewer.getMemberName());  // reviewer에 관리자의 이름 저장
-        fault.setApprovalStatus("Reject");            // 승인 상태를 Reject로 설정
+        fault.setApprovalStatus("REJECT");            // 승인 상태를 REJECT로 설정
 
         // 변경된 FaultDocument를 데이터베이스에 저장
         faultRepository.save(fault);
