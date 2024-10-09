@@ -222,4 +222,37 @@ public class MemberService {
                 Sort.by(Sort.Direction.DESC, "noticeCommentId")
         );
     }
+
+    public NoticesDTO findNotices(String username) {
+        // 1. username을 통해 회원 정보를 가져오고 apartmentName을 추출
+        MemberDocument member = memberRepository.findByUsername(username);
+        String apartmentName = member.getApartmentName();
+
+        // 2. apartmentName에 해당하는 공지들(notices)을 추출하고, noticeId로 내림차순 정렬
+        List<NoticeDocument> notices = noticeRepository.findByApartmentName(apartmentName, Sort.by(Sort.Direction.DESC, "noticeId"));
+
+        // 3. NoticesDTO 객체를 생성하고, 각 공지에 대한 댓글 수(commentCount)를 계산
+        NoticesDTO noticesDTO = new NoticesDTO();
+
+        List<NoticesDTO.NoticePosts> noticePostsList = new ArrayList<>();
+
+        for (NoticeDocument notice : notices) {
+            // 공지에 달린 댓글의 갯수 추출
+            int commentCount = noticeCommentRepository.countByNoticeId(notice.getNoticeId());
+
+            // NoticePosts 객체에 공지와 댓글 수를 저장
+            NoticesDTO.NoticePosts post = new NoticesDTO.NoticePosts();
+            post.setNotice(notice);
+            post.setCommentCount(commentCount);
+
+            // NoticePosts 객체를 리스트에 추가
+            noticePostsList.add(post);
+        }
+
+        // 4. NoticesDTO의 posts 리스트를 설정
+        noticesDTO.setPosts(noticePostsList);
+
+        // 5. NoticesDTO를 반환
+        return noticesDTO;
+    }
 }

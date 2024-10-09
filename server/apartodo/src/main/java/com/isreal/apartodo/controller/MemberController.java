@@ -87,4 +87,10 @@ public class MemberController {
     public List<NoticeCommentDocument> findNoticeComments(NoticeDocument notice) {
         return memberService.findNoticeComments(notice);
     }
+
+    @GetMapping("/find-notices")
+    public NoticesDTO findNotices() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return memberService.findNotices(username);
+    }
 }
