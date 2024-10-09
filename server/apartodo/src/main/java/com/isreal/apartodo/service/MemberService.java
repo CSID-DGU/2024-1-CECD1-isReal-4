@@ -171,23 +171,23 @@ public class MemberService {
         // 3. QuestionsDTO 객체를 생성하고, 각 질문에 대한 댓글 수(commentCount)를 계산
         QuestionsDTO questionsDTO = new QuestionsDTO();
 
-        List<QuestionsDTO.Posts> postsList = new ArrayList<>();
+        List<QuestionsDTO.QuestionPosts> questionPostsList = new ArrayList<>();
 
         for (QuestionDocument question : questions) {
             // 질문에 달린 댓글의 갯수 추출
             int commentCount = questionCommentRepository.countByQuestionId(question.getQuestionId());
 
             // Posts 객체에 질문과 댓글 수를 저장
-            QuestionsDTO.Posts post = new QuestionsDTO.Posts();
+            QuestionsDTO.QuestionPosts post = new QuestionsDTO.QuestionPosts();
             post.setQuestion(question);
             post.setCommentCount(commentCount);
 
             // Posts 객체를 리스트에 추가
-            postsList.add(post);
+            questionPostsList.add(post);
         }
 
         // 4. QuestionsDTO의 posts 리스트를 설정
-        questionsDTO.setPosts(postsList);
+        questionsDTO.setPosts(questionPostsList);
 
         // 5. QuestionsDTO를 반환
         return questionsDTO;

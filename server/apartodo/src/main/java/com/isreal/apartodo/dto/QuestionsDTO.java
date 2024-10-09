@@ -7,10 +7,10 @@ import java.util.List;
 
 @Data
 public class QuestionsDTO {
-    List<Posts> posts;
+    List<QuestionPosts> posts;
 
     @Data
-    public static class Posts {
+    public static class QuestionPosts {
         private QuestionDocument question;
         private int commentCount;
     }

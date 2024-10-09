@@ -2,8 +2,10 @@ package com.isreal.apartodo.controller;
 
 import com.isreal.apartodo.document.FaultDocument;
 import com.isreal.apartodo.document.MemberDocument;
+import com.isreal.apartodo.document.NoticeDocument;
 import com.isreal.apartodo.document.RejectionDocument;
 import com.isreal.apartodo.dto.JoinRejectDTO;
+import com.isreal.apartodo.dto.PostDTO;
 import com.isreal.apartodo.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,5 +54,11 @@ public class AdminController {
     public void faultReject(@RequestBody FaultDocument fault) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         adminService.faultReject(fault, username);
+    }
+
+    @PostMapping("/create-notice")
+    public NoticeDocument createNotice(PostDTO postDTO) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return adminService.createNotice(postDTO, username);
     }
 }

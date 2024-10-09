@@ -2,11 +2,14 @@ package com.isreal.apartodo.service;
 
 import com.isreal.apartodo.document.FaultDocument;
 import com.isreal.apartodo.document.MemberDocument;
+import com.isreal.apartodo.document.NoticeDocument;
 import com.isreal.apartodo.document.RejectionDocument;
 import com.isreal.apartodo.dto.JoinRejectDTO;
+import com.isreal.apartodo.dto.PostDTO;
 import com.isreal.apartodo.dto.Role;
 import com.isreal.apartodo.repository.FaultRepository;
 import com.isreal.apartodo.repository.MemberRepository;
+import com.isreal.apartodo.repository.NoticeRepository;
 import com.isreal.apartodo.repository.RejectionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +26,7 @@ public class AdminService {
     private final MemberRepository memberRepository;
     private final FaultRepository faultRepository;
     private final RejectionRepository rejectionRepository;
+    private final NoticeRepository noticeRepository;
 
     public List<MemberDocument> findJoinRequests(String username) {
         String apartmentName = memberRepository.findByUsername(username).getApartmentName();
@@ -79,5 +83,26 @@ public class AdminService {
 
         // 변경된 FaultDocument를 데이터베이스에 저장
         faultRepository.save(fault);
+    }
+
+    public NoticeDocument createNotice(PostDTO postDTO, String username) {
+        // username을 통해 작성자의 정보를 가져옴
+        MemberDocument member = memberRepository.findByUsername(username);
+
+        // NoticeDocument 생성
+        NoticeDocument noticeDocument = NoticeDocument.builder()
+                .username(username)                          // 작성자의 이메일
+                .memberName(member.getMemberName())           // 작성자의 이름
+                .role(member.getRole())                       // 작성자의 역할
+                .apartmentName(member.getApartmentName())     // 작성자가 속한 아파트 이름
+                .apartmentBuildingNumber(member.getApartmentBuildingNumber())  // 아파트 동호수
+                .createAt(postDTO.getCreateAt())              // 작성 시간
+                .title(postDTO.getTitle())                    // 공지 제목
+                .content(postDTO.getContent())                // 공지 내용
+                .appendImages(postDTO.getAppendImages())      // 첨부된 이미지들
+                .build();
+
+        // 생성된 NoticeDocument를 저장 후 return
+        return noticeRepository.save(noticeDocument);
     }
 }
