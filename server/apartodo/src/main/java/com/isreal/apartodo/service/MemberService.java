@@ -255,4 +255,8 @@ public class MemberService {
         // 5. NoticesDTO를 반환
         return noticesDTO;
     }
+
+    public boolean isExistUsername(String username) {
+        return memberRepository.existsByUsername(username);
+    }
 }

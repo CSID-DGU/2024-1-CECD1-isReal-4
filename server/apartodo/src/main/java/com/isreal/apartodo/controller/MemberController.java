@@ -43,13 +43,13 @@ public class MemberController {
     }
 
     @PostMapping("/create-question")
-    public QuestionDocument createQuestion(PostDTO postDTO) {
+    public QuestionDocument createQuestion(@RequestBody PostDTO postDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.createQuestion(postDTO, username);
     }
 
     @PostMapping("/update-profile")
-    public void updateProfile(ProfileDTO profileDTO) {
+    public void updateProfile(@RequestBody ProfileDTO profileDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         memberService.updateProfile(profileDTO, username);
     }
@@ -61,13 +61,13 @@ public class MemberController {
     }
 
     @PostMapping("/create-question-comment")
-    public QuestionCommentDocument createQuestionComment(CommentDTO commentDTO) {
+    public QuestionCommentDocument createQuestionComment(@RequestBody CommentDTO commentDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.createQuestionComment(commentDTO, username);
     }
 
     @PostMapping("/find-question-comments")
-    public List<QuestionCommentDocument> findComments(QuestionDocument question) {
+    public List<QuestionCommentDocument> findComments(@RequestBody QuestionDocument question) {
         return memberService.findComments(question);
     }
 
@@ -78,13 +78,13 @@ public class MemberController {
     }
 
     @PostMapping("/create-notice-comment")
-    public NoticeCommentDocument createNoticeComment(CommentDTO commentDTO) {
+    public NoticeCommentDocument createNoticeComment(@RequestBody CommentDTO commentDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.createNoticeComment(commentDTO, username);
     }
 
     @PostMapping("/find-notice-comments")
-    public List<NoticeCommentDocument> findNoticeComments(NoticeDocument notice) {
+    public List<NoticeCommentDocument> findNoticeComments(@RequestBody NoticeDocument notice) {
         return memberService.findNoticeComments(notice);
     }
 
@@ -92,5 +92,10 @@ public class MemberController {
     public NoticesDTO findNotices() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.findNotices(username);
+    }
+
+    @GetMapping("/is-exist-username")
+    public boolean isExistUsername(@RequestParam(name = "username") String username) {
+        return memberService.isExistUsername(username);
     }
 }

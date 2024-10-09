@@ -55,13 +55,13 @@ public class AdminController {
     }
 
     @PostMapping("/create-notice")
-    public NoticeDocument createNotice(PostDTO postDTO) {
+    public NoticeDocument createNotice(@RequestBody PostDTO postDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return adminService.createNotice(postDTO, username);
     }
 
     @PostMapping("/create-partner")
-    public PartnerDocument createPartner(PartnerDTO partnerDTO) {
+    public PartnerDocument createPartner(@RequestBody PartnerDTO partnerDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return adminService.createPartner(partnerDTO, username);
     }
@@ -73,12 +73,12 @@ public class AdminController {
     }
 
     @PostMapping("/update-partner")
-    public PartnerDocument updatePartner(PartnerDocument partner) {
+    public PartnerDocument updatePartner(@RequestBody PartnerDocument partner) {
         return adminService.updatePartner(partner);
     }
 
     @PostMapping("/delete-partner")
-    public void deletePartner(PartnerDocument partner) {
+    public void deletePartner(@RequestBody PartnerDocument partner) {
         adminService.deletePartner(partner);
     }
 }
