@@ -1,16 +1,11 @@
 package com.isreal.apartodo.service;
 
-import com.isreal.apartodo.document.FaultDocument;
-import com.isreal.apartodo.document.MemberDocument;
-import com.isreal.apartodo.document.NoticeDocument;
-import com.isreal.apartodo.document.RejectionDocument;
+import com.isreal.apartodo.document.*;
 import com.isreal.apartodo.dto.JoinRejectDTO;
+import com.isreal.apartodo.dto.PartnerDTO;
 import com.isreal.apartodo.dto.PostDTO;
 import com.isreal.apartodo.dto.Role;
-import com.isreal.apartodo.repository.FaultRepository;
-import com.isreal.apartodo.repository.MemberRepository;
-import com.isreal.apartodo.repository.NoticeRepository;
-import com.isreal.apartodo.repository.RejectionRepository;
+import com.isreal.apartodo.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -27,6 +22,7 @@ public class AdminService {
     private final FaultRepository faultRepository;
     private final RejectionRepository rejectionRepository;
     private final NoticeRepository noticeRepository;
+    private final PartnerRepository partnerRepository;
 
     public List<MemberDocument> findJoinRequests(String username) {
         String apartmentName = memberRepository.findByUsername(username).getApartmentName();
@@ -105,4 +101,25 @@ public class AdminService {
         // 생성된 NoticeDocument를 저장 후 return
         return noticeRepository.save(noticeDocument);
     }
+
+    public PartnerDocument createPartner(PartnerDTO partnerDTO, String username) {
+        // username을 통해 회원 정보를 가져옴
+        MemberDocument member = memberRepository.findByUsername(username);
+
+        // apartmentName 추출
+        String apartmentName = member.getApartmentName();
+
+        // PartnerDocument 생성
+        PartnerDocument partnerDocument = PartnerDocument.builder()
+                .apartmentName(apartmentName)                // apartmentName 설정
+                .companyName(partnerDTO.getCompanyName())    // 업체명 설정
+                .managerName(partnerDTO.getManagerName())    // 담당자 이름 설정
+                .phoneNumber(partnerDTO.getPhoneNumber())    // 연락처 설정
+                .area(partnerDTO.getArea())                  // 담당 구역 설정
+                .build();
+
+        // 생성된 PartnerDocument를 저장 후 반환
+        return partnerRepository.save(partnerDocument);
+    }
+
 }

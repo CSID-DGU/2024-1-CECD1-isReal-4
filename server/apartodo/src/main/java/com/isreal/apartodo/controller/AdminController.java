@@ -1,10 +1,8 @@
 package com.isreal.apartodo.controller;
 
-import com.isreal.apartodo.document.FaultDocument;
-import com.isreal.apartodo.document.MemberDocument;
-import com.isreal.apartodo.document.NoticeDocument;
-import com.isreal.apartodo.document.RejectionDocument;
+import com.isreal.apartodo.document.*;
 import com.isreal.apartodo.dto.JoinRejectDTO;
+import com.isreal.apartodo.dto.PartnerDTO;
 import com.isreal.apartodo.dto.PostDTO;
 import com.isreal.apartodo.service.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -60,5 +58,11 @@ public class AdminController {
     public NoticeDocument createNotice(PostDTO postDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return adminService.createNotice(postDTO, username);
+    }
+
+    @PostMapping("/create-partner")
+    public PartnerDocument createPartner(PartnerDTO partnerDTO) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return adminService.createPartner(partnerDTO, username);
     }
 }
