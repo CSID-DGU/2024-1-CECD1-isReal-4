@@ -65,4 +65,10 @@ public class AdminController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return adminService.createPartner(partnerDTO, username);
     }
+
+    @GetMapping("/find-partners")
+    public List<PartnerDocument> findPartners() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return adminService.findPartners(username);
+    }
 }

@@ -122,4 +122,15 @@ public class AdminService {
         return partnerRepository.save(partnerDocument);
     }
 
+    public List<PartnerDocument> findPartners(String username) {
+        // 1. username을 통해 회원 정보를 가져와 apartmentName 추출
+        MemberDocument member = memberRepository.findByUsername(username);
+        String apartmentName = member.getApartmentName();
+
+        // 2. 해당 apartmentName에 속한 파트너 목록을 내림차순으로 가져옴
+        return partnerRepository.findByApartmentName(
+                apartmentName,
+                Sort.by(Sort.Direction.DESC, "partnerId")
+        );
+    }
 }
