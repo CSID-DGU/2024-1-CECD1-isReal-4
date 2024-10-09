@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class CommentDTO {
-    private String questionId;
+    private String postId;
 
     private String createAt;
 

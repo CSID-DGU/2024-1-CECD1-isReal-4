@@ -21,6 +21,8 @@ public class MemberService {
     private final FaultRepository faultRepository;
     private final QuestionRepository questionRepository;
     private final QuestionCommentRepository questionCommentRepository;
+    private final NoticeRepository noticeRepository;
+    private final NoticeCommentRepository noticeCommentRepository;
 
     public ChecklistDocument addCheckList(ChecklistDTO checklistDTO, String username) {
         MemberDocument member = memberRepository.findByUsername(username);
@@ -138,7 +140,7 @@ public class MemberService {
 
         // QuestionCommentDocument 생성
         QuestionCommentDocument questionCommentDocument = QuestionCommentDocument.builder()
-                .questionId(commentDTO.getQuestionId())
+                .questionId(commentDTO.getPostId())
                 .username(username)                          // 작성자의 이메일
                 .memberName(member.getMemberName())           // 작성자의 이름
                 .role(member.getRole())                       // 작성자의 역할
@@ -191,5 +193,25 @@ public class MemberService {
 
         // 5. QuestionsDTO를 반환
         return questionsDTO;
+    }
+
+    public NoticeCommentDocument createNoticeComment(CommentDTO commentDTO, String username) {
+        // username을 통해 작성자의 정보를 가져옴
+        MemberDocument member = memberRepository.findByUsername(username);
+
+        // NoticeCommentDocument 생성
+        NoticeCommentDocument noticeCommentDocument = NoticeCommentDocument.builder()
+                .noticeId(commentDTO.getPostId())            // Notice의 ID
+                .username(username)                            // 작성자의 이메일
+                .memberName(member.getMemberName())            // 작성자의 이름
+                .role(member.getRole())                        // 작성자의 역할
+                .apartmentName(member.getApartmentName())      // 작성자가 속한 아파트 이름
+                .apartmentBuildingNumber(member.getApartmentBuildingNumber())  // 아파트 동호수
+                .createAt(commentDTO.getCreateAt())            // 작성 시간
+                .content(commentDTO.getContent())              // 댓글 내용
+                .build();
+
+        // 생성된 NoticeCommentDocument를 저장 후 return
+        return noticeCommentRepository.save(noticeCommentDocument);
     }
 }

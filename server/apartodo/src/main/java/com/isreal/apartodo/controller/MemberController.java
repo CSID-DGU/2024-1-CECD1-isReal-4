@@ -1,9 +1,6 @@
 package com.isreal.apartodo.controller;
 
-import com.isreal.apartodo.document.ChecklistDocument;
-import com.isreal.apartodo.document.FaultDocument;
-import com.isreal.apartodo.document.QuestionCommentDocument;
-import com.isreal.apartodo.document.QuestionDocument;
+import com.isreal.apartodo.document.*;
 import com.isreal.apartodo.dto.*;
 import com.isreal.apartodo.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -78,5 +75,11 @@ public class MemberController {
     public QuestionsDTO findQuestions() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.findQuestions(username);
+    }
+
+    @PostMapping("/create-notice-comment")
+    public NoticeCommentDocument createNoticeComment(CommentDTO commentDTO) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return memberService.createNoticeComment(commentDTO, username);
     }
 }
