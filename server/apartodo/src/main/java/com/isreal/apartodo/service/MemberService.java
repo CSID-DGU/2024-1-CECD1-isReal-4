@@ -137,6 +137,7 @@ public class MemberService {
 
         // QuestionCommentDocument 생성
         QuestionCommentDocument questionCommentDocument = QuestionCommentDocument.builder()
+                .questionId(commentDTO.getQuestionId())
                 .username(username)                          // 작성자의 이메일
                 .memberName(member.getMemberName())           // 작성자의 이름
                 .role(member.getRole())                       // 작성자의 역할
@@ -148,5 +149,13 @@ public class MemberService {
 
         // 생성된 QuestionCommentDocument를 저장 후 return
         return questionCommentRepository.save(questionCommentDocument);
+    }
+
+    public List<QuestionCommentDocument> findComments(QuestionDocument question) {
+        // questionId로 댓글을 내림차순(DESC)으로 정렬해서 가져옴
+        return questionCommentRepository.findByQuestionId(
+                question.getQuestionId(),
+                Sort.by(Sort.Direction.DESC, "questionCommentId")
+        );
     }
 }

@@ -68,4 +68,9 @@ public class MemberController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.createQuestionComment(commentDTO, username);
     }
+
+    @PostMapping("/find-comments")
+    public List<QuestionCommentDocument> findComments(QuestionDocument question) {
+        return memberService.findComments(question);
+    }
 }

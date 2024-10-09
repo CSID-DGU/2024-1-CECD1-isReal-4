@@ -18,6 +18,9 @@ public class QuestionCommentDocument {
     @Id
     private String questionCommentId;
 
+    @Field("question_id")
+    private String questionId;
+
     @Field("username")
     private String username; // 작성자 이메일
 
