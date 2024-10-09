@@ -82,4 +82,9 @@ public class MemberController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.createNoticeComment(commentDTO, username);
     }
+
+    @PostMapping("/find-notice-comments")
+    public List<NoticeCommentDocument> findNoticeComments(NoticeDocument notice) {
+        return memberService.findNoticeComments(notice);
+    }
 }

@@ -214,4 +214,12 @@ public class MemberService {
         // 생성된 NoticeCommentDocument를 저장 후 return
         return noticeCommentRepository.save(noticeCommentDocument);
     }
+
+    public List<NoticeCommentDocument> findNoticeComments(NoticeDocument notice) {
+        // noticeId로 댓글을 내림차순(DESC)으로 정렬해서 가져옴
+        return noticeCommentRepository.findByNoticeId(
+                notice.getNoticeId(),
+                Sort.by(Sort.Direction.DESC, "noticeCommentId")
+        );
+    }
 }
