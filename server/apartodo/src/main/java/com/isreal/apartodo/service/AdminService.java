@@ -137,4 +137,8 @@ public class AdminService {
     public PartnerDocument updatePartner(PartnerDocument partner) {
         return partnerRepository.save(partner);
     }
+
+    public void deletePartner(PartnerDocument partner) {
+        partnerRepository.deleteById(partner.getPartnerId());
+    }
 }

@@ -76,4 +76,9 @@ public class AdminController {
     public PartnerDocument updatePartner(PartnerDocument partner) {
         return adminService.updatePartner(partner);
     }
+
+    @PostMapping("/delete-partner")
+    public void deletePartner(PartnerDocument partner) {
+        adminService.deletePartner(partner);
+    }
 }
