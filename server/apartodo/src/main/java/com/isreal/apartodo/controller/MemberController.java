@@ -93,9 +93,4 @@ public class MemberController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.findNotices(username);
     }
-
-    @GetMapping("/is-exist-username")
-    public boolean isExistUsername(@RequestParam(name = "username") String username) {
-        return memberService.isExistUsername(username);
-    }
 }

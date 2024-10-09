@@ -66,4 +66,7 @@ public class AllService {
         rejectionRepository.deleteByUsername(member.getUsername());
     }
 
+    public boolean isExistUsername(String username) {
+        return memberRepository.existsByUsername(username);
+    }
 }

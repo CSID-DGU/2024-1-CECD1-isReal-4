@@ -56,4 +56,9 @@ public class AllController {
     public void joinAgain(@RequestBody MemberDocument member) {
         allService.joinAgain(member);
     }
+
+    @GetMapping("/all/is-exist-username")
+    public boolean isExistUsername(@RequestParam(name = "username") String username) {
+        return allService.isExistUsername(username);
+    }
 }
