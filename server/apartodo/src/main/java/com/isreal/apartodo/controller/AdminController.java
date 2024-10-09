@@ -71,4 +71,9 @@ public class AdminController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return adminService.findPartners(username);
     }
+
+    @PostMapping("/update-partner")
+    public PartnerDocument updatePartner(PartnerDocument partner) {
+        return adminService.updatePartner(partner);
+    }
 }

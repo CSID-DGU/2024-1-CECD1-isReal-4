@@ -133,4 +133,8 @@ public class AdminService {
                 Sort.by(Sort.Direction.DESC, "partnerId")
         );
     }
+
+    public PartnerDocument updatePartner(PartnerDocument partner) {
+        return partnerRepository.save(partner);
+    }
 }
