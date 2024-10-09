@@ -69,8 +69,14 @@ public class MemberController {
         return memberService.createQuestionComment(commentDTO, username);
     }
 
-    @PostMapping("/find-comments")
+    @PostMapping("/find-question-comments")
     public List<QuestionCommentDocument> findComments(QuestionDocument question) {
         return memberService.findComments(question);
+    }
+
+    @GetMapping("/find-questions")
+    public QuestionsDTO findQuestions() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return memberService.findQuestions(username);
     }
 }

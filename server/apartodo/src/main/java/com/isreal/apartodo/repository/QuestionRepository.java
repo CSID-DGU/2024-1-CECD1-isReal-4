@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface QuestionRepository extends MongoRepository<QuestionDocument, String> {
     List<QuestionDocument> findByUsername(String username, Sort sort);
+
+    List<QuestionDocument> findByApartmentName(String apartmentName, Sort sort);
 }

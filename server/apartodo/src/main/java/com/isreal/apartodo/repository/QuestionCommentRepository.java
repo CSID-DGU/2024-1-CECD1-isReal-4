@@ -10,4 +10,6 @@ import java.util.List;
 @Repository
 public interface QuestionCommentRepository extends MongoRepository<QuestionCommentDocument, String> {
     List<QuestionCommentDocument> findByQuestionId(String questionId, Sort sort);
+
+    int countByQuestionId(String questionId);
 }

@@ -29,12 +29,12 @@ public class SuperAdminInitializer implements CommandLineRunner {
                     .username(superAdminUsername)
                     .password(passwordEncoder.encode(superAdminPassword))
                     .role(Role.SUPER_ADMIN)
-                    .apartmentName(null)
+                    .apartmentName("")
                     .memberName("총관리자")
-                    .phoneNumber(null)
-                    .apartmentBuildingNumber(null)
-                    .profileImage(null)
-                    .authDocument(null)
+                    .phoneNumber("")
+                    .apartmentBuildingNumber("")
+                    .profileImage("")
+                    .authDocument("")
                     .build();
 
             memberRepository.save(memberDocument);

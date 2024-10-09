@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -157,5 +158,38 @@ public class MemberService {
                 question.getQuestionId(),
                 Sort.by(Sort.Direction.DESC, "questionCommentId")
         );
+    }
+
+    public QuestionsDTO findQuestions(String username) {
+        // 1. username을 통해 회원 정보를 가져오고 apartmentName을 추출
+        MemberDocument member = memberRepository.findByUsername(username);
+        String apartmentName = member.getApartmentName();
+
+        // 2. apartmentName에 해당하는 질문들(question)을 추출하고, questionId로 내림차순 정렬
+        List<QuestionDocument> questions = questionRepository.findByApartmentName(apartmentName, Sort.by(Sort.Direction.DESC, "questionId"));
+
+        // 3. QuestionsDTO 객체를 생성하고, 각 질문에 대한 댓글 수(commentCount)를 계산
+        QuestionsDTO questionsDTO = new QuestionsDTO();
+
+        List<QuestionsDTO.Posts> postsList = new ArrayList<>();
+
+        for (QuestionDocument question : questions) {
+            // 질문에 달린 댓글의 갯수 추출
+            int commentCount = questionCommentRepository.countByQuestionId(question.getQuestionId());
+
+            // Posts 객체에 질문과 댓글 수를 저장
+            QuestionsDTO.Posts post = new QuestionsDTO.Posts();
+            post.setQuestion(question);
+            post.setCommentCount(commentCount);
+
+            // Posts 객체를 리스트에 추가
+            postsList.add(post);
+        }
+
+        // 4. QuestionsDTO의 posts 리스트를 설정
+        questionsDTO.setPosts(postsList);
+
+        // 5. QuestionsDTO를 반환
+        return questionsDTO;
     }
 }
