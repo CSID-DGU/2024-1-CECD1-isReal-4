@@ -286,4 +286,16 @@ public class MemberService {
         // 생성된 FaultChecklistDocument를 저장 후 return
         return faultChecklistRepository.save(faultChecklistDocument);
     }
+
+    public FaultChecklistDocument updateFaultChecklist(FaultChecklistDocument faultChecklist) {
+        if (faultChecklist.getApprovalStatus().equals(ApprovalStatus.REJECT)) {
+            faultChecklist.setFaultChecklistId(null);
+            faultChecklist.setReviewer(null);
+            faultChecklist.setReviewComment(null);
+            faultChecklist.setReviewCompletionTime(null);
+            faultChecklist.setApprovalStatus(ApprovalStatus.PEND);
+            return faultChecklistRepository.save(faultChecklist);
+        }
+        return faultChecklistRepository.save(faultChecklist);
+    }
 }

@@ -94,15 +94,20 @@ public class MemberController {
         return memberService.findNotices(username);
     }
 
-    @GetMapping("find-fault-checklists")
+    @GetMapping("/find-fault-checklists")
     public List<FaultChecklistDocument> findFaultChecklists() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.findFaultChecklists(username);
     }
 
-    @PostMapping("create-fault-checklist")
+    @PostMapping("/create-fault-checklist")
     public FaultChecklistDocument createFaultChecklist(ChecklistDTO checklistDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.createFaultChecklist(checklistDTO, username);
+    }
+
+    @PostMapping("/update-fault-checklist")
+    public FaultChecklistDocument updateFaultChecklist(FaultChecklistDocument faultChecklist) {
+        return memberService.updateFaultChecklist(faultChecklist);
     }
 }
