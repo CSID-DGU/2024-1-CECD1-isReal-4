@@ -81,4 +81,10 @@ public class AdminController {
     public void deletePartner(@RequestBody PartnerDocument partner) {
         adminService.deletePartner(partner);
     }
+
+    @GetMapping("/find-fault-checklists")
+    public List<FaultChecklistDocument> findFaultChecklists() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return adminService.findFaultChecklists(username);
+    }
 }

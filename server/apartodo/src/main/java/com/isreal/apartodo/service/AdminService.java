@@ -20,6 +20,7 @@ public class AdminService {
     private final RejectionRepository rejectionRepository;
     private final NoticeRepository noticeRepository;
     private final PartnerRepository partnerRepository;
+    private final FaultChecklistRepository faultChecklistRepository;
 
     public List<MemberDocument> findJoinRequests(String username) {
         String apartmentName = memberRepository.findByUsername(username).getApartmentName();
@@ -137,5 +138,17 @@ public class AdminService {
 
     public void deletePartner(PartnerDocument partner) {
         partnerRepository.deleteById(partner.getPartnerId());
+    }
+
+    public List<FaultChecklistDocument> findFaultChecklists(String username) {
+        // username으로 회원 정보를 조회하여 apartmentName을 가져옴
+        MemberDocument member = memberRepository.findByUsername(username);
+        String apartmentName = member.getApartmentName();
+
+        // apartmentName과 일치하는 FaultChecklistDocument 리스트 반환
+        return faultChecklistRepository.findByApartmentName(
+                apartmentName,
+                Sort.by(Sort.Direction.DESC, "faultChecklistId")
+        );
     }
 }

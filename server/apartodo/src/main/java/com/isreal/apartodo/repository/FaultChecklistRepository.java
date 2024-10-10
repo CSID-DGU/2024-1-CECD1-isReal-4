@@ -13,4 +13,6 @@ public interface FaultChecklistRepository extends MongoRepository<FaultChecklist
     List<FaultChecklistDocument> findByUsername(String username, Sort sort);
 
     List<FaultChecklistDocument> findByApartmentNameAndApprovalStatus(String apartmentName, ApprovalStatus approvalStatus, Sort sort);
+
+    List<FaultChecklistDocument> findByApartmentName(String apartmentName, Sort sort);
 }
