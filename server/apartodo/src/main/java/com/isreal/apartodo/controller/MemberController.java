@@ -93,4 +93,10 @@ public class MemberController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.findNotices(username);
     }
+
+    @GetMapping("find-fault-checklists")
+    public List<FaultChecklistDocument> findFaultChecklists() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return memberService.findFaultChecklists(username);
+    }
 }

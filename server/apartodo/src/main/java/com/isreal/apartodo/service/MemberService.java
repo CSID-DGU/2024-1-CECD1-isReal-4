@@ -23,6 +23,7 @@ public class MemberService {
     private final QuestionCommentRepository questionCommentRepository;
     private final NoticeRepository noticeRepository;
     private final NoticeCommentRepository noticeCommentRepository;
+    private final FaultChecklistRepository faultChecklistRepository;
 
     public ChecklistDocument addCheckList(ChecklistDTO checklistDTO, String username) {
         MemberDocument member = memberRepository.findByUsername(username);
@@ -255,4 +256,12 @@ public class MemberService {
         // 5. NoticesDTO를 반환
         return noticesDTO;
     }
+
+    public List<FaultChecklistDocument> findFaultChecklists(String username) {
+        return faultChecklistRepository.findByUsername(
+                username,
+                Sort.by(Sort.Direction.DESC, "faultChecklistId")
+        );
+    }
+
 }
