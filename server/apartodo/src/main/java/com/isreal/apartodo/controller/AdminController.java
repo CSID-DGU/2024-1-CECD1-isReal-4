@@ -87,4 +87,10 @@ public class AdminController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return adminService.findFaultChecklists(username);
     }
+
+    @PostMapping("/reject-fault-checklist")
+    public FaultChecklistDocument rejectFaultChecklist(@RequestBody FaultChecklistDocument faultChecklist) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return adminService.rejectFaultChecklist(faultChecklist, username);
+    }
 }

@@ -151,4 +151,18 @@ public class AdminService {
                 Sort.by(Sort.Direction.DESC, "faultChecklistId")
         );
     }
+
+    public FaultChecklistDocument rejectFaultChecklist(FaultChecklistDocument faultChecklist, String username) {
+        // username으로 관리자 정보를 가져옴
+        MemberDocument admin = memberRepository.findByUsername(username);
+
+        // reviewer에 관리자의 이름을 저장
+        faultChecklist.setReviewer(admin.getMemberName());
+
+        // approvalStatus를 REJECT로 설정
+        faultChecklist.setApprovalStatus(ApprovalStatus.REJECT);
+
+        // 변경된 FaultChecklistDocument를 저장
+        return faultChecklistRepository.save(faultChecklist);
+    }
 }

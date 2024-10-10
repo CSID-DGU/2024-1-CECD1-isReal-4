@@ -102,18 +102,18 @@ public class MemberController {
     }
 
     @PostMapping("/create-fault-checklist")
-    public FaultChecklistDocument createFaultChecklist(ChecklistDTO checklistDTO) {
+    public FaultChecklistDocument createFaultChecklist(@RequestBody ChecklistDTO checklistDTO) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.createFaultChecklist(checklistDTO, username);
     }
 
     @PostMapping("/update-fault-checklist")
-    public FaultChecklistDocument updateFaultChecklist(FaultChecklistDocument faultChecklist) {
+    public FaultChecklistDocument updateFaultChecklist(@RequestBody FaultChecklistDocument faultChecklist) {
         return memberService.updateFaultChecklist(faultChecklist);
     }
 
     @PostMapping("/delete-fault-checklist")
-    public ResponseEntity<String> deleteFaultChecklist(FaultChecklistDocument faultChecklist) {
+    public ResponseEntity<String> deleteFaultChecklist(@RequestBody FaultChecklistDocument faultChecklist) {
         return memberService.deleteFaultChecklist(faultChecklist);
     }
 
