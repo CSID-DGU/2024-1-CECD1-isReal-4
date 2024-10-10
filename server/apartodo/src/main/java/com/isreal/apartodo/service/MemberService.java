@@ -310,4 +310,16 @@ public class MemberService {
         // PEND 상태가 아닌 경우, CONFLICT 상태로 응답
         return new ResponseEntity<>("Only fault checklists with PEND status can be deleted.", HttpStatus.CONFLICT);
     }
+
+    public List<FaultChecklistDocument> findOtherFaultChecklists(String username) {
+        // username으로 회원 정보를 조회하여 apartmentName을 가져옴
+        MemberDocument member = memberRepository.findByUsername(username);
+        String apartmentName = member.getApartmentName();
+
+        // apartmentName과 approvalStatus가 PEND인 FaultChecklistDocument 리스트 반환
+        return faultChecklistRepository.findByApartmentNameAndApprovalStatus(
+                apartmentName, ApprovalStatus.PEND,
+                Sort.by(Sort.Direction.DESC, "faultChecklistId")
+        );
+    }
 }

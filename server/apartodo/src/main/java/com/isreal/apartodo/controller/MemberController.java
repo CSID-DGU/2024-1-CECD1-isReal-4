@@ -116,4 +116,10 @@ public class MemberController {
     public ResponseEntity<String> deleteFaultChecklist(FaultChecklistDocument faultChecklist) {
         return memberService.deleteFaultChecklist(faultChecklist);
     }
+
+    @PostMapping("/find-other-fault-checklists")
+    public List<FaultChecklistDocument> findOtherFaultChecklists() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return memberService.findOtherFaultChecklists(username);
+    }
 }
