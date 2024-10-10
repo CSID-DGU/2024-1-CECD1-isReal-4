@@ -117,7 +117,7 @@ public class MemberController {
         return memberService.deleteFaultChecklist(faultChecklist);
     }
 
-    @PostMapping("/find-other-fault-checklists")
+    @GetMapping("/find-other-fault-checklists")
     public List<FaultChecklistDocument> findOtherFaultChecklists() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.findOtherFaultChecklists(username);
