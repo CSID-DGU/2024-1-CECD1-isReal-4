@@ -78,8 +78,8 @@ export const initialChecklist: TChecklist = {
                             items: {
                                 description: "외관상태(부착상태, 파손유무등) 이상 유무, 자동센서 작동 이상 유무",
                                 checked: true,
-                                appendText: "전등 작동 정상",
-                                appendImages: ["image1.png", "image2.png"]
+                                appendText: "",
+                                appendImages: []
                             }
                         }
                     ]

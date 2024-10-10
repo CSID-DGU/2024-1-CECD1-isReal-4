@@ -5,55 +5,6 @@ import * as Styled from "./style.ts"
 import H3 from "@/components/Common/Font/Heading/H3";
 import {DetailSection} from "@/components/CheckList/Write/DetailSection.tsx";
 
-/*
-interface SubSectionProps {
-    sectionId: string;
-    subSectionName: string;
-    items: TCheckListItem[] | TCategory[]; // 수정된 타입 반영
-    onItemCheck: (sectionId: string, subSectionName: string, itemId: string) => void;
-}
-
-const SubSection: React.FC<SubSectionProps> = ({ sectionId, subSectionName, items, onItemCheck }) => {
-    return (
-        <div>
-            <Styled.StyledSubSection>
-                <H3 text={subSectionName} />
-            </Styled.StyledSubSection>
-            {Array.isArray(items) && items.length > 0 && typeof items[0] === 'object' && 'description' in items[0] ? (
-                // TCheckListItem[]인 경우
-                (items as TCheckListItem[]).map(item => (
-                    <ChecklistItem
-                        key={item.id}
-                        sectionId={sectionId}
-                        subSectionName={subSectionName}
-                        item={item}
-                        onItemCheck={onItemCheck}
-                    />
-                ))
-            ) : (
-                // TCategory[]인 경우
-                (items as TCategory[]).map((category, index) => (
-                    <div key={index}>
-                        <Styled.StyledSubSection>
-                        <h4>{category.category}</h4>
-                        </Styled.StyledSubSection>
-                        {category.items.map(item => (
-                            <ChecklistItem
-                                key={item.id}
-                                sectionId={sectionId}
-                                subSectionName={subSectionName}
-                                item={item}
-                                onItemCheck={onItemCheck}
-                            />
-                        ))}
-                    </div>
-                ))
-            )}
-        </div>
-    );
-};
-*/
-
 interface SubSectionProps {
     sectionName: string;
     subSection: TSubSection;
