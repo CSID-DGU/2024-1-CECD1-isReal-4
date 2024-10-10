@@ -6,6 +6,8 @@ import com.isreal.apartodo.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -297,5 +299,15 @@ public class MemberService {
             return faultChecklistRepository.save(faultChecklist);
         }
         return faultChecklistRepository.save(faultChecklist);
+    }
+
+    public ResponseEntity<String> deleteFaultChecklist(FaultChecklistDocument faultChecklist) {
+        // ApprovalStatus가 PEND인 경우에만 삭제
+        if (faultChecklist.getApprovalStatus().equals(ApprovalStatus.PEND)) {
+            faultChecklistRepository.delete(faultChecklist);
+            return new ResponseEntity<>("Fault checklist deleted successfully.", HttpStatus.OK);
+        }
+        // PEND 상태가 아닌 경우, CONFLICT 상태로 응답
+        return new ResponseEntity<>("Only fault checklists with PEND status can be deleted.", HttpStatus.CONFLICT);
     }
 }
