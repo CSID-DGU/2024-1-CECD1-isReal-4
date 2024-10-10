@@ -69,7 +69,7 @@ public class MemberService {
                     .reviewer(null)                                        // 검토자 정보 없음
                     .reviewComment(null)                                   // 검토 코멘트 없음
                     .reviewCompletionTime(null)                            // 검토 시간 없음
-                    .approvalStatus("PENDING")                             // 기본 승인 상태 "PENDING"
+                    .approvalStatus(ApprovalStatus.PEND)                             // 기본 승인 상태 "PENDING"
                     .build();
 
             // FaultDocument 저장
@@ -264,4 +264,26 @@ public class MemberService {
         );
     }
 
+    public FaultChecklistDocument createFaultChecklist(ChecklistDTO checklistDTO, String username) {
+        // username을 통해 작성자의 정보를 가져옴
+        MemberDocument member = memberRepository.findByUsername(username);
+
+        // FaultChecklistDocument 생성
+        FaultChecklistDocument faultChecklistDocument = FaultChecklistDocument.builder()
+                .createAt(checklistDTO.getCreateAt())                // 작성 시간
+                .sections(checklistDTO.getSections())                // 섹션 내용
+                .username(username)                                  // 입주예정자 이메일
+                .memberName(member.getMemberName())                  // 입주예정자 이름
+                .apartmentName(member.getApartmentName())            // 아파트 이름
+                .phoneNumber(member.getPhoneNumber())                // 입주예정자 핸드폰 번호
+                .apartmentBuildingNumber(member.getApartmentBuildingNumber())  // 동호수
+                .reviewer(null)                                      // 명시적으로 null 할당
+                .reviewComment(null)                                 // 명시적으로 null 할당
+                .reviewCompletionTime(null)                          // 명시적으로 null 할당
+                .approvalStatus(ApprovalStatus.PEND)                 // 승인 상태 PEND
+                .build();
+
+        // 생성된 FaultChecklistDocument를 저장 후 return
+        return faultChecklistRepository.save(faultChecklistDocument);
+    }
 }

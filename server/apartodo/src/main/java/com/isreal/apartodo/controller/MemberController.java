@@ -99,4 +99,10 @@ public class MemberController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.findFaultChecklists(username);
     }
+
+    @PostMapping("create-fault-checklist")
+    public FaultChecklistDocument createFaultChecklist(ChecklistDTO checklistDTO) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return memberService.createFaultChecklist(checklistDTO, username);
+    }
 }

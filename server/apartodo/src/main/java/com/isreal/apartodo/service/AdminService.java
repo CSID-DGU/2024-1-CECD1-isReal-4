@@ -1,10 +1,7 @@
 package com.isreal.apartodo.service;
 
 import com.isreal.apartodo.document.*;
-import com.isreal.apartodo.dto.JoinRejectDTO;
-import com.isreal.apartodo.dto.PartnerDTO;
-import com.isreal.apartodo.dto.PostDTO;
-import com.isreal.apartodo.dto.Role;
+import com.isreal.apartodo.dto.*;
 import com.isreal.apartodo.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +34,7 @@ public class AdminService {
 
     public List<FaultDocument> findFaultRequests(String username) {
         String apartmentName = memberRepository.findByUsername(username).getApartmentName();
-        return faultRepository.findByApartmentNameAndApprovalStatus(apartmentName, "PENDING", Sort.by(Sort.Direction.DESC, "faultId"));
+        return faultRepository.findByApartmentNameAndApprovalStatus(apartmentName, ApprovalStatus.PEND, Sort.by(Sort.Direction.DESC, "faultId"));
     }
 
     public void joinReject(JoinRejectDTO joinRejectDTO, String adminUsername) {
@@ -75,7 +72,7 @@ public class AdminService {
 
         // faultDocument의 reviewer와 approvalStatus 업데이트
         fault.setReviewer(reviewer.getMemberName());  // reviewer에 관리자의 이름 저장
-        fault.setApprovalStatus("REJECT");            // 승인 상태를 REJECT로 설정
+        fault.setApprovalStatus(ApprovalStatus.REJECT);            // 승인 상태를 REJECT로 설정
 
         // 변경된 FaultDocument를 데이터베이스에 저장
         faultRepository.save(fault);

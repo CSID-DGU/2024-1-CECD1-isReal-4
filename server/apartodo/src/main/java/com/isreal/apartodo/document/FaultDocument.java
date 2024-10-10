@@ -1,5 +1,6 @@
 package com.isreal.apartodo.document;
 
+import com.isreal.apartodo.dto.ApprovalStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -59,5 +60,5 @@ public class FaultDocument {
     private String reviewCompletionTime; // 검토한 시간
 
     @Field("approval_status")
-    private String approvalStatus; // 승인 여부
+    private ApprovalStatus approvalStatus; // 승인 여부
 }
