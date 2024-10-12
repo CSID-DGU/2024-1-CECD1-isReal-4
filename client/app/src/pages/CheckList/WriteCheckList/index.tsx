@@ -7,25 +7,44 @@ import Column from "@/components/Common/Column";
 import * as Styled from "./style";
 import Sub2 from "@/components/Common/Font/Body/Sub2";
 import H4 from "@/components/Common/Font/Heading/H4";
+import SizedBox from "@/components/Common/SizedBox";
+import {CheckListPageWrapper} from "./style";
 
 const WriteChecklist: React.FC = () => {
     const [checklist, setChecklist] = useState<TChecklist>(initialChecklist);
     const [addedText, setAddedText] = useState<string>("");
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
     const [images, setImages] = useState<string[]>([]);
-
-    // 체크 상태 업데이트 함수
     const onItemCheck = (
         sectionName: string,
         subSectionName: string | null,
         detailSectionName: string | null,
+        itemIndex: number,
         checked: boolean
     ) => {
-        setChecklist(prevChecklist => ({
-            ...prevChecklist,
-            sections: prevChecklist.sections.map(section => {
-                if (section.name === sectionName) {
-                    if (subSectionName && section.subSections) {
+        setChecklist(prevChecklist => {
+            return {
+                ...prevChecklist,
+                sections: prevChecklist.sections.map(section => {
+                    // 바닥 항목 처리
+                    if (section.name === sectionName && !section.subSections) {
+                        const updatedItems = section.items.map((item, index) => {
+                            if (index === itemIndex) {
+                                return {
+                                    ...item,
+                                    checked: checked
+                                };
+                            }
+                            return item;
+                        });
+                        return {
+                            ...section,
+                            items: updatedItems
+                        };
+                    }
+
+                    // 하위 섹션이 있는 항목 처리 (기존 로직 유지)
+                    if (section.name === sectionName && subSectionName && section.subSections) {
                         return {
                             ...section,
                             subSections: section.subSections.map(subSection => {
@@ -35,38 +54,48 @@ const WriteChecklist: React.FC = () => {
                                             ...subSection,
                                             detailSections: subSection.detailSections.map(detailSection => {
                                                 if (detailSection.name === detailSectionName) {
+                                                    const updatedItems = detailSection.items.map((item, index) => {
+                                                        if (index === itemIndex) {
+                                                            return {
+                                                                ...item,
+                                                                checked: checked
+                                                            };
+                                                        }
+                                                        return item;
+                                                    });
                                                     return {
                                                         ...detailSection,
-                                                        items: detailSection.items
-                                                            ? { ...detailSection.items, checked: checked }
-                                                            : null
+                                                        items: updatedItems
                                                     };
                                                 }
                                                 return detailSection;
                                             })
                                         };
+                                    } else {
+                                        const updatedItems = subSection.items.map((item, index) => {
+                                            if (index === itemIndex) {
+                                                return {
+                                                    ...item,
+                                                    checked: checked
+                                                };
+                                            }
+                                            return item;
+                                        });
+                                        return {
+                                            ...subSection,
+                                            items: updatedItems
+                                        };
                                     }
-                                    return {
-                                        ...subSection,
-                                        items: subSection.items
-                                            ? { ...subSection.items, checked: checked }
-                                            : null
-                                    };
                                 }
                                 return subSection;
                             })
                         };
                     }
-                    return {
-                        ...section,
-                        items: section.items
-                            ? { ...section.items, checked: checked }
-                            : null
-                    };
-                }
-                return section;
-            })
-        }));
+
+                    return section;
+                })
+            };
+        });
     };
 
     // 이미지 업로드, 미리보기 설정
@@ -91,14 +120,17 @@ const WriteChecklist: React.FC = () => {
     };
 
     return (
+        <Styled.CheckListPageWrapper>
         <Column alignItems={"center"} justifyContent={"center"}>
             <Title title="체크리스트 작성하기" />
             {checklist.sections.map((section, sectionIndex) => (
                 <Section key={sectionIndex} section={section} onItemCheck={onItemCheck} />
             ))}
+
+            <SizedBox height={"20px"} />
             <Column alignItems={"center"} justifyContent={"space-between"}>
                 <Styled.AddTextArea
-                    placeholder={"추가 내용을 입력해주세요."}
+                    placeholder={"전체적으로 추가 내용을 입력해주세요."}
                     value={addedText}
                     onChange={handleTextChange}
                 />
@@ -123,6 +155,7 @@ const WriteChecklist: React.FC = () => {
                 <H4 text={"등록하기"} />
             </Styled.RegisterButton>
         </Column>
+        </Styled.CheckListPageWrapper>
     );
 };
 

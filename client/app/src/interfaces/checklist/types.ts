@@ -22,6 +22,7 @@ export interface TSection {
 */
 // types.ts
 export interface TItem {
+    id: string;
     description?: string;
     checked: boolean;
     appendText: string;
@@ -30,18 +31,18 @@ export interface TItem {
 
 export interface TDetailSection {
     name: string;
-    items: TItem | null;
+    items: TItem[] | null;
 }
 
 export interface TSubSection {
     name: string;
-    items: TItem | null;
+    items: TItem[] | null;
     detailSections: TDetailSection[] | null;
 }
 
 export interface TSection {
     name: string;
-    items: TItem | null;
+    items: TItem[] | null;
     subSections: TSubSection[] | null;
 }
 

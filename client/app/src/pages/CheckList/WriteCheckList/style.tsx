@@ -1,6 +1,12 @@
 import styled from "styled-components"
 import theme from "@/shared/theme.ts";
 
+export const CheckListPageWrapper = styled.div`
+    height: auto;
+    width: 100vw;
+    margin-bottom: 90px;
+`
+
 export const AddTextArea = styled.textarea`
     width: 90%;
     height: 100px;
