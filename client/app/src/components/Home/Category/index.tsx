@@ -11,9 +11,6 @@ import AnnouncementIcon from "@/assets/icons/Announcement.svg";
 import {useNavigate} from "react-router-dom";
 
 export default function Category() {
-    function handleCardClick() {
-        alert("Card Clicked!");
-    }
     const navigate = useNavigate()
 
     return (
@@ -24,11 +21,11 @@ export default function Category() {
                 <H3 text={"Category"} />
             </Row>
             <Styled.CategoryGrid>
-                <Styled.CategoryCard onClick={handleCardClick}>
+                <Styled.CategoryCard onClick={() => navigate("/writeCheckList")}>
                     <SvgButton src={RegisterIcon} height={"28px"} width={"28px"} />
                     <Sub1 text={"체크리스트 작성하기"} />
                 </Styled.CategoryCard>
-                <Styled.CategoryCard onClick={handleCardClick}>
+                <Styled.CategoryCard onClick={() => navigate("/listSelection")}>
                     <SvgButton src={CheckListIcon} height={"28px"} width={"28px"} />
                     <Sub1 text={"체크리스트 보기"} />
                 </Styled.CategoryCard>

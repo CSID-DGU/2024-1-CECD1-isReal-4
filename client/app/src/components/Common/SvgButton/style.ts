@@ -7,9 +7,9 @@ export const SvgButton = styled.button<SvgButtonProps>`
     width: ${(props) => props.width || "16px"};
     height: ${(props) => props.height || "16px"};
     background-color: ${(props) => props.color || "transparent"};
-    top: ${(props) => props.top || "0"};
-    right: ${(props) => props.right || "0"};
-    bottom: ${(props) => props.bottom || "0"};
-    left: ${(props) => props.left || "0"};
+    margin-top: ${(props) => props.marginTop || "0"};
+    margin-right: ${(props) => props.marginRight || "0"};
+    margin-bottom: ${(props) => props.marginBottom || "0"};
+    margin-left: ${(props) => props.marginLeft || "0"};
     border: none;
 `;

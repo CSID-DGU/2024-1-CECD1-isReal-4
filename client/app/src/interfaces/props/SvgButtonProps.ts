@@ -3,10 +3,10 @@ export interface SvgButtonProps {
     width?: string;
     height?: string;
     color?: string;
-    top?: string;
-    right?: string;
-    bottom?: string;
-    left?: string;
+    marginTop?: string;
+    marginRight?: string;
+    marginBottom?: string;
+    marginLeft?: string;
     position?: string;
     onClick?: () => void;
 }

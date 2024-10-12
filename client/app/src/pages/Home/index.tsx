@@ -7,8 +7,8 @@ import * as Styled from "./style.ts";
 export default function Home() {
   return (
     <Styled.HomeContainer>
-      <HomeHeader/>
-      <AptTitle/>
+        <HomeHeader/>
+        <AptTitle/>
         <Category/>
     </Styled.HomeContainer>
   );
