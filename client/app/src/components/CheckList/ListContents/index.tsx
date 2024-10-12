@@ -1,9 +1,10 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import * as Styled from './style';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ListItem from '../ListItem';
 import DateSeparator from '../DateSeparator';
 import Row from "@/components/Common/Row";
+import RejectModal from "@/components/CheckList/Modal/RejectModal";
 
 interface ListContentItem {
     id: number;
@@ -23,6 +24,7 @@ const mockData: ListContentItem[] = [
 export default function ListContents() {
     const navigate = useNavigate();
     const location = useLocation();
+    const [isRejectModalOpen, setisRejectModalOpen]= useState<boolean>(false);
 
     useEffect(() => {
 
@@ -35,8 +37,18 @@ export default function ListContents() {
     const groupedData = mockData.reduce((acc, item) => {
         if (!acc[item.createdAt]) acc[item.createdAt] = [];
         acc[item.createdAt].push(item);
+
         return acc;
     }, {} as Record<string, ListContentItem[]>);
+
+    // 모달 관련
+    const openRejectModal = () => {
+        setisRejectModalOpen(true);
+    };
+
+    const closeRejectModal = () => {
+        setisRejectModalOpen(false)
+    };
 
     return (
         <Styled.CheckListContentContainer>
@@ -46,13 +58,13 @@ export default function ListContents() {
                     {groupedData[date].map((item) => (
                         <Row alignItems={'center'} justifyContent={'center'}>
                         <ListItem key={item.id} item={item} onClick={handleItemClick} />
-                            {location.pathname ==='/myCheckList' && <button>신청됨</button>}
+                            {location.pathname === '/myCheckList' && <button onClick={openRejectModal}>거절됨</button>}
                         </Row>
                     ))}
 
                 </React.Fragment>
-
             ))}
+            {isRejectModalOpen && <RejectModal onClose={closeRejectModal}/>}
         </Styled.CheckListContentContainer>
     );
 }
