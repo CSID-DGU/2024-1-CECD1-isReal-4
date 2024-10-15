@@ -75,7 +75,7 @@ export const withdrawal = async () => {
 }
 
 /**
- * @description 2-5. 회원 탈퇴
+ * @description 2-5. 아파트 리스트 찾기
  */
 export const findApartments = async () => {
     try{
