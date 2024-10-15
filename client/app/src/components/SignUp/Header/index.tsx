@@ -9,7 +9,7 @@ export default function SignUpHeader() {
     const navigate = useNavigate();
 
     function handleLoginClick() {
-        navigate("/");
+        navigate("/login");
     }
 
     function handleBackClick() {

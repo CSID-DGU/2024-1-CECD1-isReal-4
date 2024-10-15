@@ -2,7 +2,6 @@ import { useState, ChangeEvent } from "react";
 import * as Styled from "./style.ts";
 import { useNavigate } from "react-router-dom";
 import { convertKoreanToEnglish } from "@/utils/convertKoreanToEnglish.ts";
-import {findApartments} from "@/apis/auth";
 
 export default function SignUpBody() {
     const navigate = useNavigate();
@@ -43,9 +42,8 @@ export default function SignUpBody() {
         );
     };
 
-    const handleDuplicateCheckClick = async () => {
-        const response = await findApartments();
-        console.log(response);
+    function handleDuplicateCheckClick() {
+        alert("중복 확인 버튼 클릭");
     }
 
     const handleIDChange = (e: ChangeEvent<HTMLInputElement>) => {
