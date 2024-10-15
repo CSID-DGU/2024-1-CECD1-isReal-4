@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TItem } from "@/interfaces/checklist/types.ts";
 import * as Styled from "./style";
 import Column from "@/components/Common/Column";
@@ -10,7 +10,11 @@ interface ChecklistItemProps {
     subSectionName: string | null;
     detailSectionName: string | null;
     item: TItem;
-    onItemCheck: (checked: boolean, appendText: string, appendImages: string[]) => void; // 추가 데이터 전달
+    itemIndex: number;  // item의 인덱스 전달
+    sectionIndex: number;
+    subSectionIndex: number | null;
+    detailSectionIndex: number | null;
+    onItemCheck: (checked: boolean, appendText: string, appendImages: string[]) => void;
 }
 
 const ChecklistItem: React.FC<ChecklistItemProps> = ({
@@ -18,13 +22,22 @@ const ChecklistItem: React.FC<ChecklistItemProps> = ({
                                                          subSectionName,
                                                          detailSectionName,
                                                          item,
-                                                         onItemCheck,
+                                                         itemIndex,
+                                                         sectionIndex,
+                                                         subSectionIndex,
+                                                         detailSectionIndex,
+                                                         onItemCheck
                                                      }) => {
-    const [inputText, setInputText] = useState<string>(""); // 텍스트 입력 상태
-    const [imagePreviews, setImagePreviews] = useState<string[]>([]); // 이미지 미리보기 상태
+    const [inputText, setInputText] = useState<string>(item.appendText || ""); // 상태를 초기화할 때 item의 값을 사용
+    const [imagePreviews, setImagePreviews] = useState<string[]>(item.images || []); // 상태 초기화
+
+    // useEffect로 상태가 변경될 때마다 onItemCheck를 호출해 상태를 전달
+    useEffect(() => {
+        onItemCheck(item.checked, inputText, imagePreviews);
+    }, [inputText, imagePreviews, item.checked]);
 
     const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setInputText(e.target.value); // 텍스트 입력 값 업데이트
+        setInputText(e.target.value);
     };
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +47,6 @@ const ChecklistItem: React.FC<ChecklistItemProps> = ({
                 const reader = new FileReader();
                 reader.onloadend = () => {
                     const base64String = reader.result as string;
-                    // 중복 이미지 방지
                     if (!imagePreviews.includes(base64String)) {
                         setImagePreviews(prev => [...prev, base64String]);
                     }
@@ -45,8 +57,8 @@ const ChecklistItem: React.FC<ChecklistItemProps> = ({
     };
 
     const handleFileUploadButtonClick = () => {
-        const fileInput = document.getElementById("file-upload") as HTMLInputElement;
-        fileInput.click(); // 파일 입력 창을 트리거
+        const fileInput = document.getElementById(`file-upload-${item.description}`) as HTMLInputElement;
+        fileInput.click();
     };
 
     const handleImageRemove = (index: number) => {
@@ -60,34 +72,41 @@ const ChecklistItem: React.FC<ChecklistItemProps> = ({
                     <input
                         type="checkbox"
                         checked={item.checked}
-                        onChange={(e) => onItemCheck(e.target.checked, inputText, imagePreviews)} // 텍스트 및 이미지 상태 전달
+                        onChange={(e) => {
+                            onItemCheck(e.target.checked, inputText, imagePreviews);
+                        }}
                     />
                     {sectionName} {subSectionName} {detailSectionName} {item.description}
                 </label>
             </Styled.StyledListItem>
 
-            {/* 항목이 체크된 경우만 textarea와 input 렌더링 */}
             {item.checked && (
                 <Column justifyContent={"center"} alignItems={"center"}>
                     <Styled.ActiveTextarea
-                        placeholder="항목에 대한 상세 설명을 입력하세요."
+                        placeholder="상세 설명을 입력하세요."
                         value={inputText}
                         onChange={handleTextChange}
                     />
-                    <Styled.FileUploadButton onClick={handleFileUploadButtonClick}>증명 사진 업로드</Styled.FileUploadButton>
-                    <Styled.CustomFileInput id="file-upload" type="file" multiple onChange={handleImageUpload} style={{ display: 'none' }} />
-                    {/* 이미지 미리보기 */}
+                    <Styled.FileUploadButton onClick={handleFileUploadButtonClick}>
+                        증명 사진 업로드
+                    </Styled.FileUploadButton>
+                    <Styled.CustomFileInput
+                        id={`file-upload-${item.description}`}
+                        type="file"
+                        multiple
+                        onChange={handleImageUpload}
+                        style={{ display: 'none' }}
+                    />
                     <Row>
                         {imagePreviews.map((image, index) => (
-                            <>
+                            <div key={index}>
                                 <img
-                                    key={index}
                                     src={image}
                                     alt={`업로드된 이미지 ${index + 1}`}
                                     style={{ width: '100px', height: '100px', margin: '10px' }}
                                 />
                                 <button onClick={() => handleImageRemove(index)}>삭제</button>
-                            </>
+                            </div>
                         ))}
                     </Row>
                 </Column>

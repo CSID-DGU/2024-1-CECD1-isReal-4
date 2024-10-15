@@ -7,10 +7,11 @@ import ChecklistItem from "@/components/CheckList/Write/CheckListItem.tsx";
 
 interface SectionProps {
     section: TSection;
-    onItemCheck: (sectionName: string, subSectionName: string | null, detailSectionName: string | null, itemIndex: number, checked: boolean) => void;
+    sectionIndex: number;
+    onItemCheck: (sectionIndex: number, subSectionIndex: number | null, detailSectionIndex: number | null, itemIndex: number, checked: boolean) => void;
 }
 
-const Section: React.FC<SectionProps> = ({ section, onItemCheck }) => {
+const Section: React.FC<SectionProps> = ({ section, sectionIndex, onItemCheck }) => {
     return (
         <Styled.PaddingWrapper>
             <Styled.StyledSection>
@@ -18,23 +19,27 @@ const Section: React.FC<SectionProps> = ({ section, onItemCheck }) => {
             </Styled.StyledSection>
 
             {/* items가 존재하면 렌더링 */}
-            {Array.isArray(section.items) && section.items.map((item, index) => (
+            {Array.isArray(section.items) && section.items.map((item, itemIndex) => (
                 <ChecklistItem
-                    key={index}  // 고유한 key 설정
+                    key={itemIndex}
                     name={section.name}
-                    sectionName={section.name}  // sectionName 전달
-                    subSectionName={null}  // subSection이 없으므로 null 전달
-                    detailSectionName={null}  // detailSection이 없으므로 null 전달
+                    sectionName={section.name}
+                    sectionIndex={sectionIndex}  // 섹션 인덱스 전달
+                    subSectionName={null}
+                    detailSectionName={null}
                     item={item}
-                    onItemCheck={(checked) => onItemCheck(section.name, null, null, index, checked)}  // itemIndex 전달
+                    onItemCheck={(checked) => onItemCheck(sectionIndex, null, null, itemIndex, checked)}  // 인덱스 전달
                 />
             ))}
 
             {/* subSections가 존재하면 SubSection을 렌더링 */}
-            {section.subSections && section.subSections.map(subSection => (
+            {section.subSections && section.subSections.map((subSection, subSectionIndex) => (
                 <SubSection
+                    key={subSectionIndex}
                     subSectionName={subSection.name}
                     sectionName={section.name}
+                    sectionIndex={sectionIndex}  // 섹션 인덱스 전달
+                    subSectionIndex={subSectionIndex}  // 서브 섹션 인덱스 전달
                     subSection={subSection}
                     onItemCheck={onItemCheck}
                 />
