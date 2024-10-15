@@ -1,14 +1,14 @@
 import axios from 'axios';
-// import Cookies from 'js-cookie';
 import Cookies from 'js-cookie';
 
-const accessToken = Cookies.get('access_token');
+// const accessToken = Cookies.get('access_token');
+const accessToken = "90480c42-6222-478c-a752-e07c8c045bd6";
 export const authInstance = axios.create({
     baseURL: import.meta.env.VITE_APP_SERVER_URL,
     withCredentials: true,
     responseType: "json",
     headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
         'Authorization': `Bearer ${accessToken}`,
     },
 });
