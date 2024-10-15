@@ -6,13 +6,14 @@ import ChecklistItem from "@/components/CheckList/Write/CheckListItem.tsx";
 import SizedBox from "@/components/Common/SizedBox";
 
 interface DetailSectionProps {
-    sectionName: string;
-    subSectionName: string;
+    sectionIndex: number;
+    subSectionIndex: number;
+    detailSectionIndex: number;
     detailSection: TDetailSection;
-    onItemCheck: (sectionName: string, subSectionName: string, detailSectionName: string, itemIndex: number, checked: boolean) => void;
+    onItemCheck: (sectionIndex: number, subSectionIndex: number, detailSectionIndex: number, itemIndex: number, checked: boolean, appendText: string, appendImages: string[]) => void;
 }
 
-export const DetailSection: React.FC<DetailSectionProps> = ({ sectionName, subSectionName, detailSection, onItemCheck }) => {
+export const DetailSection: React.FC<DetailSectionProps> = ({ sectionIndex, subSectionIndex, detailSectionIndex, detailSection, onItemCheck }) => {
     return (
         <div>
             <Styled.StyledDetailSection>
@@ -20,15 +21,20 @@ export const DetailSection: React.FC<DetailSectionProps> = ({ sectionName, subSe
             </Styled.StyledDetailSection>
 
             {/* items가 배열이므로 map으로 순회하며 ChecklistItem을 렌더링 */}
-            {Array.isArray(detailSection.items) && detailSection.items.map((item, index) => (
+            {Array.isArray(detailSection.items) && detailSection.items.map((item, itemIndex) => (
                 <ChecklistItem
-                    key={index}  // 인덱스를 사용, 그러나 고유성이 보장되지 않음
+                    key={itemIndex}  // 각 아이템에 고유 key 부여
                     name={detailSection.name}
-                    sectionName={sectionName}
-                    subSectionName={subSectionName}
+                    sectionName={null}  // 필요 없는 값 null로 전달
+                    subSectionName={null}  // 필요 없는 값 null로 전달
                     detailSectionName={detailSection.name}
+                    sectionIndex={sectionIndex}
+                    subSectionIndex={subSectionIndex}
+                    detailSectionIndex={detailSectionIndex}
                     item={item}
-                    onItemCheck={(checked) => onItemCheck(sectionName, subSectionName, detailSection.name, index, checked)}
+                    itemIndex={itemIndex}  // itemIndex 전달
+                    onItemCheck={(checked, appendText, appendImages) =>
+                        onItemCheck(sectionIndex, subSectionIndex, detailSectionIndex, itemIndex, checked, appendText, appendImages)}  // 필요한 값 전달
                 />
             ))}
             <SizedBox height={"20px"} />

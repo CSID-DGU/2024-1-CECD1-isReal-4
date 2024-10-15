@@ -27,6 +27,7 @@ export interface TItem {
     checked: boolean;
     appendText: string;
     appendImages: string[];
+    images: string[];
 }
 
 export interface TDetailSection {
