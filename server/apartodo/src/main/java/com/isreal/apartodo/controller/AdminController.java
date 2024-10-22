@@ -93,4 +93,10 @@ public class AdminController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return adminService.rejectFaultChecklist(faultChecklist, username);
     }
+
+    @PostMapping("/fault-approve")
+    public FaultChecklistDocument faultApprove(@RequestBody FaultChecklistDocument faultChecklist) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return adminService.faultApprove(faultChecklist, username);
+    }
 }

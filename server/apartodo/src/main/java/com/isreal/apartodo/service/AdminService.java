@@ -8,6 +8,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
 import java.util.List;
 
 @Slf4j
@@ -164,5 +171,36 @@ public class AdminService {
 
         // 변경된 FaultChecklistDocument를 저장
         return faultChecklistRepository.save(faultChecklist);
+    }
+
+    public FaultChecklistDocument faultApprove(FaultChecklistDocument faultChecklist, String username) {
+        // 1. username을 통해 관리자의 정보를 조회
+        MemberDocument admin = memberRepository.findByUsername(username);
+
+        // 2. FaultChecklistDocument의 approvalStatus를 APPROVE로 설정
+        faultChecklist.setApprovalStatus(ApprovalStatus.APPROVE);
+
+        // 3. 관리자의 이름을 reviewer 필드에 저장
+        faultChecklist.setReviewer(admin.getMemberName());
+
+        // 4. 업데이트된 FaultChecklistDocument를 저장
+        FaultChecklistDocument updatedFaultChecklist = faultChecklistRepository.save(faultChecklist);
+
+        // 5. RestTemplate을 이용해서 POST 방식으로 외부 API에 데이터를 전송
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "${addblock}";
+
+        // 6. 요청에 사용할 헤더 설정 (JSON 타입)
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        // 7. FaultChecklistDocument를 HttpEntity로 변환
+        HttpEntity<FaultChecklistDocument> requestEntity = new HttpEntity<>(updatedFaultChecklist, headers);
+
+        // 8. 외부 API로 POST 요청을 전송
+        restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
+
+        // 9. 수정된 FaultChecklistDocument 반환
+        return updatedFaultChecklist;
     }
 }
