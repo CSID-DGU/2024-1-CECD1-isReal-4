@@ -5,13 +5,18 @@ import com.isreal.apartodo.dto.*;
 import com.isreal.apartodo.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import com.isreal.apartodo.document.FaultChecklistDocument;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -321,5 +326,43 @@ public class MemberService {
                 apartmentName, ApprovalStatus.PEND,
                 Sort.by(Sort.Direction.DESC, "faultChecklistId")
         );
+    }
+
+    @Value("${find-blocks-by-username-url}")
+    private String findBlocksByUsernameUrl;
+
+    public List<FaultChecklistDocument> findBlocksByUsername(String username) {
+        // 1. RestTemplate 객체 생성
+        RestTemplate restTemplate = new RestTemplate();
+
+        // 2. 외부 API URL 설정, username을 URL에 포함시킴
+        String url = findBlocksByUsernameUrl + username;
+
+        // 3. GET 요청을 보내고, 응답을 FaultChecklistDocument 배열로 받음
+        ResponseEntity<FaultChecklistDocument[]> response = restTemplate.getForEntity(url, FaultChecklistDocument[].class);
+
+        // 4. 반환된 리스트를 반환
+        return Arrays.asList(Objects.requireNonNull(response.getBody()));
+    }
+
+    @Value("${find-blocks-by-apartment-name-url}")
+    private String findBlocksByApartmentNameUrl;
+
+    public List<FaultChecklistDocument> findBlocksByApartmentName(String username) {
+        // 1. username을 통해 apartmentName을 추출
+        MemberDocument member = memberRepository.findByUsername(username);
+        String apartmentName = member.getApartmentName();
+
+        // 2. RestTemplate 객체 생성
+        RestTemplate restTemplate = new RestTemplate();
+
+        // 3. 외부 API URL 설정, apartmentName을 URL에 포함시킴
+        String url = findBlocksByApartmentNameUrl + apartmentName;
+
+        // 4. GET 요청을 보내고, 응답을 FaultChecklistDocument 배열로 받음
+        ResponseEntity<FaultChecklistDocument[]> response = restTemplate.getForEntity(url, FaultChecklistDocument[].class);
+
+        // 5. 반환된 리스트를 반환
+        return Arrays.asList(Objects.requireNonNull(response.getBody()));
     }
 }

@@ -15,11 +15,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -88,10 +88,24 @@ public class AllService {
         // 3. GET 요청을 보내고, 응답을 FaultChecklistDocument 배열로 받음
         ResponseEntity<FaultChecklistDocument[]> response = restTemplate.getForEntity(url, FaultChecklistDocument[].class);
 
-        // 4. 배열로 받은 응답을 리스트로 변환
-        List<FaultChecklistDocument> faultChecklistDocuments = Arrays.asList(response.getBody());
+        // 4. 반환된 리스트를 반환
+        return Arrays.asList(Objects.requireNonNull(response.getBody()));
+    }
 
-        // 5. 반환된 리스트를 반환
-        return faultChecklistDocuments;
+    @Value("${find-blocks-by-apartment-name-url}")
+    private String findBlocksByApartmentNameUrl;
+
+    public List<FaultChecklistDocument> findBlocksByApartmentName(String apartmentName) {
+        // 1. RestTemplate 객체 생성
+        RestTemplate restTemplate = new RestTemplate();
+
+        // 2. 외부 API URL 설정, apartmentName을 URL에 포함시킴
+        String url = findBlocksByApartmentNameUrl + apartmentName;
+
+        // 3. GET 요청을 보내고, 응답을 FaultChecklistDocument 배열로 받음
+        ResponseEntity<FaultChecklistDocument[]> response = restTemplate.getForEntity(url, FaultChecklistDocument[].class);
+
+        // 4. 반환된 리스트를 반환
+        return Arrays.asList(Objects.requireNonNull(response.getBody()));
     }
 }

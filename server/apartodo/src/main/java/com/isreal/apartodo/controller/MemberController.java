@@ -122,4 +122,16 @@ public class MemberController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return memberService.findOtherFaultChecklists(username);
     }
+
+    @GetMapping("/find-blocks-by-username")
+    public List<FaultChecklistDocument> findBlocksByUsername() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return memberService.findBlocksByUsername(username);
+    }
+
+    @GetMapping("/find-blocks-by-apartment-name")
+    public List<FaultChecklistDocument> findBlocksByApartmentName() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return memberService.findBlocksByApartmentName(username);
+    }
 }

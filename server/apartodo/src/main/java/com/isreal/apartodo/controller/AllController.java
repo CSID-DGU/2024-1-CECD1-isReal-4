@@ -67,4 +67,9 @@ public class AllController {
     public List<FaultChecklistDocument> findBlocksByUsername(@RequestParam(name = "username") String username) {
         return allService.findBlocksByUsername(username);
     }
+
+    @GetMapping("/all/find-blocks-by-apartment-name")
+    public List<FaultChecklistDocument> findBlocksByApartmentName(@RequestParam(name = "apartment-name") String apartmentName) {
+        return allService.findBlocksByApartmentName(apartmentName);
+    }
 }
