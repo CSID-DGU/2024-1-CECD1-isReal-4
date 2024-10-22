@@ -1,6 +1,7 @@
 package com.isreal.apartodo.service;
 
 import com.isreal.apartodo.document.ApartmentDocument;
+import com.isreal.apartodo.document.FaultChecklistDocument;
 import com.isreal.apartodo.document.MemberDocument;
 import com.isreal.apartodo.document.RejectionDocument;
 import com.isreal.apartodo.dto.JoinRequestDTO;
@@ -10,10 +11,14 @@ import com.isreal.apartodo.repository.MemberRepository;
 import com.isreal.apartodo.repository.RejectionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -68,5 +73,25 @@ public class AllService {
 
     public boolean isExistUsername(String username) {
         return memberRepository.existsByUsername(username);
+    }
+
+    @Value("${find-blocks-by-username-url}")
+    private String findBlocksByUsernameUrl;
+
+    public List<FaultChecklistDocument> findBlocksByUsername(String username) {
+        // 1. RestTemplate 객체 생성
+        RestTemplate restTemplate = new RestTemplate();
+
+        // 2. 외부 API URL 설정, username을 URL에 포함시킴
+        String url = findBlocksByUsernameUrl + username;
+
+        // 3. GET 요청을 보내고, 응답을 FaultChecklistDocument 배열로 받음
+        ResponseEntity<FaultChecklistDocument[]> response = restTemplate.getForEntity(url, FaultChecklistDocument[].class);
+
+        // 4. 배열로 받은 응답을 리스트로 변환
+        List<FaultChecklistDocument> faultChecklistDocuments = Arrays.asList(response.getBody());
+
+        // 5. 반환된 리스트를 반환
+        return faultChecklistDocuments;
     }
 }

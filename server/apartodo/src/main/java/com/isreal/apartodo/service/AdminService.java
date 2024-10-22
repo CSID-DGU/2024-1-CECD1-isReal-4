@@ -5,6 +5,7 @@ import com.isreal.apartodo.dto.*;
 import com.isreal.apartodo.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -173,6 +173,9 @@ public class AdminService {
         return faultChecklistRepository.save(faultChecklist);
     }
 
+    @Value("${add-block-url}")
+    private String addBlockURL;
+
     public FaultChecklistDocument faultApprove(FaultChecklistDocument faultChecklist, String username) {
         // 1. username을 통해 관리자의 정보를 조회
         MemberDocument admin = memberRepository.findByUsername(username);
@@ -188,7 +191,6 @@ public class AdminService {
 
         // 5. RestTemplate을 이용해서 POST 방식으로 외부 API에 데이터를 전송
         RestTemplate restTemplate = new RestTemplate();
-        String url = "${addblock}";
 
         // 6. 요청에 사용할 헤더 설정 (JSON 타입)
         HttpHeaders headers = new HttpHeaders();
@@ -198,7 +200,7 @@ public class AdminService {
         HttpEntity<FaultChecklistDocument> requestEntity = new HttpEntity<>(updatedFaultChecklist, headers);
 
         // 8. 외부 API로 POST 요청을 전송
-        restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
+        restTemplate.exchange(addBlockURL, HttpMethod.POST, requestEntity, String.class);
 
         // 9. 수정된 FaultChecklistDocument 반환
         return updatedFaultChecklist;

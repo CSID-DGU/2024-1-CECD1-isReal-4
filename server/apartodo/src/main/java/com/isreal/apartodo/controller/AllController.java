@@ -1,6 +1,7 @@
 package com.isreal.apartodo.controller;
 
 import com.isreal.apartodo.document.ApartmentDocument;
+import com.isreal.apartodo.document.FaultChecklistDocument;
 import com.isreal.apartodo.document.MemberDocument;
 import com.isreal.apartodo.document.RejectionDocument;
 import com.isreal.apartodo.dto.JoinRequestDTO;
@@ -60,5 +61,10 @@ public class AllController {
     @GetMapping("/all/is-exist-username")
     public boolean isExistUsername(@RequestParam(name = "username") String username) {
         return allService.isExistUsername(username);
+    }
+
+    @GetMapping("/all/find-blocks-by-username")
+    public List<FaultChecklistDocument> findBlocksByUsername(@RequestParam(name = "username") String username) {
+        return allService.findBlocksByUsername(username);
     }
 }

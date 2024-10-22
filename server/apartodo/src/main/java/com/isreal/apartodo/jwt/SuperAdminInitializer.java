@@ -16,7 +16,7 @@ public class SuperAdminInitializer implements CommandLineRunner {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    @Value("${superadmin}")
+    @Value("${super-admin}")
     private String superAdminUsername;
 
     @Value("${password}")
