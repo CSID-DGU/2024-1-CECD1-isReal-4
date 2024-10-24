@@ -8,10 +8,10 @@ export const SidebarContainer = styled.aside`
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     position: fixed;
     left: 0;
     top: 0;
+    z-index: 1000;
 `;
 
 export const Logo = styled.div`
@@ -34,7 +34,7 @@ export const MenuItem = styled.div`
     font-size: 16px;
     display: flex;
     align-items: center;
-    width: 110%;
+    width: 100%;
     margin-bottom: 10px;
     font-size: larger;
 
@@ -48,4 +48,17 @@ export const MenuIcon = styled.img`
     height: 24px;
     margin-right: 10px;
     margin-left: 10px;
+`;
+
+export const Button = styled.button`
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    &:hover {
+        color: #007bff;
+    }
+    &:focus {
+        outline: none;
+    }
 `;
