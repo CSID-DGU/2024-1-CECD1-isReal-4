@@ -3,7 +3,7 @@ import * as Styled from "./style";
 import SvgButton from "@/components/Common/SvgButton";
 import Avatar from "@/assets/icons/Avatar.svg";
 
-const index: React.FC = () => {
+const Header: React.FC = () => {
     return (
         <Styled.HeaderContainer>
             <Styled.Icon>
@@ -13,4 +13,4 @@ const index: React.FC = () => {
     );
 };
 
-export default index;
+export default Header;
