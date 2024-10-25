@@ -16,7 +16,7 @@ export const ModalOverlay = styled.div`
 export const ModalContent = styled.div`
     background: white;
     padding: 30px;
-    width: 1800px;
+    width: 1600px;
     border-radius: 8px;
     display: flex;
     flex-direction: column;

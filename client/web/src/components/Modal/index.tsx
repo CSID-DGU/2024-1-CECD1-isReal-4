@@ -1,6 +1,6 @@
 import React from "react";
 import * as Styled from "./style";
-import H2 from "../Common/Font/Heading/H2";
+import H2 from "@/components/Common/Font/Heading/H2";
 
 interface ModalProps {
     title: string;
@@ -8,9 +8,10 @@ interface ModalProps {
     onClose: () => void;
     onApprove?: () => void;
     onReject?: () => void;
+    showActions?: boolean; // 버튼 표시 여부
 }
 
-const Modal: React.FC<ModalProps> = ({ title, defectData, onClose, onApprove, onReject }) => {
+const Modal: React.FC<ModalProps> = ({ title, defectData, onClose, onApprove, onReject, showActions = true }) => {
     if (!defectData) return null;
     return (
         <Styled.ModalOverlay>
@@ -63,11 +64,12 @@ const Modal: React.FC<ModalProps> = ({ title, defectData, onClose, onApprove, on
                         </Styled.ImageUpload>
                     </Styled.RightSection>
                 </Styled.ModalBody>
-
-                <Styled.ModalFooter>
-                    <Styled.RejectButton onClick={onReject}>거절하기</Styled.RejectButton>
-                    <Styled.ApproveButton onClick={onApprove}>승인하기</Styled.ApproveButton>
-                </Styled.ModalFooter>
+                {showActions && (
+                    <Styled.ModalFooter>
+                        <Styled.RejectButton onClick={onReject}>거절하기</Styled.RejectButton>
+                        <Styled.ApproveButton onClick={onApprove}>승인하기</Styled.ApproveButton>
+                    </Styled.ModalFooter>
+                )}
             </Styled.ModalContent>
         </Styled.ModalOverlay>
     );
