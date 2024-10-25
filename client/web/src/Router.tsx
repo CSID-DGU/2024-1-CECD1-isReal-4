@@ -3,6 +3,7 @@ import Auth from "@/pages/Auth";
 import Login from "@/pages/Login";
 import RequestedDefect from "@/pages/RequestedDefect";
 import ApprovedDefect from "@/pages/ApprovedDefect";
+import RequestedUser from "@/pages/RequestedUser";
 
 export default function Router() {
     return (
@@ -11,6 +12,7 @@ export default function Router() {
             <Route path='/login' element={<Login />} />
             <Route path='/requested-defect' element={<RequestedDefect />} />
             <Route path='/approved-defect' element={<ApprovedDefect />} />
+            <Route path='/requested-user' element={<RequestedUser />} />
         </Routes>
     );
 }

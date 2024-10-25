@@ -15,7 +15,7 @@ const Sidebar: React.FC = () => {
         <Styled.SidebarContainer>
             <Styled.Logo>시행•시공사 포털</Styled.Logo>
             <Styled.MenuList>
-                <Styled.MenuItem onClick={() => navigate("/")}>
+                <Styled.MenuItem onClick={() => navigate("/requested-user")}>
                     <Styled.MenuIcon src={userManage} alt='입주 예정자 신청 관리' />
                     입주 예정자 신청 관리
                 </Styled.MenuItem>
