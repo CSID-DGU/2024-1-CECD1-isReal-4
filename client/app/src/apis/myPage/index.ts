@@ -18,7 +18,11 @@ export const getMyInfo = async () => {
  * @description 5-2. 프로필 사진 수정하기
  */
 export const updateProfileImage = async ( profileImage: string ) => {
-    const response = await AuthInstance.post("/member/update-profile", profileImage);
+    const response = await AuthInstance.post("/member/update-profile", { profileImage }, {
+        headers: {
+            "Content-Type": "application/json"
+        },
+    });
     console.log("Update Profile Image's res: ",response);
     return response.data;
 }
