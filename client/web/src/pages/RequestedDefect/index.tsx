@@ -3,8 +3,8 @@ import Header from "@/components/Layout/Header";
 import Sidebar from "@/components/Layout/Sidebar";
 import * as Styled from "./style";
 import H1 from "@/components/Common/Font/Heading/H1";
-import Modal from "@/components/Modal";
-import SmallModal from "@/components/Modal/SmallModal";
+import DefectModal from "@/components/DefectModal";
+import DefectSmallModal from "@/components/DefectModal/DefectSmallModal";
 
 const RequestedDefect: React.FC = () => {
     // 예시 데이터
@@ -117,7 +117,7 @@ const RequestedDefect: React.FC = () => {
 
             {/* 첫 번째 모달 */}
             {isModalOpen && selectedDefect && (
-                <Modal
+                <DefectModal
                     title='하자 신청서'
                     defectData={selectedDefect}
                     onClose={handleCloseModal}
@@ -129,7 +129,7 @@ const RequestedDefect: React.FC = () => {
 
             {/* 작은 모달 (거절 사유 입력용) */}
             {isSmallModalOpen && (
-                <SmallModal
+                <DefectSmallModal
                     title='거절 사유 입력'
                     rejectReason={rejectReason}
                     onClose={handleCloseSmallModal}

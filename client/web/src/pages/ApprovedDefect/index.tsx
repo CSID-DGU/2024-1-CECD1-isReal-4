@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Modal from "@/components/Modal";
+import Modal from "@/components/DefectModal";
 import * as Styled from "./style";
 import Header from "@/components/Layout/Header";
 import Sidebar from "@/components/Layout/Sidebar";
