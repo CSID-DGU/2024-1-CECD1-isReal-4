@@ -17,15 +17,16 @@ export const SidebarContainer = styled.aside`
 export const Logo = styled.div`
     font-size: 20px;
     font-weight: bold;
-    margin-top: 10px;
+    margin-top: 20px;
     margin-bottom: 20px;
-    margin-left: 10px;
+    margin-left: 15px;
 `;
 
 export const MenuList = styled.div`
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    margin-top: 20px;
 `;
 
 export const MenuItem = styled.div`
