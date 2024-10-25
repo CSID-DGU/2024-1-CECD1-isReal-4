@@ -1,20 +1,36 @@
 import React from 'react';
-import { TSubSection } from "@/interfaces/checklist/types.ts";
 import ChecklistItem from "@/components/CheckList/Write/CheckListItem.tsx";
 import * as Styled from "./style.ts";
 import H3 from "@/components/Common/Font/Heading/H3";
 import { DetailSection } from "@/components/CheckList/Write/DetailSection.tsx";
+import { SubSectionState } from "@/interfaces/checklist/types.ts";
 
 interface SubSectionProps {
     sectionIndex: number;
     subSectionIndex: number;
     subSectionName: string;
     sectionName: string;
-    subSection: TSubSection;
-    onItemCheck: (sectionIndex: number, subSectionIndex: number | null, detailSectionIndex: number | null, itemIndex: number, checked: boolean) => void;
+    subSection: SubSectionState;
+    onItemCheck: (
+        sectionIndex: number,
+        subSectionIndex: number | null,
+        detailSectionIndex: number | null,
+        itemIndex: number,
+        checked: boolean,
+        appendText: string,
+        images: string[],
+        description: string
+    ) => void;
 }
 
-const SubSection: React.FC<SubSectionProps> = ({ sectionIndex, subSectionIndex, subSectionName, sectionName, subSection, onItemCheck }) => {
+const SubSection: React.FC<SubSectionProps> = ({
+                                                   sectionIndex,
+                                                   subSectionIndex,
+                                                   subSectionName,
+                                                   sectionName,
+                                                   subSection,
+                                                   onItemCheck
+                                               }) => {
     return (
         <div>
             <Styled.StyledSubSection>
@@ -28,10 +44,14 @@ const SubSection: React.FC<SubSectionProps> = ({ sectionIndex, subSectionIndex, 
                     name={subSection.name}
                     sectionName={sectionName}
                     subSectionName={subSection.name}
-                    sectionIndex={sectionIndex}  // 섹션 인덱스 전달
-                    subSectionIndex={subSectionIndex}  // 서브 섹션 인덱스 전달
+                    sectionIndex={sectionIndex}
+                    subSectionIndex={subSectionIndex}
+                    detailSectionName={null}
+                    detailSectionIndex={null}
+                    itemIndex={itemIndex}
                     item={item}
-                    onItemCheck={(checked) => onItemCheck(sectionIndex, subSectionIndex, null, itemIndex, checked)}  // 인덱스 전달
+                    onItemCheck={(checked, appendText, images, description) =>
+                        onItemCheck(sectionIndex, subSectionIndex, null, itemIndex, checked, appendText, images, description)}
                 />
             ))}
 
@@ -39,10 +59,10 @@ const SubSection: React.FC<SubSectionProps> = ({ sectionIndex, subSectionIndex, 
             {subSection.detailSections && subSection.detailSections.map((detailSection, detailSectionIndex) => (
                 <DetailSection
                     key={detailSectionIndex}
-                    sectionIndex={sectionIndex}  // 섹션 인덱스 전달
-                    subSectionIndex={subSectionIndex}  // 서브 섹션 인덱스 전달
+                    sectionIndex={sectionIndex}
+                    subSectionIndex={subSectionIndex}
                     detailSection={detailSection}
-                    detailSectionIndex={detailSectionIndex}  // 디테일 섹션 인덱스 전달
+                    detailSectionIndex={detailSectionIndex}
                     onItemCheck={onItemCheck}
                 />
             ))}

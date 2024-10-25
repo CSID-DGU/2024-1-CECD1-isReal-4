@@ -4,11 +4,12 @@ import Avatar from "@/assets/icons/Avatar.svg";
 import H2 from "@/components/Common/Font/Heading/H2/index.tsx";
 import H5 from "@/components/Common/Font/Heading/H5";
 import { useNavigate } from "react-router-dom";
+import {getMyInfo, updateProfileImage} from "@/apis/myPage";
 
 function MyPageBody() {
     const navigate = useNavigate();
 
-    const [profileImage, setProfileImage] = useState<string>(Avatar);
+    const [profileImage, setProfileImage] = useState<string>("");
     const [apartmentName, setApartmentName] = useState<string>("현재 사용자의 아파트");
     const [userName, setUserName] = useState<string>("홍길동");
     const [userEmail, setUserEmail] = useState<string>("xxxxxx@xxx.com");
@@ -27,8 +28,21 @@ function MyPageBody() {
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            setProfileImage(imageUrl);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result as string;
+                setProfileImage(base64String);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleSubmit = async () => {
+        try {
+            const response = await updateProfileImage(profileImage);  // base64 이미지를 전송
+            console.log('Profile image updated successfully:', response);
+        } catch (error) {
+            console.error('Failed to update profile image:', error);
         }
     };
 
@@ -61,21 +75,25 @@ function MyPageBody() {
         navigate("/");
     };
 
+    // 사용자 정보 불러오기 함수
+    const fetchMyInfo = async () => {
+        try {
+            const data = await getMyInfo();
+            // 디폴트 값 설정, 서버 데이터에 따라 값을 업데이트
+            setProfileImage(data.profileImage || "");
+            setUserName(data.memberName || "홍길동");
+            setUserEmail(data.username || "xxxxxx@xxx.com");
+            setApartmentName(data.apartmentName || "현재 사용자의 아파트");
+            setDefectCount(data.faultCount || 0);
+            setQnaList(data.questions || []);
+        } catch (error) {
+            console.error("Failed to get my info: ", error);
+        }
+    };
+
+    // 컴포넌트가 마운트될 때 사용자 정보 가져오기
     useEffect(() => {
-        setProfileImage(Avatar);
-        setUserName("김테스트");
-        setUserEmail("test@test.com");
-        setApartmentName("한남더힐");
-        setDefectCount(3);
-        setQnaList([
-            { id: 1, title: "제목 1", comments: 0 },
-            { id: 2, title: "제목 2", comments: 0 },
-            { id: 3, title: "제목 3", comments: 0 },
-            { id: 4, title: "제목 4", comments: 0 },
-            { id: 5, title: "제목 5", comments: 0 },
-            { id: 6, title: "제목 6", comments: 0 },
-            { id: 7, title: "제목 7", comments: 0 },
-        ]);
+        fetchMyInfo();
         setIsDocumentUploaded(false);
     }, []);
 
@@ -83,30 +101,31 @@ function MyPageBody() {
         <Styled.Container>
             <Styled.UserSection>
                 <Styled.LineWrapper>
-                    <Styled.HorizontalLine />
+                    <Styled.HorizontalLine/>
                     <Styled.UserImageWrapper>
                         <Styled.UserImage>
-                            <Styled.ProfileImage src={profileImage} alt='Profile' />
+                            <Styled.ProfileImage src={profileImage} alt='Profile'/>
                             <Styled.ChangeText>
                                 <label htmlFor='file-input'>사진 변경</label>
                             </Styled.ChangeText>
                         </Styled.UserImage>
                     </Styled.UserImageWrapper>
-                    <Styled.HorizontalLine />
+                    <Styled.HorizontalLine/>
                 </Styled.LineWrapper>
-                <Styled.FileInput id='file-input' type='file' accept='image/*' onChange={handleImageChange} />
+                <button onClick={handleSubmit}>선택한 이미지로 변경</button>
+                <Styled.FileInput id='file-input' type='file' accept='image/*' onChange={handleImageChange}/>
                 <Styled.UserLabel>
                     <Styled.UserText>
-                        <H2 text={userName} />
+                        <H2 text={userName}/>
                     </Styled.UserText>
                     <Styled.UserText>
-                        <H5 text={userEmail} />
+                        <H5 text={userEmail}/>
                     </Styled.UserText>
                 </Styled.UserLabel>
             </Styled.UserSection>
             <Styled.InfoSection>
                 <Styled.ApartNameSection>
-                    <Styled.LabelWithLine>입주 예정 아파트</Styled.LabelWithLine>
+                    <Styled.LabelWithLine>{apartmentName}</Styled.LabelWithLine>
                     <Styled.CommonWrapper>
                         <Styled.ApartNameWrapper>
                             {!isDocumentUploaded ? (

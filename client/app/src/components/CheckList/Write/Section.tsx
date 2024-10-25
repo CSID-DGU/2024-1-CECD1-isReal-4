@@ -1,14 +1,24 @@
+
 import React from 'react';
-import { TSection } from "@/interfaces/checklist/types.ts";
+import { SectionState } from "@/interfaces/checklist/types.ts";
 import SubSection from './SubSection';
 import * as Styled from "./style.ts";
 import H1 from "@/components/Common/Font/Heading/H1";
 import ChecklistItem from "@/components/CheckList/Write/CheckListItem.tsx";
 
 interface SectionProps {
-    section: TSection;
+    section: SectionState;
     sectionIndex: number;
-    onItemCheck: (sectionIndex: number, subSectionIndex: number | null, detailSectionIndex: number | null, itemIndex: number, checked: boolean) => void;
+    onItemCheck: (
+        sectionIndex: number,
+        subSectionIndex: number | null,
+        detailSectionIndex: number | null,
+        itemIndex: number,
+        checked: boolean,
+        appendText: string,
+        images: string[],
+        description: string
+    ) => void;  // onItemCheck 시그니처를 8개 인수로 업데이트
 }
 
 const Section: React.FC<SectionProps> = ({ section, sectionIndex, onItemCheck }) => {
@@ -24,12 +34,15 @@ const Section: React.FC<SectionProps> = ({ section, sectionIndex, onItemCheck })
                     key={itemIndex}
                     name={section.name}
                     sectionName={section.name}
-                    sectionIndex={sectionIndex}  // 섹션 인덱스 전달
+                    sectionIndex={sectionIndex}
                     subSectionName={null}
                     detailSectionName={null}
                     item={item}
-                    onItemCheck={(checked) => onItemCheck(sectionIndex, null, null, itemIndex, checked)}  // 인덱스 전달
+                    onItemCheck={(checked, appendText, images, description) =>
+                        onItemCheck(sectionIndex, null, null, itemIndex, checked, appendText, images, description)
+                    }
                 />
+
             ))}
 
             {/* subSections가 존재하면 SubSection을 렌더링 */}
@@ -38,8 +51,8 @@ const Section: React.FC<SectionProps> = ({ section, sectionIndex, onItemCheck })
                     key={subSectionIndex}
                     subSectionName={subSection.name}
                     sectionName={section.name}
-                    sectionIndex={sectionIndex}  // 섹션 인덱스 전달
-                    subSectionIndex={subSectionIndex}  // 서브 섹션 인덱스 전달
+                    sectionIndex={sectionIndex}
+                    subSectionIndex={subSectionIndex}
                     subSection={subSection}
                     onItemCheck={onItemCheck}
                 />

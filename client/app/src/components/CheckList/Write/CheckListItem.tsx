@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { TItem } from "@/interfaces/checklist/types.ts";
+import { ChecklistItemState } from "@/interfaces/checklist/types.ts";
 import * as Styled from "./style";
 import Column from "@/components/Common/Column";
 import Row from "@/components/Common/Row";
 
 interface ChecklistItemProps {
     name: string;
-    sectionName: string;
+    sectionName: string | null;
     subSectionName: string | null;
     detailSectionName: string | null;
-    item: TItem;
-    itemIndex: number;  // item의 인덱스 전달
+    item: ChecklistItemState;
+    itemIndex: number;
     sectionIndex: number;
     subSectionIndex: number | null;
     detailSectionIndex: number | null;
-    onItemCheck: (checked: boolean, appendText: string, appendImages: string[]) => void;
+    onItemCheck: (checked: boolean, appendText: string, appendImages: string[], description: string) => void;
 }
 
 const ChecklistItem: React.FC<ChecklistItemProps> = ({
@@ -28,16 +28,24 @@ const ChecklistItem: React.FC<ChecklistItemProps> = ({
                                                          detailSectionIndex,
                                                          onItemCheck
                                                      }) => {
-    const [inputText, setInputText] = useState<string>(item.appendText || ""); // 상태를 초기화할 때 item의 값을 사용
-    const [imagePreviews, setImagePreviews] = useState<string[]>(item.images || []); // 상태 초기화
+    const [inputText, setInputText] = useState<string>(item.appendText || "");
+    const [imagePreviews, setImagePreviews] = useState<string[]>(item.appendImages || []);
+    const [test, setTest] = useState<string>(item.description || "te.");
 
-    // useEffect로 상태가 변경될 때마다 onItemCheck를 호출해 상태를 전달
     useEffect(() => {
-        onItemCheck(item.checked, inputText, imagePreviews);
-    }, [inputText, imagePreviews, item.checked]);
+        onItemCheck(item.checked, inputText, imagePreviews, test);
+    }, [inputText, imagePreviews, item.checked, test]);
+
+    const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        onItemCheck(e.target.checked, inputText, imagePreviews, test);
+    };
 
     const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setInputText(e.target.value);
+    };
+
+    const handleTestChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setTest(e.target.value);
     };
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,11 +80,9 @@ const ChecklistItem: React.FC<ChecklistItemProps> = ({
                     <input
                         type="checkbox"
                         checked={item.checked}
-                        onChange={(e) => {
-                            onItemCheck(e.target.checked, inputText, imagePreviews);
-                        }}
+                        onChange={handleCheckboxChange}
                     />
-                    {sectionName} {subSectionName} {detailSectionName} {item.description}
+                    {test} {/* 이 부분에서 test 값을 보여줌 */}
                 </label>
             </Styled.StyledListItem>
 

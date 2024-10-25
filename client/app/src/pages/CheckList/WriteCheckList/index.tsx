@@ -7,16 +7,21 @@ import Sub2 from "@/components/Common/Font/Body/Sub2";
 import H4 from "@/components/Common/Font/Heading/H4";
 import SizedBox from "@/components/Common/SizedBox";
 import { initialChecklist } from "@/interfaces/checklist/data.ts";
-import { useChecklistStore } from "@/stores/useChecklistStore.ts";
+import { useChecklistStore} from "@/stores/useChecklistStore.ts";
+import {createChecklist} from "@/apis/checklist";
+import {useNavigate} from "react-router-dom";
+
 
 const WriteChecklist: React.FC = () => {
     const { sections, initializeChecklist, setChecklistItem, getChecklistData } = useChecklistStore();
     const [addedText, setAddedText] = useState<string>("");
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        // 초기 데이터로 체크리스트를 Zustand에 로드
         initializeChecklist(initialChecklist.sections);
+        console.log("초기 데이터: ", initialChecklist);
+        console.log("초기 데이터 섹션:", initialChecklist.sections);
     }, [initializeChecklist]);
 
     const onItemCheck = (
@@ -26,11 +31,13 @@ const WriteChecklist: React.FC = () => {
         itemIndex: number,
         checked: boolean,
         appendText: string,
-        images: string[]
+        images: string[],
+        description: string
     ) => {
-        // 업데이트할 항목의 데이터를 체크, 텍스트, 이미지 포함하여 전달
-        const updatedItem = { checked, appendText, images };
+        const updatedItem = { checked, appendText, appendImages: images, description };
         setChecklistItem(sectionIndex, subSectionIndex, detailSectionIndex, itemIndex, updatedItem);
+        console.log("onItemCheck description: ", description);
+
     };
 
     // 이미지 업로드, 미리보기 설정
@@ -53,11 +60,50 @@ const WriteChecklist: React.FC = () => {
         setAddedText(e.target.value);
     };
 
-    const handleSubmit = () => {
-        const checklistData = getChecklistData();
-        console.log('서버로 보낼 데이터:', checklistData);
-        // 서버로 데이터 전송 로직 (예: axios 사용)
-    };
+    /*
+    체크리스트 전체를 아우르는 추가 설명, 이미지 입력 코드였는데, 설계 사항이 바뀐 관계로 삭제한 코드입니다.
+    추후 재사용 가능성을 염두에 두고 남겨두었습니다.
+     */
+    const overallAddInformation = () => {
+        return (
+            <>
+            <Column alignItems={"center"} justifyContent={"space-between"}>
+                <Styled.AddTextArea
+                    placeholder={"전체적으로 추가 내용을 입력해주세요."}
+                    value={addedText}
+                    onChange={handleTextChange}
+                />
+                <Styled.AddTextButton>
+                    <Sub2 text={"내용 추가하기"} />
+                </Styled.AddTextButton>
+            </Column>
+            <div>
+                {imagePreviews.map((image, index) => (
+                    <img
+                        key={index}
+                        src={image}
+                        alt={`${index}번째 이미지 미리보기`}
+                        style={{ width: '100px', height: '100px', margin: '10px' }}
+                    />
+                ))}
+            </div>
+            파일 업로드 input
+            <Styled.FileUploadButton htmlFor="file-upload">사진 추가하기</Styled.FileUploadButton>
+            <Styled.CustomFileInput id="file-upload" type="file" multiple onChange={handleImageUpload} />
+        </>
+        )
+    }
+
+
+    const handleCreateChecklist = async () => {
+        const response = await createChecklist();
+        if(response) {
+            alert("체크리스트가 정상적으로 작성되었습니다.");
+            navigate("/home");
+        } else {
+            alert("체크리스트 작성에서 문제가 발생했습니다.");
+        }
+    }
 
     return (
         <Styled.CheckListPageWrapper>
@@ -68,35 +114,13 @@ const WriteChecklist: React.FC = () => {
                         key={sectionIndex}
                         section={section}
                         sectionIndex={sectionIndex}
-                        onItemCheck={onItemCheck}  // onItemCheck 함수를 전달
+                        onItemCheck={onItemCheck}
                     />
                 ))}
 
-                <SizedBox height={"20px"} />
-                <Column alignItems={"center"} justifyContent={"space-between"}>
-                    <Styled.AddTextArea
-                        placeholder={"전체적으로 추가 내용을 입력해주세요."}
-                        value={addedText}
-                        onChange={handleTextChange}
-                    />
-                    <Styled.AddTextButton>
-                        <Sub2 text={"내용 추가하기"} />
-                    </Styled.AddTextButton>
-                </Column>
-                <div>
-                    {imagePreviews.map((image, index) => (
-                        <img
-                            key={index}
-                            src={image}
-                            alt={`${index}번째 이미지 미리보기`}
-                            style={{ width: '100px', height: '100px', margin: '10px' }}
-                        />
-                    ))}
-                </div>
-                {/* 파일 업로드 input */}
-                <Styled.FileUploadButton htmlFor="file-upload">사진 추가하기</Styled.FileUploadButton>
-                <Styled.CustomFileInput id="file-upload" type="file" multiple onChange={handleImageUpload} />
-                <Styled.RegisterButton onClick={handleSubmit}>
+                <SizedBox height={"40px"} />
+
+                <Styled.RegisterButton onClick={handleCreateChecklist}>
                     <H4 text={"등록하기"} />
                 </Styled.RegisterButton>
             </Column>
