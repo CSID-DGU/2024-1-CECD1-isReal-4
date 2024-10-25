@@ -19,7 +19,7 @@ const Sidebar: React.FC = () => {
                     <Styled.MenuIcon src={userManage} alt='입주 예정자 신청 관리' />
                     입주 예정자 신청 관리
                 </Styled.MenuItem>
-                <Styled.MenuItem onClick={() => navigate("/")}>
+                <Styled.MenuItem onClick={() => navigate("/subscribed-user")}>
                     <Styled.MenuIcon src={userSearch} alt='입주 예정자 정보 조회' />
                     입주 예정자 정보 조회
                 </Styled.MenuItem>
