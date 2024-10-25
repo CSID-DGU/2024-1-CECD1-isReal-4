@@ -4,9 +4,11 @@ import Avatar from "@/assets/icons/Avatar.svg";
 import H2 from "@/components/Common/Font/Heading/H2/index.tsx";
 import H5 from "@/components/Common/Font/Heading/H5";
 import { useNavigate } from "react-router-dom";
+import {getMyInfo} from "@/apis/myPage";
 
 function MyPageBody() {
     const navigate = useNavigate();
+    const [myInfo, setMyInfo] = useState<any>(null);
 
     const [profileImage, setProfileImage] = useState<string>(Avatar);
     const [apartmentName, setApartmentName] = useState<string>("현재 사용자의 아파트");
@@ -62,20 +64,23 @@ function MyPageBody() {
     };
 
     useEffect(() => {
-        setProfileImage(Avatar);
-        setUserName("김테스트");
-        setUserEmail("test@test.com");
-        setApartmentName("한남더힐");
-        setDefectCount(3);
-        setQnaList([
-            { id: 1, title: "제목 1", comments: 0 },
-            { id: 2, title: "제목 2", comments: 0 },
-            { id: 3, title: "제목 3", comments: 0 },
-            { id: 4, title: "제목 4", comments: 0 },
-            { id: 5, title: "제목 5", comments: 0 },
-            { id: 6, title: "제목 6", comments: 0 },
-            { id: 7, title: "제목 7", comments: 0 },
-        ]);
+        const fetchMyInfo = async () => {
+            try {
+                const data = await getMyInfo();
+                // setMyInfo(data);
+                // console.log("Fetch My Info's data: ", data);
+
+                setProfileImage(data.profiileImage || null);
+                setUserName(data.memberName);
+                setUserEmail(data.username);
+                setApartmentName(data.apartmentName);
+                setDefectCount(data.faultCount)
+                setQnaList(data.questions);
+            } catch (error) {
+                console.error("Failed to get my info: ", error);
+            }
+        }
+        fetchMyInfo();
         setIsDocumentUploaded(false);
     }, []);
 
@@ -106,7 +111,7 @@ function MyPageBody() {
             </Styled.UserSection>
             <Styled.InfoSection>
                 <Styled.ApartNameSection>
-                    <Styled.LabelWithLine>입주 예정 아파트</Styled.LabelWithLine>
+                    <Styled.LabelWithLine>{apartmentName}</Styled.LabelWithLine>
                     <Styled.CommonWrapper>
                         <Styled.ApartNameWrapper>
                             {!isDocumentUploaded ? (
