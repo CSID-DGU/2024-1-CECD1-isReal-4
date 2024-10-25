@@ -2,7 +2,7 @@ import authInstance from "@/apis/base/authInstance.ts";
 import useChecklistStore from "@/stores/useCheckliststore.ts";
 
 /**
- * @description 3-1. 체크리스트 작성하기
+ * @description 4-1. 체크리스트 작성하기
  */
 export const createChecklist = async () => {
     const { sections } = useChecklistStore.getState();
@@ -59,7 +59,7 @@ export const createChecklist = async () => {
 };
 
 /**
- * @description 3-2. 본인 하자 체크리스트 조회
+ * @description 4-2. 본인 하자 체크리스트 조회
  */
 export const findMyChecklists = async () => {
     try{
