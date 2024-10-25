@@ -10,7 +10,13 @@ interface SmallModalProps {
     onRejectReasonChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-const SmallModal: React.FC<SmallModalProps> = ({ title, rejectReason, onClose, onSave, onRejectReasonChange }) => {
+const DefectSmallModal: React.FC<SmallModalProps> = ({
+    title,
+    rejectReason,
+    onClose,
+    onSave,
+    onRejectReasonChange,
+}) => {
     return (
         <Styled.SmallModalOverlay>
             <Styled.SmallModalContent>
@@ -34,4 +40,4 @@ const SmallModal: React.FC<SmallModalProps> = ({ title, rejectReason, onClose, o
     );
 };
 
-export default SmallModal;
+export default DefectSmallModal;
