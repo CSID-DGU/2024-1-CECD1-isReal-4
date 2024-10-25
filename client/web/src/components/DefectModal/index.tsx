@@ -11,7 +11,7 @@ interface ModalProps {
     showActions?: boolean; // 버튼 표시 여부
 }
 
-const Modal: React.FC<ModalProps> = ({ title, defectData, onClose, onApprove, onReject, showActions = true }) => {
+const DefectModal: React.FC<ModalProps> = ({ title, defectData, onClose, onApprove, onReject, showActions = true }) => {
     if (!defectData) return null;
     return (
         <Styled.ModalOverlay>
@@ -75,4 +75,4 @@ const Modal: React.FC<ModalProps> = ({ title, defectData, onClose, onApprove, on
     );
 };
 
-export default Modal;
+export default DefectModal;
