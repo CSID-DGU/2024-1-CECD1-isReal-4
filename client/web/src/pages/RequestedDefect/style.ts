@@ -22,10 +22,24 @@ export const MainContent = styled.main`
     background-color: #fff;
 `;
 
+export const SearchContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+`;
+
+export const SearchInput = styled.input`
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+`;
+
 export const DefectTable = styled.table`
     width: 100%;
     border-collapse: collapse;
-    margin-top: 50px;
+    margin-top: 20px;
 
     th,
     td {
