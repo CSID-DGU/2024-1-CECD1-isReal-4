@@ -1,69 +1,91 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "@/components/Layout/Header";
 import Sidebar from "@/components/Layout/Sidebar";
 import * as Styled from "./style";
 import H1 from "@/components/Common/Font/Heading/H1";
 import DefectModal from "@/components/DefectModal";
 import DefectSmallModal from "@/components/DefectModal/DefectSmallModal";
+import { fetchRequestedDefects, approveDefect } from "@/apis/defects";
 
 const RequestedDefect: React.FC = () => {
-    // 예시 데이터
-    const defects = [
-        { id: 1, user: "user1", date: "28 December 2022", aptInfo: "아파트 이름, 1단지, 101동" },
-        { id: 2, user: "user2", date: "29 December 2022", aptInfo: "아파트 이름, 2단지, 102동" },
-        { id: 3, user: "user3", date: "30 December 2022", aptInfo: "아파트 이름, 3단지, 103동" },
-    ];
-
+    const [defects, setDefects] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedDefect, setSelectedDefect] = useState<any>(null);
     const [isSmallModalOpen, setIsSmallModalOpen] = useState(false);
     const [rejectReason, setRejectReason] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
-    const [filteredDefects, setFilteredDefects] = useState(defects);
+    const [filteredDefects, setFilteredDefects] = useState([]);
 
-    // 검색어 입력 핸들러
+    // API에서 하자 데이터를 가져오는 함수
+    useEffect(() => {
+        const loadDefects = async () => {
+            try {
+                const data = await fetchRequestedDefects(); // API 호출
+                setDefects(data);
+                setFilteredDefects(data); // 초기 필터 설정
+            } catch (error) {
+                console.error("Failed to load defects:", error);
+            }
+        };
+        loadDefects();
+    }, []);
+
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const searchValue = e.target.value.toLowerCase();
         setSearchTerm(searchValue);
 
-        // 검색어에 맞춰 필터링된 데이터 계산
         const filtered = defects.filter(
-            (defect) =>
-                defect.user.toLowerCase().includes(searchValue) || defect.aptInfo.toLowerCase().includes(searchValue)
+            (defect: any) =>
+                defect.memberName.toLowerCase().includes(searchValue) ||
+                defect.apartmentName.toLowerCase().includes(searchValue)
         );
         setFilteredDefects(filtered);
     };
 
-    // 신청서 열람 버튼 클릭 시 모달을 열고, 예시 데이터에서 신청서 데이터를 가져옴
-    const handleOpenModal = (defectId: number) => {
-        const selected = defects.find((defect) => defect.id === defectId);
-        setSelectedDefect(selected);
+    // 신청서 열람 버튼 클릭 시 모달을 열고, 선택된 신청서 데이터 설정
+    const handleOpenModal = (defect: any) => {
+        console.log("Opening modal with defect:", defect);
+        setSelectedDefect(defect);
         setIsModalOpen(true);
     };
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
-        setSelectedDefect(null); // 선택된 데이터 초기화
+        setSelectedDefect(null);
     };
 
-    const handleApproveModal = () => {
-        console.log("승인되었습니다.");
-        setIsModalOpen(false);
+    // 모달에서 승인 버튼을 누르면 이 부분이 호출되고 해당 부분에서 승인 로직이 일어날 예정입니다.
+    const handleApproveModal = async () => {
+        if (selectedDefect) {
+            try {
+                await approveDefect(selectedDefect);
+                alert("하자가 승인되었습니다.");
+                // 승인 후 데이터 갱신
+                const updatedDefects = defects.filter((d) => d.faultChecklistId !== selectedDefect.faultChecklistId);
+                setDefects(updatedDefects);
+                setFilteredDefects(updatedDefects);
+                setIsModalOpen(false);
+            } catch (error) {
+                console.error("승인 중 오류 발생:", error);
+                alert("하자 승인에 실패했습니다.");
+            }
+        }
     };
 
     const handleOpenSmallModal = () => {
-        setIsSmallModalOpen(true); // 작은 모달 열기
+        setIsSmallModalOpen(true);
     };
 
     const handleCloseSmallModal = () => {
         setIsSmallModalOpen(false);
-        setRejectReason(""); // 거절 사유 초기화
+        setRejectReason("");
     };
 
+    // 모달에서 거절 버튼을 누르고 거절 사유를 입력하면 이 부분이 호출되고 해당 부분에서 거절 로직이 일어날 예정입니다.
     const handleSaveRejectReason = () => {
         console.log("거절 사유:", rejectReason);
         setIsSmallModalOpen(false);
-        setIsModalOpen(false); // 모든 모달 닫기
+        setIsModalOpen(false);
     };
 
     const handleRejectReasonChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -77,8 +99,6 @@ const RequestedDefect: React.FC = () => {
                 <Sidebar />
                 <Styled.MainContent>
                     <H1 text='신청된 하자 데이터 관리' />
-
-                    {/* 검색 입력 필드 추가 */}
                     <Styled.SearchContainer>
                         <Styled.SearchInput
                             type='text'
@@ -99,14 +119,14 @@ const RequestedDefect: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredDefects.map((defect) => (
-                                <tr key={defect.id}>
-                                    <td>{defect.user}</td>
-                                    <td>사용자 이름</td>
-                                    <td>{defect.date}</td>
-                                    <td>{defect.aptInfo}</td>
+                            {filteredDefects.map((defect: any) => (
+                                <tr key={defect.faultChecklistId}>
+                                    <td>{defect.username}</td>
+                                    <td>{defect.memberName}</td>
+                                    <td>{new Date(defect.createAt).toLocaleDateString()}</td>
+                                    <td>{`${defect.apartmentName}, ${defect.apartmentBuildingNumber}`}</td>
                                     <td>
-                                        <button onClick={() => handleOpenModal(defect.id)}>신청서 열람하기</button>
+                                        <button onClick={() => handleOpenModal(defect)}>신청서 열람하기</button>
                                     </td>
                                 </tr>
                             ))}
