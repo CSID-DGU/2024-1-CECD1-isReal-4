@@ -1,41 +1,42 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "@/components/DefectModal";
 import * as Styled from "./style";
 import Header from "@/components/Layout/Header";
 import Sidebar from "@/components/Layout/Sidebar";
 import H1 from "@/components/Common/Font/Heading/H1";
+import { fetchRequestedDefects } from "@/apis/defects"; // API 호출 함수
 
 const ApprovedDefect: React.FC = () => {
-    // 예시 데이터
-    const approvedDefects = [
-        {
-            id: 1,
-            name: "힘들어요",
-            date: "28 December 2022",
-            aptInfo: "아파트 이름, 1단지, 101동",
-            defectId: "D003",
-        },
-        {
-            id: 2,
-            name: "진짜에요",
-            date: "29 December 2022",
-            aptInfo: "아파트 이름, 2단지, 102동",
-            defectId: "D004",
-        },
-    ];
-
     const [searchTerm, setSearchTerm] = useState("");
-    const [filteredData, setFilteredData] = useState(approvedDefects);
+    const [approvedDefects, setApprovedDefects] = useState([]);
+    const [filteredData, setFilteredData] = useState([]);
     const [selectedDefect, setSelectedDefect] = useState<any>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    // API에서 하자 데이터를 가져오는 함수
+    useEffect(() => {
+        const loadApprovedDefects = async () => {
+            try {
+                const data = await fetchRequestedDefects(); // API 호출
+                const approvedOnly = data.filter((defect: any) => defect.approvalStatus === "APPROVE"); // 승인된 데이터만 필터링
+                setApprovedDefects(approvedOnly);
+                setFilteredData(approvedOnly); // 초기 필터 설정
+            } catch (error) {
+                console.error("Failed to load approved defects:", error);
+            }
+        };
+        loadApprovedDefects();
+    }, []);
+
+    // 검색어 입력 핸들러
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const searchValue = e.target.value.toLowerCase();
         setSearchTerm(searchValue);
 
         const filtered = approvedDefects.filter(
-            (defect) =>
-                defect.name.toLowerCase().includes(searchValue) || defect.defectId.toLowerCase().includes(searchValue)
+            (defect: any) =>
+                defect.memberName.toLowerCase().includes(searchValue) ||
+                defect.faultChecklistId.toLowerCase().includes(searchValue)
         );
         setFilteredData(filtered);
     };
@@ -77,12 +78,16 @@ const ApprovedDefect: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredData.map((defect) => (
-                        <tr key={defect.id}>
-                            <td>{defect.defectId}</td>
-                            <td>{defect.name}</td>
-                            <td>{defect.date}</td>
-                            <td>{defect.aptInfo}</td>
+                    {filteredData.map((defect: any) => (
+                        <tr key={defect.faultChecklistId}>
+                            <td>{defect.username}</td>
+                            <td>{defect.memberName}</td>
+                            <td>
+                                {defect.reviewCompletionTime
+                                    ? new Date(defect.reviewCompletionTime).toLocaleDateString()
+                                    : "N/A"}
+                            </td>
+                            <td>{`${defect.apartmentName}, ${defect.apartmentBuildingNumber}`}</td>
                             <td>
                                 <button onClick={() => handleOpenModal(defect)}>상세 정보 보기</button>
                             </td>
