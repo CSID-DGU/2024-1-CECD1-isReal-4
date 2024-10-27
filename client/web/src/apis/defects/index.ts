@@ -6,7 +6,7 @@ import authInstance from "@/apis/base/authInstance";
 export const fetchRequestedDefects = async () => {
     try {
         const response = await authInstance.get("/admin/find-fault-checklists");
-        console.log("Response received:", response);
+        console.log("신청된 하자 데이터 조회 완료:", response);
         return response.data;
     } catch (error) {
         console.error("Error fetching requested defects:", error);
@@ -18,27 +18,36 @@ export const fetchRequestedDefects = async () => {
  * @description 1-2. 선택한 하자를 승인하는 API
  */
 
-export const approveDefect = async (defectData: any) => {
-    const requestBody = {
-        faultChecklistId: defectData.faultChecklistId,
-        createAt: defectData.createAt,
-        sections: defectData.sections,
-        username: defectData.username,
-        memberName: defectData.memberName,
-        apartmentName: defectData.apartmentName,
-        phoneNumber: defectData.phoneNumber,
-        apartmentBuildingNumber: defectData.apartmentBuildingNumber,
-        reviewer: defectData.reviewer || "관리자이름", // 필요 시 기본 값 설정
-        reviewComment: defectData.reviewComment || "승인됨",
-        reviewCompletionTime: new Date().toISOString(),
-        approvalStatus: "APPROVED",
-    };
+export const approveDefect = async (requestBody: any) => {
+    try {
+        const response = await authInstance.post("/admin/fault-approve", requestBody, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        console.log("하자 승인 응답: ", response);
+        return response.data;
+    } catch (error) {
+        console.error("승인 API 호출 오류:", error);
+        throw error;
+    }
+};
 
-    const response = await authInstance.post("/admin/approve-defect", requestBody, {
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
-    console.log("Approve Defect Response: ", response);
-    return response.data;
+/**
+ * @description 1-3. 선택한 하자를 거절하는 API
+ */
+
+export const rejectDefect = async (requestBody: any) => {
+    try {
+        const response = await authInstance.post("/admin/reject-fault-checklist", requestBody, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        console.log("하자 거절 응답: ", response);
+        return response.data;
+    } catch (error) {
+        console.error("거절 API 호출 오류:", error);
+        throw error;
+    }
 };

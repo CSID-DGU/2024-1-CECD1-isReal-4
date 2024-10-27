@@ -5,7 +5,7 @@ import * as Styled from "./style";
 import H1 from "@/components/Common/Font/Heading/H1";
 import DefectModal from "@/components/DefectModal";
 import DefectSmallModal from "@/components/DefectModal/DefectSmallModal";
-import { fetchRequestedDefects, approveDefect } from "@/apis/defects";
+import { fetchRequestedDefects, approveDefect, rejectDefect } from "@/apis/defects";
 
 const RequestedDefect: React.FC = () => {
     const [defects, setDefects] = useState([]);
@@ -21,8 +21,9 @@ const RequestedDefect: React.FC = () => {
         const loadDefects = async () => {
             try {
                 const data = await fetchRequestedDefects(); // API 호출
-                setDefects(data);
-                setFilteredDefects(data); // 초기 필터 설정
+                const pendingDefects = data.filter((defect: any) => defect.approvalStatus === "PEND"); // PEND 상태만 필터링
+                setDefects(pendingDefects);
+                setFilteredDefects(pendingDefects); // 초기 필터 설정
             } catch (error) {
                 console.error("Failed to load defects:", error);
             }
@@ -44,7 +45,6 @@ const RequestedDefect: React.FC = () => {
 
     // 신청서 열람 버튼 클릭 시 모달을 열고, 선택된 신청서 데이터 설정
     const handleOpenModal = (defect: any) => {
-        console.log("Opening modal with defect:", defect);
         setSelectedDefect(defect);
         setIsModalOpen(true);
     };
@@ -57,10 +57,26 @@ const RequestedDefect: React.FC = () => {
     // 모달에서 승인 버튼을 누르면 이 부분이 호출되고 해당 부분에서 승인 로직이 일어날 예정입니다.
     const handleApproveModal = async () => {
         if (selectedDefect) {
+            const requestBody = {
+                faultChecklistId: selectedDefect.faultChecklistId,
+                createAt: selectedDefect.createAt,
+                sections: selectedDefect.sections,
+                username: selectedDefect.username,
+                memberName: selectedDefect.memberName,
+                apartmentName: selectedDefect.apartmentName,
+                phoneNumber: selectedDefect.phoneNumber,
+                apartmentBuildingNumber: selectedDefect.apartmentBuildingNumber,
+                reviewer: selectedDefect.reviewer || "관리자이름",
+                reviewComment: "승인됨",
+                reviewCompletionTime: new Date().toISOString(),
+                approvalStatus: selectedDefect.approvalStatus,
+            };
+
             try {
-                await approveDefect(selectedDefect);
+                await approveDefect(requestBody);
                 alert("하자가 승인되었습니다.");
-                // 승인 후 데이터 갱신
+
+                // 승인 후 리스트 갱신
                 const updatedDefects = defects.filter((d) => d.faultChecklistId !== selectedDefect.faultChecklistId);
                 setDefects(updatedDefects);
                 setFilteredDefects(updatedDefects);
@@ -82,10 +98,41 @@ const RequestedDefect: React.FC = () => {
     };
 
     // 모달에서 거절 버튼을 누르고 거절 사유를 입력하면 이 부분이 호출되고 해당 부분에서 거절 로직이 일어날 예정입니다.
-    const handleSaveRejectReason = () => {
-        console.log("거절 사유:", rejectReason);
-        setIsSmallModalOpen(false);
-        setIsModalOpen(false);
+    const handleSaveRejectReason = async () => {
+        console.log("거절 사유 저장:", rejectReason);
+        console.log("선택된 하자:", selectedDefect);
+        if (selectedDefect) {
+            const requestBody = {
+                faultChecklistId: selectedDefect.faultChecklistId,
+                createAt: selectedDefect.createAt,
+                sections: selectedDefect.sections,
+                username: selectedDefect.username,
+                memberName: selectedDefect.memberName,
+                apartmentName: selectedDefect.apartmentName,
+                phoneNumber: selectedDefect.phoneNumber,
+                apartmentBuildingNumber: selectedDefect.apartmentBuildingNumber,
+                reviewer: "관리자이름",
+                reviewComment: rejectReason,
+                reviewCompletionTime: new Date().toISOString(),
+                approvalStatus: selectedDefect.approvalStatus,
+            };
+
+            try {
+                await rejectDefect(requestBody);
+                alert("하자가 거절되었습니다.");
+
+                // 거절 후 리스트 갱신
+                const updatedDefects = defects.filter((d) => d.faultChecklistId !== selectedDefect.faultChecklistId);
+                setDefects(updatedDefects);
+                setFilteredDefects(updatedDefects);
+                setIsModalOpen(false);
+                setIsSmallModalOpen(false);
+                setRejectReason("");
+            } catch (error) {
+                console.error("거절 중 오류 발생:", error);
+                alert("하자 거절에 실패했습니다.");
+            }
+        }
     };
 
     const handleRejectReasonChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
