@@ -34,7 +34,7 @@ export default function Login() {
                 }
 
                 console.log("로그인에 성공했습니다.");
-                navigate("/subscribed-user"); // 로그인 성공 시 홈으로 이동
+                navigate("/requested-user"); // 로그인 성공 시 홈으로 이동
             } else {
                 console.log("로그인에 실패했습니다. 실패 코드: ", response.status);
                 alert(`로그인 실패: 서버에서 실패 응답을 받았습니다. (코드: ${response.status})`);
