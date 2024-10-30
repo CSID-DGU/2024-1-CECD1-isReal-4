@@ -1,7 +1,29 @@
 import styled from "styled-components";
 
 export const StatusText = styled.span<{ status: string }>`
-    color: ${({ status }) => (status === "승인" ? "green" : status === "거절" ? "red" : "black")};
+    font-weight: bold;
+    color: ${({ status }) => {
+        switch (status) {
+            case "WAIT":
+                return "orange";
+            case "DENY":
+                return "red";
+            default:
+                return "black";
+        }
+    }};
+    padding: 4px 8px;
+    border-radius: 4px;
+    background-color: ${({ status }) => {
+        switch (status) {
+            case "WAIT":
+                return "#fff4e5";
+            case "DENY":
+                return "#ffe5e5";
+            default:
+                return "transparent";
+        }
+    }};
 `;
 
 export const PageContainer = styled.div`

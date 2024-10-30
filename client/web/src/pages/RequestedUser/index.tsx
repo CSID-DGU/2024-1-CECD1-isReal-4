@@ -1,64 +1,58 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "@/components/Layout/Header";
 import Sidebar from "@/components/Layout/Sidebar";
 import * as Styled from "./style";
 import H1 from "@/components/Common/Font/Heading/H1";
 import UserModal from "@/components/UserModal";
 import UserSmallModal from "@/components/UserModal/UserSmallModal";
+import { fetchRequestedUsers, approveUser, rejectUser } from "@/apis/users";
 
 const RequestedUser: React.FC = () => {
-    const [filterStatus, setFilterStatus] = useState("전체"); // 상태 필터 (전체, 승인됨, 거절됨, 미확인)
+    const [filterStatus, setFilterStatus] = useState("전체"); // 상태 필터 (전체, 거절됨, 미확인)
     const [searchTerm, setSearchTerm] = useState("");
     const [isUserModalOpen, setIsUserModalOpen] = useState(false);
     const [isUserSmallModalOpen, setIsUserSmallModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<any>(null);
     const [rejectReason, setRejectReason] = useState("");
+    const [users, setUsers] = useState<any[]>([]);
 
-    // 예시 데이터
-    const users = [
-        {
-            id: "0001",
-            date: "28 December 2022",
-            status: "승인",
-            name: "홍길동",
-            email: "hong@example.com",
-            phone: "010-0000-0000",
-            images: [
-                "https://via.placeholder.com/200",
-                "https://via.placeholder.com/200",
-                "https://via.placeholder.com/200",
-                "https://via.placeholder.com/200",
-            ],
-        },
-        {
-            id: "0002",
-            date: "28 December 2022",
-            status: "거절",
-            name: "김철수",
-            email: "kim@example.com",
-            phone: "010-0000-0000",
-            images: ["https://via.placeholder.com/200"],
-        },
-        {
-            id: "0003",
-            date: "28 December 2022",
-            status: "미확인",
-            name: "이영희",
-            email: "lee@example.com",
-            phone: "010-0000-0000",
-            images: [],
-        },
-    ];
+    useEffect(() => {
+        const loadUsers = async () => {
+            try {
+                const data = await fetchRequestedUsers();
+                const filteredData = data.filter((user) => user.role !== "MEMBER");
+                setUsers(filteredData);
+            } catch (error) {
+                console.error("Failed to load users:", error);
+            }
+        };
+        loadUsers();
+    }, []);
+
+    const getUserStatus = (role: string) => {
+        switch (role) {
+            case "WAIT":
+                return "미확인";
+            case "DENY":
+                return "거절됨";
+            default:
+                return "미확인";
+        }
+    };
 
     const filterUsers = () => {
         let filtered = users;
 
         if (filterStatus !== "전체") {
-            filtered = filtered.filter((user) => user.status === filterStatus);
+            filtered = filtered.filter((user) => getUserStatus(user.role) === filterStatus);
         }
 
         if (searchTerm) {
-            filtered = filtered.filter((user) => user.id.toLowerCase().includes(searchTerm.toLowerCase()));
+            filtered = filtered.filter(
+                (user) =>
+                    user.memberName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    user.username.toLowerCase().includes(searchTerm.toLowerCase())
+            );
         }
 
         return filtered;
@@ -72,40 +66,84 @@ const RequestedUser: React.FC = () => {
         setSearchTerm(e.target.value);
     };
 
-    // 신청서 열람 모달 열기
     const handleOpenUserModal = (user: any) => {
         setSelectedUser(user);
         setIsUserModalOpen(true);
     };
 
-    // 신청서 모달 닫기
     const handleCloseUserModal = () => {
         setIsUserModalOpen(false);
         setSelectedUser(null);
     };
 
-    // 거절 사유 모달 열기
     const handleOpenUserSmallModal = () => {
         setIsUserSmallModalOpen(true);
     };
 
-    // 거절 사유 모달 닫기
     const handleCloseUserSmallModal = () => {
         setIsUserSmallModalOpen(false);
         setRejectReason("");
     };
 
-    // 거절 사유 저장 핸들러
-    const handleSaveRejectReason = (reason: string) => {
-        console.log("거절 사유:", reason);
-        handleCloseUserSmallModal();
-        handleCloseUserModal();
+    const handleSaveRejectReason = async (reason: string) => {
+        if (selectedUser) {
+            const requestBody = {
+                member: {
+                    memberId: selectedUser.memberId,
+                    username: selectedUser.username,
+                    role: selectedUser.role,
+                    memberName: selectedUser.memberName,
+                    phoneNumber: selectedUser.phoneNumber,
+                    apartmentName: selectedUser.apartmentName,
+                    apartmentBuildingNumber: selectedUser.apartmentBuildingNumber,
+                    profileImage: selectedUser.profileImage,
+                    authDocument: selectedUser.authDocument,
+                },
+                rejection: reason,
+                createAt: new Date().toISOString(),
+            };
+
+            try {
+                await rejectUser(requestBody);
+                alert("회원가입이 거절되었습니다.");
+
+                const updatedUsers = users.filter((user) => user.memberId !== selectedUser.memberId);
+                setUsers(updatedUsers);
+                handleCloseUserModal();
+                setRejectReason("");
+            } catch (error) {
+                console.error("거절 중 오류 발생:", error);
+                alert("회원가입 거절에 실패했습니다.");
+            }
+        }
     };
 
-    // 승인 처리 핸들러
-    const handleApprove = () => {
-        console.log("승인되었습니다.");
-        handleCloseUserModal();
+    const handleApprove = async () => {
+        if (selectedUser) {
+            const requestBody = {
+                memberId: selectedUser.memberId,
+                username: selectedUser.username,
+                role: selectedUser.role,
+                memberName: selectedUser.memberName,
+                phoneNumber: selectedUser.phoneNumber,
+                apartmentName: selectedUser.apartmentName,
+                apartmentBuildingNumber: selectedUser.apartmentBuildingNumber,
+                profileImage: selectedUser.profileImage,
+                authDocument: selectedUser.authDocument,
+            };
+
+            try {
+                await approveUser(requestBody);
+                alert("승인되었습니다.");
+
+                const updatedUsers = users.filter((user) => user.memberId !== selectedUser.memberId);
+                setUsers(updatedUsers);
+                setIsUserModalOpen(false);
+            } catch (error) {
+                console.error("승인 중 오류 발생:", error);
+                alert("승인에 실패했습니다.");
+            }
+        }
     };
 
     return (
@@ -124,25 +162,18 @@ const RequestedUser: React.FC = () => {
                                 전체
                             </Styled.FilterButton>
                             <Styled.FilterButton
-                                onClick={() => handleFilterChange("승인")}
-                                active={filterStatus === "승인"}
-                            >
-                                승인됨
-                            </Styled.FilterButton>
-                            <Styled.FilterButton
-                                onClick={() => handleFilterChange("거절")}
-                                active={filterStatus === "거절"}
-                            >
-                                거절됨
-                            </Styled.FilterButton>
-                            <Styled.FilterButton
                                 onClick={() => handleFilterChange("미확인")}
                                 active={filterStatus === "미확인"}
                             >
                                 미확인
                             </Styled.FilterButton>
+                            <Styled.FilterButton
+                                onClick={() => handleFilterChange("거절됨")}
+                                active={filterStatus === "거절됨"}
+                            >
+                                거절됨
+                            </Styled.FilterButton>
                         </Styled.FilterButtons>
-
                         {/* 검색창 */}
                         <Styled.SearchContainer>
                             <Styled.SearchInput
@@ -165,11 +196,13 @@ const RequestedUser: React.FC = () => {
                         </thead>
                         <tbody>
                             {filterUsers().map((user) => (
-                                <tr key={user.id}>
-                                    <td>{user.id}</td>
-                                    <td>{user.date}</td>
+                                <tr key={user.memberId}>
+                                    <td>{user.memberId}</td>
+                                    <td>{user.username}</td>
                                     <td>
-                                        <Styled.StatusText status={user.status}>{user.status}</Styled.StatusText>
+                                        <Styled.StatusText status={user.role}>
+                                            {getUserStatus(user.role)}
+                                        </Styled.StatusText>
                                     </td>
                                     <td>
                                         <button onClick={() => handleOpenUserModal(user)}>신청서 열람하기</button>
@@ -181,15 +214,18 @@ const RequestedUser: React.FC = () => {
                 </Styled.MainContent>
             </Styled.ContentArea>
 
+            {/* 신청서 모달 */}
             {isUserModalOpen && selectedUser && (
                 <UserModal
                     onClose={handleCloseUserModal}
                     onReject={handleOpenUserSmallModal}
                     onApprove={handleApprove}
                     selectedUser={selectedUser}
+                    isRejected={selectedUser.role === "DENY"}
                 />
             )}
 
+            {/* 거절 사유 모달 */}
             {isUserSmallModalOpen && (
                 <UserSmallModal onClose={handleCloseUserSmallModal} onSave={handleSaveRejectReason} />
             )}
