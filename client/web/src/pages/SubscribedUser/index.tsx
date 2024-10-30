@@ -1,61 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "@/components/Layout/Header";
 import Sidebar from "@/components/Layout/Sidebar";
 import * as Styled from "./style";
 import H1 from "@/components/Common/Font/Heading/H1";
+import { fetchRequestedUsers } from "@/apis/users";
 
 const SubscribedUser: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState("");
+    const [users, setUsers] = useState<any[]>([]);
 
-    // 예시 데이터
-    const users = [
-        {
-            id: "0001",
-            name: "사용자 이름",
-            email: "example@email.com",
-            phone: "010-0000-0000",
-            aptInfo: "아파트 이름, 1단지, 101동, 38평, A타입",
-        },
-        {
-            id: "0002",
-            name: "사용자 이름",
-            email: "example@email.com",
-            phone: "010-0000-0000",
-            aptInfo: "아파트 이름, 1단지, 101동, 38평, A타입",
-        },
-        {
-            id: "0003",
-            name: "사용자 이름",
-            email: "example@email.com",
-            phone: "010-0000-0000",
-            aptInfo: "아파트 이름, 1단지, 101동, 38평, A타입",
-        },
-        {
-            id: "0004",
-            name: "사용자 이름",
-            email: "example@email.com",
-            phone: "010-0000-0000",
-            aptInfo: "아파트 이름, 1단지, 101동, 38평, A타입",
-        },
-        {
-            id: "0005",
-            name: "사용자 이름",
-            email: "example@email.com",
-            phone: "010-0000-0000",
-            aptInfo: "아파트 이름, 1단지, 101동, 38평, A타입",
-        },
-        {
-            id: "0006",
-            name: "사용자 이름",
-            email: "example@email.com",
-            phone: "010-0000-0000",
-            aptInfo: "아파트 이름, 1단지, 101동, 38평, A타입",
-        },
-    ];
+    useEffect(() => {
+        const loadUsers = async () => {
+            try {
+                const data = await fetchRequestedUsers();
+                const memberUsers = data.filter((user: any) => user.role === "MEMBER");
+                setUsers(memberUsers);
+            } catch (error) {
+                console.error("Error loading users:", error);
+            }
+        };
+        loadUsers();
+    }, []);
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
     };
+
+    const filteredUsers = users.filter(
+        (user) => user.memberName.toLowerCase().includes(searchTerm.toLowerCase()) || user.memberId.includes(searchTerm)
+    );
 
     return (
         <Styled.PageContainer>
@@ -65,7 +38,7 @@ const SubscribedUser: React.FC = () => {
                 <Styled.MainContent>
                     <H1 text='입주 예정자 정보 조회' />
                     <Styled.FilterAndSearchContainer>
-                        <Styled.TotalCount>총 {users.length}명</Styled.TotalCount>
+                        <Styled.TotalCount>총 {filteredUsers.length}명</Styled.TotalCount>
 
                         <Styled.SearchContainer>
                             <Styled.SearchInput
@@ -88,21 +61,15 @@ const SubscribedUser: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {users
-                                .filter(
-                                    (user) =>
-                                        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                        user.id.includes(searchTerm)
-                                )
-                                .map((user) => (
-                                    <tr key={user.id}>
-                                        <td>{user.id}</td>
-                                        <td>{user.name}</td>
-                                        <td>{user.email}</td>
-                                        <td>{user.phone}</td>
-                                        <td>{user.aptInfo}</td>
-                                    </tr>
-                                ))}
+                            {filteredUsers.map((user) => (
+                                <tr key={user.memberId}>
+                                    <td>{user.memberId}</td>
+                                    <td>{user.memberName}</td>
+                                    <td>{user.username}</td>
+                                    <td>{user.phoneNumber}</td>
+                                    <td>{`${user.apartmentName}, ${user.apartmentBuildingNumber}`}</td>
+                                </tr>
+                            ))}
                         </tbody>
                     </Styled.UserTable>
                 </Styled.MainContent>
