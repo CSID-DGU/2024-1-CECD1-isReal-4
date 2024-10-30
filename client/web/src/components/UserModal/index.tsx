@@ -7,9 +7,10 @@ interface UserModalProps {
     onReject: () => void;
     onApprove: () => void;
     selectedUser: any;
+    isRejected: boolean;
 }
 
-const UserModal: React.FC<UserModalProps> = ({ onClose, onReject, onApprove, selectedUser }) => {
+const UserModal: React.FC<UserModalProps> = ({ onClose, onReject, onApprove, selectedUser, isRejected }) => {
     if (!selectedUser) return null;
 
     return (
@@ -23,34 +24,46 @@ const UserModal: React.FC<UserModalProps> = ({ onClose, onReject, onApprove, sel
                 <Styled.ModalBody>
                     <Styled.ImageContainer>
                         <Styled.ImageList>
-                            {selectedUser.images?.map((image: string, index: number) => (
-                                <Styled.ImageItem key={index}>
-                                    <img src={image} alt={`사진 ${index + 1}`} />
+                            {/* 프로필 이미지 */}
+                            {selectedUser.profileImage && (
+                                <Styled.ImageItem>
+                                    <img src={selectedUser.profileImage} alt='프로필 사진' />
                                 </Styled.ImageItem>
-                            ))}
+                            )}
+                            {/* 인증 문서 이미지 */}
+                            {selectedUser.authDocument && (
+                                <Styled.ImageItem>
+                                    <img src={selectedUser.authDocument} alt='인증 문서' />
+                                </Styled.ImageItem>
+                            )}
                         </Styled.ImageList>
                     </Styled.ImageContainer>
 
                     <Styled.UserInfo>
                         <label>이름</label>
-                        <input type='text' value={selectedUser.name} readOnly />
+                        <input type='text' value={selectedUser.memberName} readOnly />
 
                         <label>이메일</label>
-                        <input type='email' value={selectedUser.email} readOnly />
+                        <input type='email' value={selectedUser.username} readOnly />
 
                         <label>연락처</label>
-                        <input type='tel' value={selectedUser.phone} readOnly />
+                        <input type='tel' value={selectedUser.phoneNumber} readOnly />
 
-                        <label>신청 날짜</label>
-                        <input type='text' value={selectedUser.date} readOnly />
+                        <label>아파트 이름</label>
+                        <input type='text' value={selectedUser.apartmentName} readOnly />
+
+                        <label>건물 번호</label>
+                        <input type='text' value={selectedUser.apartmentBuildingNumber} readOnly />
                     </Styled.UserInfo>
                 </Styled.ModalBody>
 
-                <Styled.ModalFooter>
-                    <button onClick={onClose}>닫기</button>
-                    <Styled.RejectButton onClick={onReject}>거절하기</Styled.RejectButton>
-                    <Styled.ApproveButton onClick={onApprove}>승인하기</Styled.ApproveButton>
-                </Styled.ModalFooter>
+                {!isRejected && (
+                    <Styled.ModalFooter>
+                        <button onClick={onClose}>닫기</button>
+                        <Styled.RejectButton onClick={onReject}>거절하기</Styled.RejectButton>
+                        <Styled.ApproveButton onClick={onApprove}>승인하기</Styled.ApproveButton>
+                    </Styled.ModalFooter>
+                )}
             </Styled.ModalContent>
         </Styled.ModalOverlay>
     );
