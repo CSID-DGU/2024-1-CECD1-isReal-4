@@ -9,8 +9,8 @@ import SubscribedUser from "@/pages/SubscribedUser";
 export default function Router() {
     return (
         <Routes>
-            <Route path='/' element={<Auth />} />
-            <Route path='/login' element={<Login />} />
+            <Route path='/' element={<Login />} />
+            <Route path='/auth' element={<Auth />} />
             <Route path='/requested-defect' element={<RequestedDefect />} />
             <Route path='/approved-defect' element={<ApprovedDefect />} />
             <Route path='/requested-user' element={<RequestedUser />} />
