@@ -40,7 +40,7 @@ export const approveUser = async (requestBody: any) => {
 
 export const rejectUser = async (requestBody: any) => {
     try {
-        const response = await authInstance.post("/admin/reject-join-request", requestBody, {
+        const response = await authInstance.post("/admin/join-reject", requestBody, {
             headers: {
                 "Content-Type": "application/json",
             },
