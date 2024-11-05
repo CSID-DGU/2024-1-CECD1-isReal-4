@@ -1,19 +1,19 @@
 import { useState, ChangeEvent, MouseEvent } from "react";
 import * as Styled from "./style.ts";
 import { useNavigate } from "react-router-dom";
+import { useSignUpStore } from "@/stores/useSignUpStore.ts"
 
 export default function UploadDocBody() {
     const navigate = useNavigate();
-
-    const [fileNames, setFileNames] = useState<string[]>([]);
+    const { authDocument, setAuthDocument } = useSignUpStore();
+    // const [fileNames, setFileNames] = useState<string[]>([]);
     const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
     const [openSection, setOpenSection] = useState<number | null>(null);
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const files = event.target.files;
-        if (files) {
-            const newFileNames = Array.from(files).map((file) => file.name);
-            setFileNames(newFileNames);
+        const file = event.target.files?.[0];
+        if (file) {
+            setAuthDocument(file);
         }
     };
 
@@ -21,7 +21,7 @@ export default function UploadDocBody() {
         setIsCheckboxChecked(event.target.checked);
     };
 
-    const isButtonEnabled = fileNames.length > 0 && isCheckboxChecked;
+    const isButtonEnabled = !!authDocument && isCheckboxChecked;
 
     const toggleSection = (section: number) => {
         setOpenSection(openSection === section ? null : section);
@@ -44,12 +44,12 @@ export default function UploadDocBody() {
                     <Styled.Input
                         type='file'
                         id='file-upload'
-                        accept='.pdf, .jpg' // 파일 형식 제한
+                        accept='.pdf, .jpg'
                         multiple
                         onChange={handleFileChange}
                     />
                     <Styled.InputLabel htmlFor='file-upload'>
-                        {fileNames.length > 0 ? fileNames.join(", ") : "인증 서류를 업로드해주세요."}
+                        {authDocument ? authDocument.name : "인증 서류를 업로드해주세요."}
                     </Styled.InputLabel>
                 </Styled.UploadWrapper>
                 <Styled.Description>

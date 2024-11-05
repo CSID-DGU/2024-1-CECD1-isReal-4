@@ -9,6 +9,7 @@ export interface SignUpState {
     apartmentBuildingNumber: string;
     authDocument: File | null;
     setField: (field: keyof SignUpState, value: any) => void;
+    setAuthDocument: (file: File | null) => void;
 }
 
 export const useSignUpStore = create<SignUpState>((set) => ({
@@ -21,4 +22,5 @@ export const useSignUpStore = create<SignUpState>((set) => ({
     authDocument: null,
 
     setField: (field, value) => set((state) => ({ ...state, [field]: value })),
+    setAuthDocument: (file) => set(() => ({ authDocument: file })),
 }));
