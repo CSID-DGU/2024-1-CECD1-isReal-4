@@ -2,12 +2,13 @@ import { useState, ChangeEvent } from "react";
 import * as Styled from "./style.ts";
 import { useNavigate } from "react-router-dom";
 import { convertKoreanToEnglish } from "@/utils/convertKoreanToEnglish.ts";
-import {findApartments} from "@/apis/auth";
+import {findApartments, validateEmail} from "@/apis/auth";
 
 export default function SignUpBody() {
     const navigate = useNavigate();
 
-    const [ID, setID] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [name, setName] = useState<string>("");
     const [idMessage, setIdMessage] = useState<string>("");
     const [idValid, setIdValid] = useState<boolean>(false);
     const [password, setPassword] = useState<string>("");
@@ -16,7 +17,6 @@ export default function SignUpBody() {
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [passwordConfirmMessage, setPasswordConfirmMessage] = useState<string>("");
     const [passwordValid, setPasswordValid] = useState<boolean>(false); // 비밀번호 유효성 여부
-    const [email, setEmail] = useState<string>("");
     const [emailMessage, setEmailMessage] = useState<string>("");
     const [emailValid, setEmailValid] = useState<boolean>(false);
     const [phoneNumber, setPhoneNumber] = useState<string>("");
@@ -27,13 +27,13 @@ export default function SignUpBody() {
 
     const isFormCompleted = (): boolean => {
         return (
-            ID !== "" &&
+            email !== "" &&
             idValid &&
             password !== "" &&
             confirmPassword !== "" &&
             passwordConfirmMessage === "비밀번호가 일치합니다." &&
             passwordValid &&
-            email !== "" &&
+            name !== "" &&
             emailValid &&
             phoneNumber !== "" &&
             apartmentName !== "" &&
@@ -44,25 +44,24 @@ export default function SignUpBody() {
     };
 
     const handleDuplicateCheckClick = async () => {
-        const response = await findApartments();
+        const response = await validateEmail(email);
         console.log(response);
     }
 
-    const handleIDChange = (e: ChangeEvent<HTMLInputElement>) => {
-        let value = e.target.value;
-        value = convertKoreanToEnglish(value);
-
-        setID(value);
+    const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+        // let value = e.target.value;
+        // value = convertKoreanToEnglish(value);
+        setName(e.target.value);
 
         // 아이디 유효성 검사: 영어 소문자, 숫자만 허용, 5~15자
-        const idPattern = /^[a-z0-9]+$/;
-        if (value.length < 5 || value.length > 15 || !idPattern.test(value)) {
-            setIdMessage("사용할 수 없는 아이디입니다.");
-            setIdValid(false);
-        } else {
-            setIdMessage("사용 가능한 아이디입니다.");
-            setIdValid(true);
-        }
+        // const idPattern = /^[a-z0-9]+$/;
+        // if (value.length < 5 || value.length > 15 || !idPattern.test(value)) {
+        //     setIdMessage("사용할 수 없는 아이디입니다.");
+        //     setIdValid(false);
+        // } else {
+        //     setIdMessage("사용 가능한 아이디입니다.");
+        //     setIdValid(true);
+        // }
     };
 
     const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -91,7 +90,7 @@ export default function SignUpBody() {
         }
     }
 
-    const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handlEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setEmail(value);
 
@@ -135,13 +134,13 @@ export default function SignUpBody() {
                 <Styled.SideButtonWrapper>
                     <Styled.Input
                         type='text'
-                        placeholder='사용하실 아이디를 입력해주세요'
-                        value={ID}
-                        onChange={handleIDChange}
+                        placeholder='이메일 형식으로 입력해주세요.'
+                        value={email}
+                        onChange={handlEmailChange}
                     />
                     <Styled.CheckButton onClick={handleDuplicateCheckClick}>중복 확인</Styled.CheckButton>
                 </Styled.SideButtonWrapper>
-                {idMessage && <Styled.MessageText match={idValid}>{idMessage}</Styled.MessageText>}
+                {emailMessage && <Styled.MessageText match={emailValid}>{emailMessage}</Styled.MessageText>}
             </Styled.InputContainer>
             <Styled.InputContainer>
                 <Styled.Label>비밀번호</Styled.Label>
@@ -175,16 +174,16 @@ export default function SignUpBody() {
                 )}
             </Styled.InputContainer>
             <Styled.InputContainer>
-                <Styled.Label>이메일</Styled.Label>
+                <Styled.Label>이름</Styled.Label>
                 <Styled.CommonWrapper>
                     <Styled.Input
                         type='text'
-                        placeholder='이메일을 입력해주세요'
-                        value={email}
-                        onChange={handleEmailChange}
+                        placeholder='이름을 입력해주세요'
+                        value={name}
+                        onChange={handleNameChange}
                     />
                 </Styled.CommonWrapper>
-                {emailMessage && <Styled.MessageText match={emailValid}>{emailMessage}</Styled.MessageText>}
+
             </Styled.InputContainer>
             <Styled.InputContainer>
                 <Styled.Label>휴대전화</Styled.Label>
