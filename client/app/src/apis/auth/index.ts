@@ -31,14 +31,10 @@ export const logout = async () => {
 }
 
 /**
- * @description 2-1. 이메일 검증하기 (Authentication Code) 발급
+ * @description 2-1. 이메일 중복확인
  */
 export const validateEmail = async (email: string) => {
-    const response = await publicInstance.post("/auth/validations/email", {
-        email: email,
-        is_duplicate_check: true,
-    });
-
+    const response = await publicInstance.get(`/all/is-exist-username?username=${encodeURIComponent(email)}`);
     return response.data;
 }
 
