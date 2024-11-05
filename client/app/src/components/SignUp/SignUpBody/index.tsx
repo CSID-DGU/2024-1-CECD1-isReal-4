@@ -1,9 +1,10 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import * as Styled from "./style.ts";
 import { useNavigate } from "react-router-dom";
 import { convertKoreanToEnglish } from "@/utils/convertKoreanToEnglish.ts";
 import { findApartments, validateEmail } from "@/apis/auth";
 import { useSignUpStore, SignUpState } from "@/stores/useSignUpStore.ts"
+import {CommnMessageText} from "./style.ts";
 
 
 export default function SignUpBody() {
@@ -19,6 +20,12 @@ export default function SignUpBody() {
         setField,
     } = useSignUpStore();
 
+    const [emailMessage, setEmailMessage] = useState<string>("");
+    const [passwordMessage, setPasswordMessage] = useState<string>("");
+    const [unique, setUnique] = useState<boolean>(false);
+    const [match, setMatch] = useState<boolean>(false);
+
+
     const isFormCompleted = (): boolean => {
         return (
             username !== "" &&
@@ -26,13 +33,26 @@ export default function SignUpBody() {
             memberName !== "" &&
             phoneNumber !== "" &&
             apartmentName !== "" &&
-            apartmentBuildingNumber !== ""
+            apartmentBuildingNumber !== ""&&
+                unique
         );
     };
 
     const handleDuplicateCheckClick = async () => {
-        const response = await validateEmail(username);
-        console.log(response);
+        try {
+            const response = await validateEmail(username);
+            console.log(response);
+            if (response) {
+                setEmailMessage("이미 사용 중인 이메일입니다.");
+                setUnique(false);
+            } else {
+                setEmailMessage("사용 가능한 이메일입니다.");
+                setUnique(true);
+            }
+        } catch (error) {
+            console.error("Failed to validate email:", error);
+            setEmailMessage("이메일 확인 중 오류가 발생했습니다.");
+        }
     };
 
     const handleInputChange = (field: keyof SignUpState) => (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -42,7 +62,11 @@ export default function SignUpBody() {
             value = convertKoreanToEnglish(value);
             const passwordPattern = /^(?=.*[!@#$%^&*])(?=.*[a-zA-Z0-9])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
             if (!passwordPattern.test(value)) {
-                console.log("비밀번호는 숫자, 영어, 특수문자를 포함한 8~20자여야 합니다.");
+                setPasswordMessage("비밀번호는 숫자, 영어, 특수문자를 포함한 8~20자여야 합니다.");
+                setMatch(false);
+            } else {
+                setPasswordMessage("사용할 수 있는 비밀번호입니다.");
+                setMatch(true)
             }
         } else if (field === "phoneNumber") {
             value = value.replace(/[^0-9]/g, "");
@@ -72,6 +96,7 @@ export default function SignUpBody() {
                     />
                     <Styled.CheckButton onClick={handleDuplicateCheckClick}>중복 확인</Styled.CheckButton>
                 </Styled.SideButtonWrapper>
+                {emailMessage && <Styled.CommnMessageText>{emailMessage}</Styled.CommnMessageText>}
             </Styled.InputContainer>
 
             <Styled.InputContainer>
@@ -82,6 +107,7 @@ export default function SignUpBody() {
                     value={password}
                     onChange={handleInputChange("password")}
                 />
+                {passwordMessage && <Styled.MessageText match={match}>{passwordMessage}</Styled.MessageText>}
             </Styled.InputContainer>
 
             <Styled.InputContainer>

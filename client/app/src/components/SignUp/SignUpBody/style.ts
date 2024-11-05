@@ -81,6 +81,12 @@ export const MessageText = styled.p<{ match: boolean }>`
     margin-left: 5px;
 `;
 
+export const CommnMessageText = styled.p`
+color: gray;
+    font-size: 12px;
+    margin-top: 5px;
+    margin-left: 5px;`
+
 export const LineContainer = styled.div`
     display: flex;
     justify-content: space-between;
