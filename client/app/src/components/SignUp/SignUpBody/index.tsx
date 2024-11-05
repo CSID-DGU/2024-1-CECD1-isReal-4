@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { convertKoreanToEnglish } from "@/utils/convertKoreanToEnglish.ts";
 import { findApartments, validateEmail } from "@/apis/auth";
 import { useSignUpStore, SignUpState } from "@/stores/useSignUpStore.ts"
-import {CommnMessageText} from "./style.ts";
 
 
 export default function SignUpBody() {
@@ -16,10 +15,9 @@ export default function SignUpBody() {
         phoneNumber,
         apartmentName,
         apartmentBuildingNumber,
-        authDocument,
         setField,
     } = useSignUpStore();
-
+    const [emailValid, setEmailValid] = useState<boolean>(false);
     const [emailMessage, setEmailMessage] = useState<string>("");
     const [passwordMessage, setPasswordMessage] = useState<string>("");
     const [unique, setUnique] = useState<boolean>(false);
@@ -34,7 +32,7 @@ export default function SignUpBody() {
             phoneNumber !== "" &&
             apartmentName !== "" &&
             apartmentBuildingNumber !== ""&&
-                unique
+                unique && match
         );
     };
 
@@ -57,6 +55,18 @@ export default function SignUpBody() {
 
     const handleInputChange = (field: keyof SignUpState) => (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         let value = e.target.value;
+
+        if (field === "username") {
+            // 이메일 유효성 검사: @를 포함하고, . 뒤에 최소 2글자 이상이어야 함
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+            if (!emailPattern.test(value)) {
+                setEmailMessage("유효하지 않은 이메일입니다.");
+                setEmailValid(false);
+            } else {
+                setEmailMessage("사용할 수 있는 이메일입니다.");
+                setEmailValid(true);
+            }
+        }
 
         if (field === "password") {
             value = convertKoreanToEnglish(value);
@@ -94,7 +104,7 @@ export default function SignUpBody() {
                         value={username}
                         onChange={handleInputChange("username")}
                     />
-                    <Styled.CheckButton onClick={handleDuplicateCheckClick}>중복 확인</Styled.CheckButton>
+                    <Styled.CheckButton onClick={handleDuplicateCheckClick} disabled={!emailValid}>중복 확인</Styled.CheckButton>
                 </Styled.SideButtonWrapper>
                 {emailMessage && <Styled.CommnMessageText>{emailMessage}</Styled.CommnMessageText>}
             </Styled.InputContainer>
