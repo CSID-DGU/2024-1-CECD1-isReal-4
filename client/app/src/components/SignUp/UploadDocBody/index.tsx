@@ -27,7 +27,6 @@ export default function UploadDocBody() {
         toggleSection(section);
     };
 
-    // 파일을 base64로 인코딩하여 상태에 저장
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
@@ -42,7 +41,6 @@ export default function UploadDocBody() {
     };
 
     const handleComplete = async () => {
-        // JSON 형식으로 전송할 데이터 생성
         const jsonData = {
             username,
             password,
@@ -54,7 +52,7 @@ export default function UploadDocBody() {
         };
 
         try {
-            const response = await postRegister(jsonData);  // JSON 데이터 전송
+            const response = await postRegister(jsonData);
             if(response === 201) {
                 alert("회원가입이 완료되었습니다.");
                 navigate("/home");
