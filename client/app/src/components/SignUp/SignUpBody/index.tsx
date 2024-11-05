@@ -39,7 +39,6 @@ export default function SignUpBody() {
     const handleDuplicateCheckClick = async () => {
         try {
             const response = await validateEmail(username);
-            console.log(response);
             if (response) {
                 setEmailMessage("이미 사용 중인 이메일입니다.");
                 setUnique(false);
@@ -134,7 +133,7 @@ export default function SignUpBody() {
                 <Styled.Label>휴대전화</Styled.Label>
                 <Styled.Input
                     type="text"
-                    placeholder="전화번호를 입력해주세요"
+                    placeholder="010-1234-5678 형식으로 입력해주세요"
                     value={phoneNumber}
                     onChange={handleInputChange("phoneNumber")}
                 />

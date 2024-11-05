@@ -2,20 +2,15 @@ import { useState, ChangeEvent, MouseEvent } from "react";
 import * as Styled from "./style.ts";
 import { useNavigate } from "react-router-dom";
 import { useSignUpStore } from "@/stores/useSignUpStore.ts"
+import {postRegister} from "@/apis/auth";
 
 export default function UploadDocBody() {
     const navigate = useNavigate();
-    const { authDocument, setAuthDocument } = useSignUpStore();
-    // const [fileNames, setFileNames] = useState<string[]>([]);
+    const { username, password, memberName, phoneNumber, apartmentName, apartmentBuildingNumber, authDocument, setField } = useSignUpStore();
     const [isCheckboxChecked, setIsCheckboxChecked] = useState<boolean>(false);
     const [openSection, setOpenSection] = useState<number | null>(null);
+    const [fileName, setFileName] = useState<string>("");
 
-    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            setAuthDocument(file);
-        }
-    };
 
     const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
         setIsCheckboxChecked(event.target.checked);
@@ -32,9 +27,47 @@ export default function UploadDocBody() {
         toggleSection(section);
     };
 
-    const handleComplete = () => {
-        navigate("/home");
+    // 파일을 base64로 인코딩하여 상태에 저장
+    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result as string;
+                setField("authDocument", base64String);
+                setFileName(file.name);
+            };
+            reader.readAsDataURL(file);
+        }
     };
+
+    const handleComplete = async () => {
+        // JSON 형식으로 전송할 데이터 생성
+        const jsonData = {
+            username,
+            password,
+            memberName,
+            phoneNumber,
+            apartmentName,
+            apartmentBuildingNumber,
+            authDocument,
+        };
+
+        try {
+            const response = await postRegister(jsonData);  // JSON 데이터 전송
+            if(response === 201) {
+                alert("회원가입이 완료되었습니다.");
+                navigate("/home");
+            } else {
+                alert("오류가 발생하였습니다.");
+                navigate("/");
+            }
+        } catch (error) {
+            console.error("Failed to register:", error);
+            alert("회원가입에 실패하였습니다.");
+        }
+    };
+
 
     return (
         <Styled.Container>
@@ -49,7 +82,7 @@ export default function UploadDocBody() {
                         onChange={handleFileChange}
                     />
                     <Styled.InputLabel htmlFor='file-upload'>
-                        {authDocument ? authDocument.name : "인증 서류를 업로드해주세요."}
+                        {fileName ? fileName : "인증 서류를 업로드해주세요."}
                     </Styled.InputLabel>
                 </Styled.UploadWrapper>
                 <Styled.Description>
