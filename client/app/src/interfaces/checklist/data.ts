@@ -1,5 +1,3 @@
-// data.ts
-
 import { SectionState } from "@/interfaces/checklist/types.ts";
 
 /**
@@ -9,7 +7,7 @@ export const initialChecklist: { createAt: string; sections: SectionState[] } = 
     createAt: "2024-10-04T10:00:00",
     sections: [
         {
-            name: "현관/전실ㄴ",
+            name: "현관/전실",
             items: null,
             subSections: [
                 {
@@ -21,7 +19,7 @@ export const initialChecklist: { createAt: string; sections: SectionState[] } = 
                             items: [
                                 {
                                     id: "1",
-                                    description: "외관상태(부착상태, 파s손유ㄴ무 등) 이상 유무, 자동센서 작동 이상 유무",
+                                    description: "외관상태(부착상태, 파손유무 등) 이상 유무, 자동센서 작동 이상 유무",
                                     checked: false,
                                     appendText: "전등 작동 정상 아니 왜 설명 안나몽?",
                                     appendImages: []
