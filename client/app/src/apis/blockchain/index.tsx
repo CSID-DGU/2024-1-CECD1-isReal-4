@@ -45,7 +45,7 @@ export const getBlockchainDataByAptNameFromMember= async () => {
 export const getBlockchainDataByAptName= async (apartment: string) => {
     try {
         const response = await AuthInstance.get(`/all/find-blocks-by-apartment-name?apartment-name=${apartment}`);
-        console.log("아파트 이름으로 블록체인 검색: ", response.data);
+        console.log("전채_아파트 이름으로 블록체인 검색: ", response.data);
     } catch (error) {
         console.error("전체_아파트 이름으로 블록체인 검색에서 에러 발생: ", error);
         throw error;

@@ -5,6 +5,12 @@ import H2 from "@/components/Common/Font/Heading/H2/index.tsx";
 import H5 from "@/components/Common/Font/Heading/H5";
 import { useNavigate } from "react-router-dom";
 import {getMyInfo, updateProfileImage} from "@/apis/myPage";
+import {
+    getBlockchainDataByAptNameFromMember,
+    getBlockchainDataByAptName,
+    getBlockchainDataByEmail,
+    getBlockchainDataByEmailFromMember
+} from "@/apis/blockchain";
 
 function MyPageBody() {
     const navigate = useNavigate();
@@ -12,7 +18,7 @@ function MyPageBody() {
     const [profileImage, setProfileImage] = useState<string>("");
     const [apartmentName, setApartmentName] = useState<string>("현재 사용자의 아파트");
     const [userName, setUserName] = useState<string>("홍길동");
-    const [userEmail, setUserEmail] = useState<string>("xxxxxx@xxx.com");
+    const [userEmail, setUserEmail] = useState<string>("");
     const [defectCount, setDefectCount] = useState<number>(0);
     const [qnaList, setQnaList] = useState<{ id: number; title: string; comments: number }[]>([
         { id: 1, title: "제목 1", comments: 0 },
@@ -76,24 +82,25 @@ function MyPageBody() {
     };
 
     // 사용자 정보 불러오기 함수
-    const fetchMyInfo = async () => {
+    const fetchMyInfoAndBlockchainData = async () => {
         try {
             const data = await getMyInfo();
-            // 디폴트 값 설정, 서버 데이터에 따라 값을 업데이트
             setProfileImage(data.profileImage || "");
             setUserName(data.memberName || "홍길동");
             setUserEmail(data.username || "xxxxxx@xxx.com");
             setApartmentName(data.apartmentName || "현재 사용자의 아파트");
             setDefectCount(data.faultCount || 0);
             setQnaList(data.questions || []);
+
+            await getBlockchainDataByEmail(data.username || "");
+            await getBlockchainDataByAptName(data.apartmentName || "");
         } catch (error) {
             console.error("Failed to get my info: ", error);
         }
     };
 
-    // 컴포넌트가 마운트될 때 사용자 정보 가져오기
     useEffect(() => {
-        fetchMyInfo();
+        fetchMyInfoAndBlockchainData();
         setIsDocumentUploaded(false);
     }, []);
 
