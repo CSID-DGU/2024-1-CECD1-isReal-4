@@ -92,8 +92,8 @@ function MyPageBody() {
             setDefectCount(data.faultCount || 0);
             setQnaList(data.questions || []);
 
-            await getBlockchainDataByEmail(data.username || "");
-            await getBlockchainDataByAptName(data.apartmentName || "");
+            await getBlockchainDataByEmailFromMember();
+            await getBlockchainDataByAptNameFromMember();
         } catch (error) {
             console.error("Failed to get my info: ", error);
         }
