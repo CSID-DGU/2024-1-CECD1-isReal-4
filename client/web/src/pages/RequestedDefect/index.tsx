@@ -16,14 +16,13 @@ const RequestedDefect: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredDefects, setFilteredDefects] = useState([]);
 
-    // API에서 하자 데이터를 가져오는 함수
     useEffect(() => {
         const loadDefects = async () => {
             try {
-                const data = await fetchRequestedDefects(); // API 호출
+                const data = await fetchRequestedDefects();
                 const pendingDefects = data.filter((defect: any) => defect.approvalStatus === "PEND"); // PEND 상태만 필터링
                 setDefects(pendingDefects);
-                setFilteredDefects(pendingDefects); // 초기 필터 설정
+                setFilteredDefects(pendingDefects);
             } catch (error) {
                 console.error("Failed to load defects:", error);
             }
@@ -54,7 +53,6 @@ const RequestedDefect: React.FC = () => {
         setSelectedDefect(null);
     };
 
-    // 모달에서 승인 버튼을 누르면 이 부분이 호출되고 해당 부분에서 승인 로직이 일어날 예정입니다.
     const handleApproveModal = async () => {
         if (selectedDefect) {
             const requestBody = {
@@ -97,7 +95,6 @@ const RequestedDefect: React.FC = () => {
         setRejectReason("");
     };
 
-    // 모달에서 거절 버튼을 누르고 거절 사유를 입력하면 이 부분이 호출되고 해당 부분에서 거절 로직이 일어날 예정입니다.
     const handleSaveRejectReason = async () => {
         console.log("거절 사유 저장:", rejectReason);
         console.log("선택된 하자:", selectedDefect);
