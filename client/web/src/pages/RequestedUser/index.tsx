@@ -189,7 +189,8 @@ const RequestedUser: React.FC = () => {
                         <thead>
                             <tr>
                                 <th>입주 예정자 ID</th>
-                                <th>신청 일자</th>
+                                <th>이름</th>
+                                <th>전화번호</th>
                                 <th>상태</th>
                                 <th>상세 정보</th>
                             </tr>
@@ -197,8 +198,9 @@ const RequestedUser: React.FC = () => {
                         <tbody>
                             {filterUsers().map((user) => (
                                 <tr key={user.memberId}>
-                                    <td>{user.memberId}</td>
                                     <td>{user.username}</td>
+                                    <td>{user.memberName}</td>
+                                    <td>{user.phoneNumber}</td>
                                     <td>
                                         <Styled.StatusText status={user.role}>
                                             {getUserStatus(user.role)}
