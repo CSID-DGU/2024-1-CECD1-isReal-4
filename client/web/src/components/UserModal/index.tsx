@@ -24,16 +24,23 @@ const UserModal: React.FC<UserModalProps> = ({ onClose, onReject, onApprove, sel
                 <Styled.ModalBody>
                     <Styled.ImageContainer>
                         <Styled.ImageList>
-                            {/* 프로필 이미지 */}
-                            {selectedUser.profileImage && (
-                                <Styled.ImageItem>
-                                    <img src={selectedUser.profileImage} alt='프로필 사진' />
-                                </Styled.ImageItem>
-                            )}
-                            {/* 인증 문서 이미지 */}
+                            {/* 인증 문서 파일 처리 */}
                             {selectedUser.authDocument && (
                                 <Styled.ImageItem>
-                                    <img src={selectedUser.authDocument} alt='인증 문서' />
+                                    {selectedUser.authDocumentType === "pdf" ? (
+                                        <a
+                                            href={`data:application/pdf;base64,${selectedUser.authDocument}`}
+                                            target='_blank'
+                                            rel='noopener noreferrer'
+                                        >
+                                            PDF 문서 보기
+                                        </a>
+                                    ) : (
+                                        <img
+                                            src={`data:image/png;base64,${selectedUser.authDocument}`}
+                                            alt='인증 문서'
+                                        />
+                                    )}
                                 </Styled.ImageItem>
                             )}
                         </Styled.ImageList>
@@ -52,7 +59,7 @@ const UserModal: React.FC<UserModalProps> = ({ onClose, onReject, onApprove, sel
                         <label>아파트 이름</label>
                         <input type='text' value={selectedUser.apartmentName} readOnly />
 
-                        <label>건물 번호</label>
+                        <label>아파트 정보</label>
                         <input type='text' value={selectedUser.apartmentBuildingNumber} readOnly />
                     </Styled.UserInfo>
                 </Styled.ModalBody>

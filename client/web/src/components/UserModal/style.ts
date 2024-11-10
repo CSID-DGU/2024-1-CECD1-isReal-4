@@ -92,7 +92,7 @@ export const UserInfo = styled.div`
 
     label {
         font-weight: bold;
-        margin-bottom: 5px;
+        margin-bottom: 0px;
     }
 
     input {
@@ -100,6 +100,7 @@ export const UserInfo = styled.div`
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 4px;
+        margin-bottom: 15px;
     }
 `;
 
