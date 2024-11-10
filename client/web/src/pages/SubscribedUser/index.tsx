@@ -55,7 +55,6 @@ const SubscribedUser: React.FC = () => {
                             <tr>
                                 <th>입주 예정자 ID</th>
                                 <th>이름</th>
-                                <th>이메일</th>
                                 <th>연락처</th>
                                 <th>아파트 정보</th>
                             </tr>
@@ -63,9 +62,8 @@ const SubscribedUser: React.FC = () => {
                         <tbody>
                             {filteredUsers.map((user) => (
                                 <tr key={user.memberId}>
-                                    <td>{user.memberId}</td>
-                                    <td>{user.memberName}</td>
                                     <td>{user.username}</td>
+                                    <td>{user.memberName}</td>
                                     <td>{user.phoneNumber}</td>
                                     <td>{`${user.apartmentName}, ${user.apartmentBuildingNumber}`}</td>
                                 </tr>

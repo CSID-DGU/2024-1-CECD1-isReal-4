@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const PageContainer = styled.div`
     padding: 20px;
-    margin-top: 80px;
+    margin-top: 100px;
     margin-left: 350px;
     margin-right: 50px;
 `;
@@ -14,8 +14,6 @@ export const ContentArea = styled.div`
 
 export const MainContent = styled.div`
     flex: 1;
-    padding: 20px;
-    min-height: 100vh;
 `;
 
 export const TotalCount = styled.div`
