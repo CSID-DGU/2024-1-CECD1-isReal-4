@@ -6,37 +6,32 @@ export const ModalOverlay = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6); // 배경을 어둡게 처리
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 1000; // 모달이 다른 요소 위에 위치하도록 설정
 `;
 
 export const ModalContent = styled.div`
-    background: white;
-    padding: 20px;
+    background-color: #fff;
+    width: 80%;
+    max-width: 900px;
     border-radius: 8px;
-    width: 800px;
-    max-width: 90%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    position: relative;
+    z-index: 1010; // Overlay 위에 모달을 배치
 `;
 
 export const ModalHeader = styled.div`
+    padding: 20px;
+    border-bottom: 1px solid #eee;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ddd;
 
-    h2 {
-        font-size: 1.5rem;
-        margin: 0;
-    }
-
-    button {
+    button: {
         background: none;
         border: none;
         cursor: pointer;
@@ -46,108 +41,120 @@ export const ModalHeader = styled.div`
 
 export const ModalBody = styled.div`
     display: flex;
+    padding: 20px;
     gap: 20px;
 `;
 
+export const ModalFooter = styled.div`
+    padding: 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+`;
 export const LeftSection = styled.div`
     flex: 1;
+`;
+
+export const RightSection = styled.div`
+    flex: 2;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+`;
+
+export const RightSectionHeader = styled.div`
+    margin-bottom: 20px;
+`;
+
+export const InfoField = styled.div`
+    margin-bottom: 15px;
+    padding: 12px;
+    background-color: #f1f1f1;
+    border-radius: 4px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
 
     label {
         font-weight: bold;
+        margin-bottom: 5px;
+        font-size: 16px;
     }
 
     input,
     textarea {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 1rem;
-    }
-
-    textarea {
+        font-size: 16px;
+        border: none;
+        background: none;
         resize: none;
-        height: 80px;
-    }
-`;
-
-export const RightSection = styled.div`
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-
-    label {
-        font-weight: bold;
+        outline: none;
+        color: #333;
     }
 `;
 
 export const SectionContainer = styled.div`
-    margin-bottom: 10px;
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 20px;
 `;
 
 export const SectionTitle = styled.h3`
-    font-size: 1.2rem;
+    font-size: 18px;
     font-weight: bold;
-    margin-bottom: 5px;
-`;
-
-export const SubSectionContainer = styled.div`
-    padding-left: 20px;
     margin-bottom: 10px;
-`;
-
-export const SubSectionTitle = styled.h4`
-    font-size: 1rem;
-    font-weight: bold;
-    margin-bottom: 5px;
 `;
 
 export const ImageContainer = styled.div`
     display: flex;
     gap: 10px;
-    margin-top: 5px;
+    margin-top: 10px;
+`;
+
+export const ImageItem = styled.div`
+    width: 80px;
+    height: 80px;
+    background-color: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     img {
-        width: 60px;
-        height: 60px;
-        object-fit: cover;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
-`;
-
-export const ModalFooter = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-`;
-
-export const RejectButton = styled.button`
-    background-color: #e74c3c;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-
-    &:hover {
-        background-color: #c0392b;
+        max-width: 100%;
+        max-height: 100%;
     }
 `;
 
 export const ApproveButton = styled.button`
-    background-color: #2ecc71;
-    color: white;
-    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 18px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 
     &:hover {
-        background-color: #27ae60;
+        background-color: #555;
+    }
+`;
+
+export const RejectButton = styled.button`
+    background-color: #fff;
+    color: #333;
+    padding: 12px 20px;
+    font-size: 18px;
+    border: 2px solid #333;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    &:hover {
+        background-color: #666;
+        color: #fff;
     }
 `;
