@@ -9,11 +9,12 @@ function MyPageHeader() {
     const navigate = useNavigate();
 
     const handleArrowClick = () => {
-        navigate(-1);
+        navigate("/home");
     };
 
     const handleAlarmClick = () => {
         alert("알람 클릭");
+
     };
 
     return (

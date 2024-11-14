@@ -13,7 +13,7 @@ export default function SignUpHeader() {
     }
 
     function handleBackClick() {
-        navigate(-1);
+        navigate("/");
     }
 
     return (
