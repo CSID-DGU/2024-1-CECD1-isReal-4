@@ -2,18 +2,17 @@ import * as Styled from "./style.ts"
 import Avatar from "@/assets/icons/Avatar.svg"
 import Alarm from "@/assets/icons/Alarm.svg"
 import SvgButton from "@/components/Common/SvgButton";
-import { checkSuperAdmin } from "@/apis/auth";
 import Cookies from "js-cookie";
+import {useNavigate} from "react-router-dom";
 
 
 export default function HomeHeader() {
-
+    const navigate = useNavigate();
     const myCookie = Cookies.get("access_token");
     console.log("Cookie", myCookie);
 
     const handleCheckSuperAdmin = async () => {
-        const response = await checkSuperAdmin();
-        console.log(response);
+        navigate("/myPage")
     }
 
 

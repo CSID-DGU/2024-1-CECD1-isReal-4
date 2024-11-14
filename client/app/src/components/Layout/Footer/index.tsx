@@ -16,10 +16,12 @@ export default function Footer() {
         // 현재 경로에 따라 selectedNav 설정
         if (location.pathname.includes("/home")) {
             setSelectedNav("home");
-        } else if (location.pathname.includes("/register")) {
-            setSelectedNav("register");
+        } else if (location.pathname.includes("/writeCheckList")) {
+            setSelectedNav("writeCheckList");
         } else if (location.pathname.includes("/myPage")) {
             setSelectedNav("myPage");
+        } else {
+            setSelectedNav("");
         }
     }, [location.pathname]);
 
@@ -30,7 +32,7 @@ export default function Footer() {
                 navigate("/home");
                 break;
             case "register":
-                navigate("/register");
+                navigate("/writeCheckList");
                 break;
             case "myPage":
                 navigate("/myPage");
@@ -48,9 +50,9 @@ export default function Footer() {
                 <Sub3 text={"홈"} isActive={selectedNav === "home"} />
             </Styled.NavItem>
             <Styled.NavItem isActive={selectedNav === "register"}
-                            onClick={() => handleNavClick("register")}>
+                            onClick={() => handleNavClick("writeCheckList")}>
                 <SvgButton src={RegisterIcon} width="28px" height="28px" />
-                <Sub3 text={"등록하기"} isActive={selectedNav === "register"} />
+                <Sub3 text={"등록하기"} isActive={selectedNav === "writeCheckList"} />
             </Styled.NavItem>
             <Styled.NavItem isActive={selectedNav === "myPage"}
                             onClick={() => handleNavClick("myPage")}>

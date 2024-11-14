@@ -25,6 +25,4 @@ export const NavItem = styled.div<{ isActive: boolean }>`
     width: 24px;
     height: 24px;
   }
-    
-
 `;
