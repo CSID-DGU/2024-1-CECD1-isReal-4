@@ -21,7 +21,7 @@ export const initialChecklist: { createAt: string; sections: SectionState[] } = 
                                     id: "1",
                                     description: "외관상태(부착상태, 파손유무 등) 이상 유무, 자동센서 작동 이상 유무",
                                     checked: false,
-                                    appendText: "전등 작동 정상 아니 왜 설명 안나몽?",
+                                    appendText: "",
                                     appendImages: []
                                 },
                                 {
@@ -58,7 +58,7 @@ export const initialChecklist: { createAt: string; sections: SectionState[] } = 
                                     id: "4",
                                     description: "벽 도장 상태 확인",
                                     checked: false,
-                                    appendText: "도장 상태 양호",
+                                    appendText: "",
                                     appendImages: []
                                 }
                             ]
@@ -86,7 +86,7 @@ export const initialChecklist: { createAt: string; sections: SectionState[] } = 
                     id: "6",
                     description: "바닥재 상태, 곰팡이 여부 확인",
                     checked: false,
-                    appendText: "곰팡이 발견됨",
+                    appendText: "",
                     appendImages: []
                 }
             ],
@@ -116,7 +116,7 @@ export const initialChecklist: { createAt: string; sections: SectionState[] } = 
                             id: "8",
                             description: "창문 틀 상태 확인",
                             checked: false,
-                            appendText: "창문 틀 문제 없음",
+                            appendText: "",
                             appendImages: []
                         }
                     ],
