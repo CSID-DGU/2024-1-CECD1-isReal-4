@@ -54,11 +54,11 @@ export default function UploadDocBody() {
         try {
             const response = await postRegister(jsonData);
             if(response === 201) {
-                alert("회원가입이 완료되었습니다.");
-                navigate("/home");
-            } else {
-                alert("오류가 발생하였습니다.");
+                alert("회원가입이 신청되었습니다. 2~3영업일 이내에 관리자가 정보 확인 후, 회원 가입을 처리할 예정입니다.");
                 navigate("/");
+            } else {
+                alert("오류가 발생하였습니다. 관리자에게 문의해주세요.");
+                return;
             }
         } catch (error) {
             console.error("Failed to register:", error);

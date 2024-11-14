@@ -60,7 +60,7 @@ export const postRegister = async (data: {
     phoneNumber: string;
     apartmentName: string;
     apartmentBuildingNumber: string;
-    authDocument: string | null;
+    authDocument: File | null;
 }) => {
     const response = await publicInstance.post("/all/join-request", {
         username: data.username,
