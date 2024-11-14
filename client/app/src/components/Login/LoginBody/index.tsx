@@ -4,7 +4,7 @@ import H4 from "@/components/Common/Font/Heading/H4/index.tsx";
 import H6 from "@/components/Common/Font/Heading/H6/index.tsx";
 import { useNavigate } from "react-router-dom";
 import { convertKoreanToEnglish } from "@/utils/convertKoreanToEnglish.ts";
-import { postFormLogin } from "@/apis/auth";
+import {checkWait, postFormLogin} from "@/apis/auth";
 import Cookies from "js-cookie";
 
 export default function LoginBody() {
@@ -17,6 +17,10 @@ export default function LoginBody() {
 
     // Login API 호출
     const handleLogin = async () => {
+        // const waitState = await checkWait();
+        // if (waitState.data === true) {
+        //     return;
+        // }
         if (!isLoginDisabled) {
             try {
                 const response = await postFormLogin({username, password});

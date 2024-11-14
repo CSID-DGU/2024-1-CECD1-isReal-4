@@ -1,5 +1,7 @@
 import authInstance from "@/apis/base/authInstance.ts";
 import publicInstance from "@/apis/base/publicInstance.ts";
+import AuthInstance from "@/apis/base/authInstance.ts";
+import PublicInstance from "@/apis/base/publicInstance.ts";
 
 /**
  * @description 1-1. 일반 로그인
@@ -28,6 +30,16 @@ export const logout = async () => {
     const response = await authInstance.post("/auth/logout");
 
     return response.data;
+}
+
+/*
+ * @description 1-3. 계정 상태 확인
+ */
+export const checkWait = async () => {
+    const response = await PublicInstance.get("/wait/is-wait");
+    console.log("checkWait: ", response.data);
+console.log("asd");
+    return response;
 }
 
 /**
