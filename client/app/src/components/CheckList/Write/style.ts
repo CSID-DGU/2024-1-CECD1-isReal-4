@@ -1,14 +1,18 @@
 import styled from "styled-components"
+import theme from "@/shared/theme.ts";
 
 export const StyledSection = styled.div`
     border: 1px solid black;
     width: 100vw;
     text-align: center;
     padding: 10px 0 10px 0;
+    background: ${theme.colorSystem.slate["600"]};
 `
 
 export const StyledSubSection = styled.div`
-    padding-left: 2%;
+    display: flex;
+    padding: 10px;
+    background-color: ${theme.colorSystem.slate["300"]};
     
 `
 export const PaddingWrapper = styled.div`
@@ -20,11 +24,12 @@ export const StyledListItem = styled.div`
 `
 
 export const StyledDetailSection = styled.div`
+    display: flex;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-bottom: 10px;
-    background-color: #f9f9f9;
+    background-color: ${theme.colorSystem.slate["100"]};
 
     h4 {
         font-size: 18px;

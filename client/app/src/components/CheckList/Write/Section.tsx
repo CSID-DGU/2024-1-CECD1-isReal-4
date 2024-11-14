@@ -5,6 +5,7 @@ import SubSection from './SubSection';
 import * as Styled from "./style.ts";
 import H1 from "@/components/Common/Font/Heading/H1";
 import ChecklistItem from "@/components/CheckList/Write/CheckListItem.tsx";
+import theme from "@/shared/theme.ts";
 
 interface SectionProps {
     section: SectionState;
@@ -25,7 +26,7 @@ const Section: React.FC<SectionProps> = ({ section, sectionIndex, onItemCheck })
     return (
         <Styled.PaddingWrapper>
             <Styled.StyledSection>
-                <H1 text={section.name} />
+                <H1 text={section.name} color={theme.colorSystem.slate["200"]}/>
             </Styled.StyledSection>
 
             {/* items가 존재하면 렌더링 */}
@@ -42,7 +43,6 @@ const Section: React.FC<SectionProps> = ({ section, sectionIndex, onItemCheck })
                         onItemCheck(sectionIndex, null, null, itemIndex, checked, appendText, images, description)
                     }
                 />
-
             ))}
 
             {/* subSections가 존재하면 SubSection을 렌더링 */}

@@ -26,7 +26,7 @@ export const DetailSection: React.FC<DetailSectionProps> = ({ sectionIndex, subS
     return (
         <div>
             <Styled.StyledDetailSection>
-                <H4 text={detailSection.name} />
+                **<H4 text={detailSection.name} />
             </Styled.StyledDetailSection>
 
             {Array.isArray(detailSection.items) && detailSection.items.map((item, itemIndex) => (

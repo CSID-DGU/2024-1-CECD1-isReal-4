@@ -10,6 +10,7 @@ import { initialChecklist } from "@/interfaces/checklist/data.ts";
 import { useChecklistStore} from "@/stores/useChecklistStore.ts";
 import {createChecklist} from "@/apis/checklist";
 import {useNavigate} from "react-router-dom";
+import theme from "@/shared/theme.ts";
 
 
 const WriteChecklist: React.FC = () => {
@@ -121,7 +122,7 @@ const WriteChecklist: React.FC = () => {
                 <SizedBox height={"40px"} />
 
                 <Styled.RegisterButton onClick={handleCreateChecklist}>
-                    <H4 text={"등록하기"} />
+                    <H4 text={"등록하기"} color={theme.colorSystem.neutral["100"]}/>
                 </Styled.RegisterButton>
             </Column>
         </Styled.CheckListPageWrapper>

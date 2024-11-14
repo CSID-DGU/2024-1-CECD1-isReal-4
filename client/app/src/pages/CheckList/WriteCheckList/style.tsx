@@ -45,6 +45,6 @@ export const RegisterButton = styled.button`
     width: 340px;
     height: 50px;
     border-radius: 25px;
-    border: 1px solid black;
-    background: ${theme.colorSystem.white};
+    border: none;
+    background: ${theme.colorSystem.blue["500"]};
 `

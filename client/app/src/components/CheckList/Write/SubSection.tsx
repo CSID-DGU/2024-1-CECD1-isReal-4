@@ -34,7 +34,7 @@ const SubSection: React.FC<SubSectionProps> = ({
     return (
         <div>
             <Styled.StyledSubSection>
-                <H3 text={subSection.name} />
+                *<H3 text={subSection.name} />
             </Styled.StyledSubSection>
 
             {/* items가 배열인 경우에만 렌더링 */}
