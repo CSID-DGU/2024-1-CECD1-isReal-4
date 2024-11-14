@@ -31,7 +31,7 @@ export default function Footer() {
             case "home":
                 navigate("/home");
                 break;
-            case "register":
+            case "writeCheckList":
                 navigate("/writeCheckList");
                 break;
             case "myPage":
