@@ -1,4 +1,5 @@
-import { Route, Routes } from "react-router-dom";
+import {Route, Routes, useLocation} from "react-router-dom";
+import Footer from "@/components/Layout/Footer";
 import Entry from "@/pages/Entry";
 import Home from "@/pages/Home";
 import MyPage from "@/pages/MyPage";
@@ -22,7 +23,10 @@ import MyCheckLists from "@/pages/CheckList/MyCheckLists";
 import WriteCheckList from "@/pages/CheckList/WriteCheckList";
 
 export default function Router() {
+    const location = useLocation();
+    const hideFooterPaths = ["/entry", "/", "/signup", "/signup/uploadDoc"];
     return (
+        <>
         <Routes>
             <Route path='/entry' element={<Entry />} />
             <Route path='/' element={<LogIn />} />
@@ -44,5 +48,7 @@ export default function Router() {
             <Route path='/myCheckList' element={<MyCheckLists />} />
             <Route path='/writeCheckList' element={<WriteCheckList />} />
         </Routes>
+        {!hideFooterPaths.includes(location.pathname) && <Footer />}
+        </>
     );
 }

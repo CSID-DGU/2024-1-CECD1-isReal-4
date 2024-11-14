@@ -1,13 +1,15 @@
 
 import {BrowserRouter} from "react-router-dom";
 import Router from "./Router"
-import Footer from "@/components/Layout/Footer";
+
 
 function App() {
+
+    // Footer를 숨기고 싶은 경로 설정
+
     return (
         <BrowserRouter>
             <Router />
-            <Footer/>
         </BrowserRouter>
     );
 }
