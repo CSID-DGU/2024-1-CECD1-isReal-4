@@ -5,13 +5,14 @@ import Header from "@/components/Layout/Header";
 import Sidebar from "@/components/Layout/Sidebar";
 import H1 from "@/components/Common/Font/Heading/H1";
 import { fetchRequestedDefects } from "@/apis/defects"; // API 호출 함수
+import { useModalStore } from "@/stores/useModalStore";
 
 const ApprovedDefect: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [approvedDefects, setApprovedDefects] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
-    const [selectedDefect, setSelectedDefect] = useState<any>(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const { isOpen, defectData, openModal, closeModal } = useModalStore();
 
     // API에서 하자 데이터를 가져오는 함수
     useEffect(() => {
@@ -41,18 +42,6 @@ const ApprovedDefect: React.FC = () => {
         setFilteredData(filtered);
     };
 
-    // 모달 열기 핸들러
-    const handleOpenModal = (defect: any) => {
-        setSelectedDefect(defect);
-        setIsModalOpen(true);
-    };
-
-    // 모달 닫기 핸들러
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-        setSelectedDefect(null);
-    };
-
     return (
         <Styled.PageContainer>
             <Header />
@@ -69,39 +58,39 @@ const ApprovedDefect: React.FC = () => {
 
             <Styled.Table>
                 <thead>
-                    <tr>
-                        <th>입주 예정자 ID</th>
-                        <th>이름</th>
-                        <th>승인 날짜</th>
-                        <th>아파트 정보</th>
-                        <th>상세 정보</th>
-                    </tr>
+                <tr>
+                    <th>입주 예정자 ID</th>
+                    <th>이름</th>
+                    <th>승인 날짜</th>
+                    <th>아파트 정보</th>
+                    <th>상세 정보</th>
+                </tr>
                 </thead>
                 <tbody>
-                    {filteredData.map((defect: any) => (
-                        <tr key={defect.faultChecklistId}>
-                            <td>{defect.username}</td>
-                            <td>{defect.memberName}</td>
-                            <td>
-                                {defect.reviewCompletionTime
-                                    ? new Date(defect.reviewCompletionTime).toLocaleDateString()
-                                    : "N/A"}
-                            </td>
-                            <td>{`${defect.apartmentName}, ${defect.apartmentBuildingNumber}`}</td>
-                            <td>
-                                <button onClick={() => handleOpenModal(defect)}>상세 정보 보기</button>
-                            </td>
-                        </tr>
-                    ))}
+                {filteredData.map((defect: any) => (
+                    <tr key={defect.faultChecklistId}>
+                        <td>{defect.username}</td>
+                        <td>{defect.memberName}</td>
+                        <td>
+                            {defect.reviewCompletionTime
+                                ? new Date(defect.reviewCompletionTime).toLocaleDateString()
+                                : "N/A"}
+                        </td>
+                        <td>{`${defect.apartmentName}, ${defect.apartmentBuildingNumber}`}</td>
+                        <td>
+                            <button onClick={() => openModal(defect)}>상세 정보 보기</button>
+                        </td>
+                    </tr>
+                ))}
                 </tbody>
             </Styled.Table>
 
             {/* 모달 */}
-            {isModalOpen && selectedDefect && (
+            {isOpen && defectData && (
                 <Modal
                     title='하자 상세 정보'
-                    defectData={selectedDefect}
-                    onClose={handleCloseModal}
+                    defectData={defectData}
+                    onClose={closeModal}
                     showActions={false}
                 />
             )}
