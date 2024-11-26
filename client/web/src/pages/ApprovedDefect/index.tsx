@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Modal from "@/components/DefectModal";
+import DefectModal from "@/components/DefectModal";
 import * as Styled from "./style";
 import Header from "@/components/Layout/Header";
 import Sidebar from "@/components/Layout/Sidebar";
@@ -87,7 +87,7 @@ const ApprovedDefect: React.FC = () => {
 
             {/* 모달 */}
             {isOpen && defectData && (
-                <Modal
+                <DefectModal
                     title='하자 상세 정보'
                     defectData={defectData}
                     onClose={closeModal}
