@@ -16,6 +16,8 @@ interface itemType {
 
 const QuestionList: React.FC = () => {
     const [items, setItems] = useState<itemType[]>([]);
+    const [filteredItems, setFilteredItems] = useState<itemType[]>([]);
+    const [searchTerm, setSearchTerm] = useState<string>("");
 
     const loadMockData = () => {
         const mockItems: itemType[] = [
@@ -91,7 +93,21 @@ const QuestionList: React.FC = () => {
             },
         ];
         setItems(mockItems);
+        setFilteredItems(mockItems);
     };
+
+    // 검색어에 따라 항목 필터링
+    useEffect(() => {
+        if (searchTerm.trim() === "") {
+            setFilteredItems(items);
+        } else {
+            const lowercasedTerm = searchTerm.toLowerCase();
+            const filtered = items.filter((item) =>
+                item.title.toLowerCase().includes(lowercasedTerm)
+            );
+            setFilteredItems(filtered);
+        }
+    }, [searchTerm, items]);
 
     useEffect(() => {
         loadMockData();
@@ -101,8 +117,13 @@ const QuestionList: React.FC = () => {
         <Styled.QnAContainer>
             <Title title={"Q&A"}/>
             <Padding all={"10px"}/>
-            <SearchInput placeholder={"검색어를 입력해세요."} width={"350px"} borderRadius={"50px"}/>
-            <ContentList items={items} />
+            <SearchInput
+                placeholder={"검색어를 입력하세요."}
+                width={"350px"}
+                borderRadius={"50px"}
+                onChange={(value) => setSearchTerm(value)}
+            />
+            <ContentList items={filteredItems} />
             <WriteQuestionButton/>
         </Styled.QnAContainer>
     );
