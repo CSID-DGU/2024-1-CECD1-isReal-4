@@ -4,43 +4,35 @@ import * as Styled from "./style";
 import Header from "@/components/Layout/Header";
 import Sidebar from "@/components/Layout/Sidebar";
 import H1 from "@/components/Common/Font/Heading/H1";
-import { fetchRequestedDefects } from "@/apis/defects"; // API 호출 함수
+import { fetchRequestedDefects } from "@/apis/defects";
 import { useModalStore } from "@/stores/useModalStore";
 
 const ApprovedDefect: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [approvedDefects, setApprovedDefects] = useState([]);
-    const [filteredData, setFilteredData] = useState([]);
-
     const { isOpen, defectData, openModal, closeModal } = useModalStore();
 
-    // API에서 하자 데이터를 가져오는 함수
+    // API 호출 및 데이터 로드
+    const loadApprovedDefects = async () => {
+        try {
+            const data = await fetchRequestedDefects();
+            const approvedOnly = data.filter((defect: any) => defect.approvalStatus === "APPROVE");
+            setApprovedDefects(approvedOnly);
+        } catch (error) {
+            console.error("Failed to load approved defects:", error);
+        }
+    };
+
+    // 검색 필터링
+    const filteredDefects = approvedDefects.filter(
+        (defect: any) =>
+            defect.memberName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            defect.faultChecklistId.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     useEffect(() => {
-        const loadApprovedDefects = async () => {
-            try {
-                const data = await fetchRequestedDefects(); // API 호출
-                const approvedOnly = data.filter((defect: any) => defect.approvalStatus === "APPROVE"); // 승인된 데이터만 필터링
-                setApprovedDefects(approvedOnly);
-                setFilteredData(approvedOnly); // 초기 필터 설정
-            } catch (error) {
-                console.error("Failed to load approved defects:", error);
-            }
-        };
         loadApprovedDefects();
     }, []);
-
-    // 검색어 입력 핸들러
-    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const searchValue = e.target.value.toLowerCase();
-        setSearchTerm(searchValue);
-
-        const filtered = approvedDefects.filter(
-            (defect: any) =>
-                defect.memberName.toLowerCase().includes(searchValue) ||
-                defect.faultChecklistId.toLowerCase().includes(searchValue)
-        );
-        setFilteredData(filtered);
-    };
 
     return (
         <Styled.PageContainer>
@@ -52,7 +44,7 @@ const ApprovedDefect: React.FC = () => {
                     type='text'
                     placeholder='검색어 입력'
                     value={searchTerm}
-                    onChange={handleSearchChange}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                 />
             </Styled.SearchContainer>
 
@@ -67,7 +59,7 @@ const ApprovedDefect: React.FC = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {filteredData.map((defect: any) => (
+                {filteredDefects.map((defect: any) => (
                     <tr key={defect.faultChecklistId}>
                         <td>{defect.username}</td>
                         <td>{defect.memberName}</td>

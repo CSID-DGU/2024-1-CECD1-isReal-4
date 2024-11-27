@@ -1,31 +1,25 @@
-import { create } from "zustand";
+import { create } from "zustand"
 
 interface ModalState {
     isOpen: boolean;
-    defectData: any | null;
-    openModal: (data: any) => void;
+    isSmallModalOpen: boolean;
+    defectData: any;
+    rejectReason: string;
+    openModal: (defect: any) => void;
     closeModal: () => void;
-    approveDefect: () => void;
-    rejectDefect: () => void;
+    openSmallModal: () => void;
+    closeSmallModal: () => void;
+    setRejectReason: (reason: string) => void;
 }
 
-export const useModalStore = create<ModalState>((set, get) => ({
+export const useModalStore = create<ModalState>((set) => ({
     isOpen: false,
+    isSmallModalOpen: false,
     defectData: null,
-
-    openModal: (data) => set({ isOpen: true, defectData: data }),
-
+    rejectReason: "",
+    openModal: (defect) => set({ isOpen: true, defectData: defect }),
     closeModal: () => set({ isOpen: false, defectData: null }),
-
-    approveDefect: () => {
-        const defectData = get().defectData;
-        console.log("Defect Approved:", defectData);
-        set({ isOpen: false, defectData: null });
-    },
-
-    rejectDefect: () => {
-        const defectData = get().defectData;
-        console.log("Defect Rejected:", defectData);
-        set({ isOpen: false, defectData: null });
-    },
+    openSmallModal: () => set({ isSmallModalOpen: true }),
+    closeSmallModal: () => set({ isSmallModalOpen: false, rejectReason: "" }),
+    setRejectReason: (reason) => set({ rejectReason: reason }),
 }));
