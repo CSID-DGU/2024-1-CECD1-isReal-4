@@ -4,7 +4,6 @@ import * as Style from "./style.ts"
 import Answer from "@/components/Answer";
 import Title from "@/components/Title";
 import Row from "@/components/Common/Row";
-import {CommentButton} from "./style.ts";
 
 interface ItemType {
     id: number;

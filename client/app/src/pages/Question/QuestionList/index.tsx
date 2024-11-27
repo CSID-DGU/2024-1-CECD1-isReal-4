@@ -123,7 +123,7 @@ const QuestionList: React.FC = () => {
                 borderRadius={"50px"}
                 onChange={(value) => setSearchTerm(value)}
             />
-            <ContentList items={filteredItems} />
+            <ContentList items={filteredItems} location={"question"}/>
             <WriteQuestionButton/>
         </Styled.QnAContainer>
     );
