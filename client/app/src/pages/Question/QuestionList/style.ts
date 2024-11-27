@@ -6,4 +6,6 @@ export const QnAContainer = styled.div`
     align-items: center;
     justify-content: flex-start;
     height: 100vh;
+    padding-bottom: 60px;
+    overflow-y: auto;
 `;

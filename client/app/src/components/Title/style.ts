@@ -5,7 +5,7 @@ export const Container = styled.div`
     flex-direction: row;
     align-items: center;
     min-width: 100vw;
-    height: 70px;
+    min-height: 70px;
     //padding-top: 20px; // 상태 바를 위한 여유 공간
     background-color: #fff;
     position: relative;
