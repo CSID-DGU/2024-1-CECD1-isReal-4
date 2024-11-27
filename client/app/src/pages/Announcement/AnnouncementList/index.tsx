@@ -10,7 +10,7 @@ interface itemType {
     title: string;
     description: string;
     time: string;
-    comments: number;
+    comments?: number;
 }
 
 const AnnouncementList: React.FC = () => {
@@ -26,35 +26,30 @@ const AnnouncementList: React.FC = () => {
                 title: "정기 점검 안내",
                 description: "10월 25일 오전 9시부터 오후 6시까지 정기 점검이 진행됩니다.",
                 time: "2024.10.22",
-                comments: 5,
             },
             {
                 id: 2,
                 title: "주차장 이용 안내",
                 description: "추석 연휴 기간 동안 주차장 이용은 선착순으로 운영됩니다.",
                 time: "2024.09.10",
-                comments: 3,
             },
             {
                 id: 3,
                 title: "커뮤니티 시설 이용 시간 변경",
                 description: "헬스장 및 라운지 이용 시간이 변경되었습니다. 새로운 시간표를 확인해주세요.",
                 time: "2024.11.01",
-                comments: 10,
             },
             {
                 id: 4,
                 title: "아파트 단지 내 도로 공사 일정",
                 description: "10월 30일부터 11월 5일까지 단지 내 도로 공사가 진행됩니다.",
                 time: "2024.10.25",
-                comments: 0,
             },
             {
                 id: 5,
                 title: "이사 지원 서비스 안내",
                 description: "입주민 대상 무료 이사 지원 서비스 신청을 받습니다.",
                 time: "2024.09.20",
-                comments: 7,
             },
         ];
         setItems(mockItems);
