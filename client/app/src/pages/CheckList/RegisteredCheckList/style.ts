@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import theme from "@/shared/theme.ts";
 
 export const RegisteredCheckListWrapper = styled.div`
     display: flex;
@@ -12,9 +13,9 @@ export const ToggleButtonContainer = styled.div`
   display: flex;
   position: relative;
   border: 1px solid #ddd;
-  border-radius: 20px;
+  border-radius: 30px;
   overflow: hidden;
-  width: 200px;
+  width: 300px;
   height: 40px; 
 `;
 
@@ -34,7 +35,7 @@ export const Button = styled.button<{ isSelected: boolean }>`
     isSelected &&
     css`
       font-weight: bold;
-      color: #007bff; // 선택된 버튼의 텍스트 색상을 강조
+      color: ${theme.colorSystem.blue["700"]};
     `}
 `;
 
@@ -45,7 +46,7 @@ export const HighlightBar = styled.div<{ selected: string }>`
   left: ${({ selected }) => (selected === 'registered' ? '0%' : '50%')};
   width: 50%;
   height: 4px;
-  background-color: #007bff;
+  background-color: ${theme.colorSystem.blue["700"]};;
   border-radius: 20px;
   transition: left 0.3s ease;
 `;

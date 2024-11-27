@@ -9,7 +9,7 @@ interface RejectModalProps {
     onClose: () => void;
 }
 export default function RejectModal({ onClose } : RejectModalProps) {
-    const [rejectMsg, setRejectMsg] = useState<string>("이러이러한 이유로 심사에서 거절당하셨습니다.");
+    const [rejectMsg, setRejectMsg] = useState<string>("등록 사진에서 하자가 확인되지 않는 이유로 심사에서 거절당하셨습니다.");
 
     return (
         <S.ModalBackground>

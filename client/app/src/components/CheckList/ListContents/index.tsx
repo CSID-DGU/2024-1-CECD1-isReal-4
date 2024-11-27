@@ -3,8 +3,8 @@ import * as Styled from './style';
 import { useNavigate, useLocation } from 'react-router-dom';
 import ListItem from '../ListItem';
 import DateSeparator from '../DateSeparator';
-import Row from "@/components/Common/Row";
 import RejectModal from "@/components/CheckList/Modal/RejectModal";
+import Row from "@/components/Common/Row";
 
 interface ListContentItem {
     id: number;
@@ -56,9 +56,9 @@ export default function ListContents() {
                 <React.Fragment key={date}>
                     <DateSeparator date={date} />
                     {groupedData[date].map((item) => (
-                        <Row alignItems={'center'} justifyContent={'center'}>
+                        <Row alignItems={"center"} justifyContent={"center"}>
                         <ListItem key={item.id} item={item} onClick={handleItemClick} />
-                            {location.pathname === '/myCheckList' && <button onClick={openRejectModal}>거절됨</button>}
+                            {location.pathname === '/myCheckList' && <button onClick={openRejectModal}>거절사유</button>}
                         </Row>
                     ))}
 

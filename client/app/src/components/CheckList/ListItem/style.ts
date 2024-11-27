@@ -3,9 +3,12 @@ import styled from "styled-components";
 export const ListItem = styled.div`
   display: flex;
   align-items: center;
+    justify-content: center;
   padding: 10px;
   border-bottom: 1px solid #eee;
   cursor: pointer;
+    min-width: 1em;
+    
 `;
 
 export const ListIcon = styled.div`
