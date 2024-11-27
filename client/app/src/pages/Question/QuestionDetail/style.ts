@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import theme from "@/shared/theme.ts";
 
 
 export const Container = styled.div`
@@ -25,6 +26,12 @@ export const Time = styled.span`
 export const Description = styled.p`
   font-size: 14px;
   margin-bottom: 20px;
+    border: 1px solid ${theme.colorSystem.slate["400"]};
+    border-radius: 10px;
+    padding: 10px;
+    min-height: 100px;
+    max-width: 100%;
+    
 `;
 
 export const ImageContainer = styled.div`
@@ -60,3 +67,14 @@ export const CommentInput = styled.input`
   margin-top: 10px;
   box-sizing: border-box;
 `;
+
+export const CommentButton = styled.button`
+    width: 4em;
+    height: 2.5em;
+    margin: 10px 5px 5px 10px;
+    border-radius: 10%;
+    border: none;
+    background-color: ${theme.colorSystem.black};
+    color: ${theme.colorSystem.slate["300"]};
+    font-size: 0.8em;
+`

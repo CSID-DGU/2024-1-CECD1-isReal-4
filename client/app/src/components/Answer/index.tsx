@@ -14,7 +14,7 @@ const Answer: React.FC<AnswerItemProps> = ({ author, content, time }) => {
             <Styled.AnswerContent>
                 <Styled.AnswerHeader>
                     <Styled.Author>{author}</Styled.Author>
-                    <Styled.Time>{time} ago</Styled.Time>
+                    <Styled.Time>{time}</Styled.Time>
                 </Styled.AnswerHeader>
                 <Styled.Content>{content}</Styled.Content>
             </Styled.AnswerContent>
