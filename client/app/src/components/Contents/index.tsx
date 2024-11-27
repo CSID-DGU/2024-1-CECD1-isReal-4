@@ -31,7 +31,7 @@ const ContentList: React.FC<ContentListProps> = ({ items }) => {
                     <Styled.TextContainer>
                         <Styled.Header>
                             <H5 text={item.title} color={theme.colorSystem.black} />
-                            <Sub3 text={item.time + " 전"} color={"#888"}/>
+                            <Sub3 text={item.time} color={"#888"}/>
                         </Styled.Header>
                         <Styled.Description>{item.description}</Styled.Description>
                         <Styled.Comments>댓글 {item.comments}</Styled.Comments>
