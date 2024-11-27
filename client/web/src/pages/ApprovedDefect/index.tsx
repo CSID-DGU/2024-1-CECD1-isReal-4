@@ -5,12 +5,12 @@ import Header from "@/components/Layout/Header";
 import Sidebar from "@/components/Layout/Sidebar";
 import H1 from "@/components/Common/Font/Heading/H1";
 import { fetchRequestedDefects } from "@/apis/defects";
-import { useModalStore } from "@/stores/useModalStore";
+import { useDefectModalStore } from "@/stores/useDefectModalStore.ts";
 
 const ApprovedDefect: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [approvedDefects, setApprovedDefects] = useState([]);
-    const { isOpen, defectData, openModal, closeModal } = useModalStore();
+    const { isOpen, defectData, openModal, closeModal } = useDefectModalStore();
 
     // API 호출 및 데이터 로드
     const loadApprovedDefects = async () => {

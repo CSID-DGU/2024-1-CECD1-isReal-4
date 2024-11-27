@@ -6,7 +6,7 @@ import H1 from "@/components/Common/Font/Heading/H1";
 import DefectModal from "@/components/DefectModal";
 import DefectSmallModal from "@/components/DefectModal/DefectSmallModal";
 import { fetchRequestedDefects, approveDefect, rejectDefect } from "@/apis/defects";
-import { useModalStore } from "@/stores/useModalStore";
+import { useDefectModalStore } from "@/stores/useDefectModalStore.ts";
 
 const RequestedDefect: React.FC = () => {
     const [defects, setDefects] = useState([]);
@@ -22,7 +22,7 @@ const RequestedDefect: React.FC = () => {
         openSmallModal,
         closeSmallModal,
         setRejectReason,
-    } = useModalStore();
+    } = useDefectModalStore();
 
     useEffect(() => {
         const loadDefects = async () => {

@@ -12,7 +12,7 @@ interface ModalState {
     setRejectReason: (reason: string) => void;
 }
 
-export const useModalStore = create<ModalState>((set) => ({
+export const useDefectModalStore = create<ModalState>((set) => ({
     isOpen: false,
     isSmallModalOpen: false,
     defectData: null,
