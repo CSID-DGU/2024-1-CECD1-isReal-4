@@ -1,6 +1,6 @@
 import { create } from "zustand"
 
-interface ModalState {
+interface ModalDefectState {
     isOpen: boolean;
     isSmallModalOpen: boolean;
     defectData: any;
@@ -12,7 +12,7 @@ interface ModalState {
     setRejectReason: (reason: string) => void;
 }
 
-export const useDefectModalStore = create<ModalState>((set) => ({
+export const useDefectModalStore = create<ModalDefectState>((set) => ({
     isOpen: false,
     isSmallModalOpen: false,
     defectData: null,
