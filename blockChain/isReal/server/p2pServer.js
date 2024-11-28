@@ -18,7 +18,18 @@ function initConnection(ws) {
     initErrorHandler(ws);
     // 연결된 노드에게 최신 블록 요청
     write(ws, queryLatestMsg());
+
+    // 5초마다 각 연결된 WebSocket에 ping 메시지 보내기
+    setInterval(() => {
+        sockets.forEach((socket) => {
+            if (socket.readyState === ws.OPEN) {
+                console.log("Sending ping to keep the connection alive.");
+                socket.ping();
+            }
+        });
+    }, 5000); // 5초마다 ping
 }
+
 
 function write(ws, message) {
     ws.send(JSON.stringify(message));
@@ -157,8 +168,8 @@ function connectToPeers(newPeer) {
     ws.on("open", () => {
         initConnection(ws);
     });
-    ws.on("error", () => {
-        console.log("Connection failed");
+    ws.on("error", (error) => {
+        console.log(`Connection to ${newPeer} failed : ${error.message}`);
     });
 }
 

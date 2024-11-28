@@ -10,17 +10,22 @@ interface ContentItem {
     title: string;
     description: string;
     time: string;
-    comments: number;
+    comments?: number;
 }
 
 interface ContentListProps {
     items: ContentItem[];
+    location: string;
 }
 
-const ContentList: React.FC<ContentListProps> = ({ items }) => {
+const ContentList: React.FC<ContentListProps> = ({ items , location}) => {
     const navigate = useNavigate();
     const handleItemClick = (item: ContentItem) => {
-        navigate(`/question/${item.id}`, { state: item });
+        if(location === 'question') {
+            navigate(`/question/${item.id}`, { state: item });
+        } else if(location === 'announcement') {
+            navigate(`/announcement/${item.id}`, { state: item });
+        }
     };
 
     return (
@@ -31,10 +36,12 @@ const ContentList: React.FC<ContentListProps> = ({ items }) => {
                     <Styled.TextContainer>
                         <Styled.Header>
                             <H5 text={item.title} color={theme.colorSystem.black} />
-                            <Sub3 text={item.time + " 전"} color={"#888"}/>
+                            <Sub3 text={item.time} color={"#888"}/>
                         </Styled.Header>
                         <Styled.Description>{item.description}</Styled.Description>
-                        <Styled.Comments>댓글 {item.comments}</Styled.Comments>
+                        {item.comments !== undefined && (
+                            <Styled.Comments>댓글 {item.comments}</Styled.Comments>
+                        )}
                     </Styled.TextContainer>
                 </Styled.ListItem>
             ))}

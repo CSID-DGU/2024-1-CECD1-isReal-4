@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import theme from "@/shared/theme.ts";
 
 
 export const Container = styled.div`
@@ -25,12 +26,18 @@ export const Time = styled.span`
 export const Description = styled.p`
   font-size: 14px;
   margin-bottom: 20px;
+    border: 1px solid ${theme.colorSystem.slate["400"]};
+    border-radius: 10px;
+    padding: 10px;
+    min-height: 100px;
+    max-width: 100%;
 `;
 
 export const ImageContainer = styled.div`
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
+    
 `;
 
 export const Image = styled.img`

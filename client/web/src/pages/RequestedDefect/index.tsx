@@ -6,21 +6,29 @@ import H1 from "@/components/Common/Font/Heading/H1";
 import DefectModal from "@/components/DefectModal";
 import DefectSmallModal from "@/components/DefectModal/DefectSmallModal";
 import { fetchRequestedDefects, approveDefect, rejectDefect } from "@/apis/defects";
+import { useDefectModalStore } from "@/stores/useDefectModalStore.ts";
 
 const RequestedDefect: React.FC = () => {
     const [defects, setDefects] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedDefect, setSelectedDefect] = useState<any>(null);
-    const [isSmallModalOpen, setIsSmallModalOpen] = useState(false);
-    const [rejectReason, setRejectReason] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredDefects, setFilteredDefects] = useState([]);
+    const {
+        isOpen,
+        isSmallModalOpen,
+        defectData,
+        rejectReason,
+        openModal,
+        closeModal,
+        openSmallModal,
+        closeSmallModal,
+        setRejectReason,
+    } = useDefectModalStore();
 
     useEffect(() => {
         const loadDefects = async () => {
             try {
                 const data = await fetchRequestedDefects();
-                const pendingDefects = data.filter((defect: any) => defect.approvalStatus === "PEND"); // PEND 상태만 필터링
+                const pendingDefects = data.filter((defect: any) => defect.approvalStatus === "PEND");
                 setDefects(pendingDefects);
                 setFilteredDefects(pendingDefects);
             } catch (error) {
@@ -33,7 +41,6 @@ const RequestedDefect: React.FC = () => {
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const searchValue = e.target.value.toLowerCase();
         setSearchTerm(searchValue);
-
         const filtered = defects.filter(
             (defect: any) =>
                 defect.memberName.toLowerCase().includes(searchValue) ||
@@ -42,43 +49,22 @@ const RequestedDefect: React.FC = () => {
         setFilteredDefects(filtered);
     };
 
-    // 신청서 열람 버튼 클릭 시 모달을 열고, 선택된 신청서 데이터 설정
-    const handleOpenModal = (defect: any) => {
-        setSelectedDefect(defect);
-        setIsModalOpen(true);
-    };
-
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-        setSelectedDefect(null);
-    };
-
-    const handleApproveModal = async () => {
-        if (selectedDefect) {
+    const handleApprove = async () => {
+        if (defectData) {
             const requestBody = {
-                faultChecklistId: selectedDefect.faultChecklistId,
-                createAt: selectedDefect.createAt,
-                sections: selectedDefect.sections,
-                username: selectedDefect.username,
-                memberName: selectedDefect.memberName,
-                apartmentName: selectedDefect.apartmentName,
-                phoneNumber: selectedDefect.phoneNumber,
-                apartmentBuildingNumber: selectedDefect.apartmentBuildingNumber,
-                reviewer: selectedDefect.reviewer || "관리자이름",
+                ...defectData,
+                reviewer: defectData.reviewer || "관리자이름",
                 reviewComment: "승인됨",
                 reviewCompletionTime: new Date().toISOString(),
-                approvalStatus: selectedDefect.approvalStatus,
+                approvalStatus: "APPROVE",
             };
-
             try {
                 await approveDefect(requestBody);
                 alert("하자가 승인되었습니다.");
-
-                // 승인 후 리스트 갱신
-                const updatedDefects = defects.filter((d) => d.faultChecklistId !== selectedDefect.faultChecklistId);
+                const updatedDefects = defects.filter((d) => d.faultChecklistId !== defectData.faultChecklistId);
                 setDefects(updatedDefects);
                 setFilteredDefects(updatedDefects);
-                setIsModalOpen(false);
+                closeModal();
             } catch (error) {
                 console.error("승인 중 오류 발생:", error);
                 alert("하자 승인에 실패했습니다.");
@@ -86,54 +72,28 @@ const RequestedDefect: React.FC = () => {
         }
     };
 
-    const handleOpenSmallModal = () => {
-        setIsSmallModalOpen(true);
-    };
-
-    const handleCloseSmallModal = () => {
-        setIsSmallModalOpen(false);
-        setRejectReason("");
-    };
-
-    const handleSaveRejectReason = async () => {
-        console.log("거절 사유 저장:", rejectReason);
-        console.log("선택된 하자:", selectedDefect);
-        if (selectedDefect) {
+    const handleReject = async () => {
+        if (defectData) {
             const requestBody = {
-                faultChecklistId: selectedDefect.faultChecklistId,
-                createAt: selectedDefect.createAt,
-                sections: selectedDefect.sections,
-                username: selectedDefect.username,
-                memberName: selectedDefect.memberName,
-                apartmentName: selectedDefect.apartmentName,
-                phoneNumber: selectedDefect.phoneNumber,
-                apartmentBuildingNumber: selectedDefect.apartmentBuildingNumber,
+                ...defectData,
                 reviewer: "관리자이름",
                 reviewComment: rejectReason,
                 reviewCompletionTime: new Date().toISOString(),
-                approvalStatus: selectedDefect.approvalStatus,
+                approvalStatus: "REJECT",
             };
-
             try {
                 await rejectDefect(requestBody);
                 alert("하자가 거절되었습니다.");
-
-                // 거절 후 리스트 갱신
-                const updatedDefects = defects.filter((d) => d.faultChecklistId !== selectedDefect.faultChecklistId);
+                const updatedDefects = defects.filter((d) => d.faultChecklistId !== defectData.faultChecklistId);
                 setDefects(updatedDefects);
                 setFilteredDefects(updatedDefects);
-                setIsModalOpen(false);
-                setIsSmallModalOpen(false);
-                setRejectReason("");
+                closeModal();
+                closeSmallModal();
             } catch (error) {
                 console.error("거절 중 오류 발생:", error);
                 alert("하자 거절에 실패했습니다.");
             }
         }
-    };
-
-    const handleRejectReasonChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setRejectReason(e.target.value);
     };
 
     return (
@@ -154,51 +114,49 @@ const RequestedDefect: React.FC = () => {
 
                     <Styled.DefectTable>
                         <thead>
-                            <tr>
-                                <th>입주 예정자 ID</th>
-                                <th>이름</th>
-                                <th>등록 날짜</th>
-                                <th>아파트 정보</th>
-                                <th>신청서 정보</th>
-                            </tr>
+                        <tr>
+                            <th>입주 예정자 ID</th>
+                            <th>이름</th>
+                            <th>등록 날짜</th>
+                            <th>아파트 정보</th>
+                            <th>신청서 정보</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {filteredDefects.map((defect: any) => (
-                                <tr key={defect.faultChecklistId}>
-                                    <td>{defect.username}</td>
-                                    <td>{defect.memberName}</td>
-                                    <td>{new Date(defect.createAt).toLocaleDateString()}</td>
-                                    <td>{`${defect.apartmentName}, ${defect.apartmentBuildingNumber}`}</td>
-                                    <td>
-                                        <button onClick={() => handleOpenModal(defect)}>신청서 열람하기</button>
-                                    </td>
-                                </tr>
-                            ))}
+                        {filteredDefects.map((defect: any) => (
+                            <tr key={defect.faultChecklistId}>
+                                <td>{defect.username}</td>
+                                <td>{defect.memberName}</td>
+                                <td>{new Date(defect.createAt).toLocaleDateString()}</td>
+                                <td>{`${defect.apartmentName}, ${defect.apartmentBuildingNumber}`}</td>
+                                <td>
+                                    <button onClick={() => openModal(defect)}>신청서 열람하기</button>
+                                </td>
+                            </tr>
+                        ))}
                         </tbody>
                     </Styled.DefectTable>
                 </Styled.MainContent>
             </Styled.ContentArea>
 
-            {/* 첫 번째 모달 */}
-            {isModalOpen && selectedDefect && (
+            {isOpen && defectData && (
                 <DefectModal
                     title='하자 신청서'
-                    defectData={selectedDefect}
-                    onClose={handleCloseModal}
-                    onApprove={handleApproveModal}
-                    onReject={handleOpenSmallModal}
+                    defectData={defectData}
+                    onClose={closeModal}
+                    onApprove={handleApprove}
+                    onReject={openSmallModal}
                     showActions={true}
                 />
             )}
 
-            {/* 작은 모달 (거절 사유 입력용) */}
             {isSmallModalOpen && (
                 <DefectSmallModal
                     title='거절 사유 입력'
                     rejectReason={rejectReason}
-                    onClose={handleCloseSmallModal}
-                    onSave={handleSaveRejectReason}
-                    onRejectReasonChange={handleRejectReasonChange}
+                    onClose={closeSmallModal}
+                    onSave={handleReject}
+                    onRejectReasonChange={(e) => setRejectReason(e.target.value)}
                 />
             )}
         </Styled.PageContainer>

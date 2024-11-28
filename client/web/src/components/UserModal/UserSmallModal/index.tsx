@@ -6,12 +6,15 @@ interface UserSmallModalProps {
     onClose: () => void;
     onSave: (reason: string) => void;
 }
-
 const UserSmallModal: React.FC<UserSmallModalProps> = ({ onClose, onSave }) => {
     const [rejectReason, setRejectReason] = useState("");
 
     const handleSave = () => {
-        onSave(rejectReason);
+        if (rejectReason.trim()) {
+            onSave(rejectReason);
+        } else {
+            alert("거절 사유를 입력해주세요.");
+        }
     };
 
     return (

@@ -23,12 +23,45 @@ class BlockHeader {
 }
 
 class BlockBody {
-    constructor(aprtinfo, fault, proofData, applicant, approver){
-        this.aprtinfo=aprtinfo;
-        this.fault=fault;
-        this.proofData=proofData;
-        this.applicant=applicant;
-        this.approver=approver;
+    constructor(faultChecklistId, createAt, sections, username, memberName, apartmentName, phoneNumber, apartmentBuildingNumber, reviewer, reviewComment, reviewCompletionTime, approvalStatus) {
+        this.faultChecklistId = faultChecklistId;
+        this.createAt = createAt;
+        this.sections = sections;
+        this.username = username;
+        this.memberName = memberName;
+        this.apartmentName = apartmentName;
+        this.phoneNumber = phoneNumber;
+        this.apartmentBuildingNumber = apartmentBuildingNumber;
+        this.reviewer = reviewer;
+        this.reviewComment = reviewComment;
+        this.reviewCompletionTime = reviewCompletionTime;
+        this.approvalStatus = approvalStatus;
+    }
+}
+
+class Section {
+    constructor(name, items, checked, subSections = []) {
+        this.name = name;
+        this.items = items;
+        this.checked = checked;
+        this.subSections = subSections;
+    }
+}
+
+class SubSection {
+    constructor(name, items, checked, detailSections = []) {
+        this.name = name;
+        this.items = items;
+        this.checked = checked;
+        this.detailSections = detailSections;
+    }
+}
+
+class DetailSection {
+    constructor(name, items, checked) {
+        this.name = name;
+        this.items = items;
+        this.checked = checked;
     }
 }
 
@@ -42,7 +75,52 @@ function createGenesisBlock() {
     const previousBlockHash = '0'.repeat(64);
     //const timestamp = parseInt(Date.now() / 1000);
     const timestamp = 10000;
-    const bodyData = new BlockBody("apartInfo","Fault","ProofData","Applicant","Approver");
+    const bodyData = new BlockBody(
+        "falutChecklistId",
+        "createAt",
+        [
+            new Section(
+                "sections",
+                {
+                    description: "description",
+                    appendText: "appendText",
+                    appendImages: ["appendImages"]
+                },
+                true,
+                [
+                    new SubSection(
+                        "subSections",
+                        {
+                            description: "description",
+                            appendText: "appendText",
+                            appendImages: ["appendImages"]
+                        },
+                        true,
+                        [
+                            new DetailSection(
+                                "DetailSection",
+                                {
+                                    description: "description",
+                                    appendText: "appendText",
+                                    appendImages: ["appendImages"]
+                                },
+                                true
+                            )
+                        ]
+                    )
+                ]
+            )
+        ],
+        "username",
+        "memberName",
+        "apartmentName",
+        "phoneNumber",
+        "apartmentBuildingNumber",
+        "reviewer",
+        "reviewComment",
+        "reviewCompletionTime",
+        "approvalStatus"
+    );
     const body = [JSON.stringify(bodyData)];
     const tree = merkle('sha256').sync(body);
     const merkleRoot = tree.root() || '0'.repeat(64);
@@ -79,11 +157,11 @@ function nextBlock(newData) {
     const version = getVersion();
     const index = prevBlock.header.index + 1;
     const previousBlockHash = createHash(prevBlock);
-    const bodyData = new BlockBody(newData[0], newData[1], newData[2], newData[3], newData[4]);
+    const bodyData = new BlockBody(newData.faultChecklistId, newData.createAt, newData.sections, newData.username, newData.memberName, newData.apartmentName, newData.phoneNumber, newData.apartmentBuildingNumber, newData.reviewer, newData.reviewComment, newData.reviewCompletionTime, newData.approvalStatus);
     const body = [JSON.stringify(bodyData)];
     const tree = merkle("sha256").sync(body);
     const merkleRoot = tree.root() || '0'.repeat(64);
-    const timestamp = parseInt(Date.now() / 1000);
+    const timestamp = Date.now();
     const difficulty = 0;
 
     const header = new BlockHeader(version, previousBlockHash, timestamp, merkleRoot, index, difficulty);
@@ -105,12 +183,19 @@ function isValidBlockStructure(block) {
         (typeof block.header.merkleRoot === "string") &&
         (typeof block.header.timestamp === "number") &&
         (typeof block.header.index === "number") &&
-        (typeof block.header.difficulty === "number")&&
-        (typeof block.body.aprtinfo =="string")&&
-        (typeof block.body.fault =="string")&&
-        (typeof block.body.proofData =="string")&&
-        (typeof block.body.applicant =="string")&&
-        (typeof block.body.approver =="string")
+        (typeof block.header.difficulty === "number") &&
+        (typeof block.body.faultChecklistId === "string") &&
+        (typeof block.body.createAt === "string") &&
+        (Array.isArray(block.body.sections)) &&
+        (typeof block.body.username === "string") &&
+        (typeof block.body.memberName === "string") &&
+        (typeof block.body.apartmentName === "string") &&
+        (typeof block.body.phoneNumber === "string") &&
+        (typeof block.body.apartmentBuildingNumber === "string") &&
+        (typeof block.body.reviewer === "string") &&
+        (typeof block.body.reviewComment === "string") &&
+        (typeof block.body.reviewCompletionTime === "string") &&
+        (typeof block.body.approvalStatus === "string")
     );
 }
 
@@ -141,7 +226,7 @@ function isvalidNewBlock(newBlock, prevBlock) {
 }
 
 function getCurrentTimestamp() {
-    return Math.round(Date.now() / 1000);
+    return Date.now();
 }
 
 function isValidTimestamp(newBlock, prevBlock) {
@@ -161,7 +246,7 @@ function hashMatchesDifficulty(hash, difficulty) {
     return hash.startsWith(requiredPrefix);
 }
 
-const genesisBlock=createGenesisBlock();
+const genesisBlock = createGenesisBlock();
 Blocks = [genesisBlock];
 
-module.exports={getBlocks,Blocks,nextBlock,addBlock,getLastBlock,createHash}
+module.exports = { getBlocks, Blocks, nextBlock, addBlock, getLastBlock, createHash };

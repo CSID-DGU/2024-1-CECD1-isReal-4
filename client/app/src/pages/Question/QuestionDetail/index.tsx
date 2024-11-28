@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import * as Style from "./style.ts"
 import Answer from "@/components/Answer";
 import Title from "@/components/Title";
+import Row from "@/components/Common/Row";
 
 interface ItemType {
     id: number;
@@ -26,7 +27,7 @@ const QuestionDetail: React.FC = () => {
         <Style.Container>
             <Style.TitleContainer>
                 <Style.DetailTitle>{item.title}</Style.DetailTitle>
-                <Style.Time>{item.time} ago</Style.Time>
+                <Style.Time>{item.time}</Style.Time>
             </Style.TitleContainer>
             <Style.Description>{item.description}</Style.Description>
             {item.images && (
@@ -38,9 +39,12 @@ const QuestionDetail: React.FC = () => {
             )}
             <Style.AnswersSection>
                 <Style.SectionTitle>답변</Style.SectionTitle>
-                <Answer author="관리자" content="He'll want to use your yacht, and I don't want this thing smelling like fish." time="8m" />
+                <Answer author="관리자" content="확인 후에 알려드리겠습니다." time="2024.11.27" />
             </Style.AnswersSection>
+            <Row alignItems={"center"} justifyContent={"center"}>
             <Style.CommentInput placeholder="댓글을 입력해주세요" />
+            <Style.CommentButton>등록</Style.CommentButton>
+            </Row>
         </Style.Container>
         </>
     );

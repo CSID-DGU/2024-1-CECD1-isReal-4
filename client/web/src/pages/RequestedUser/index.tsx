@@ -6,30 +6,40 @@ import H1 from "@/components/Common/Font/Heading/H1";
 import UserModal from "@/components/UserModal";
 import UserSmallModal from "@/components/UserModal/UserSmallModal";
 import { fetchRequestedUsers, approveUser, rejectUser } from "@/apis/users";
+import { useUserModalStore } from "@/stores/useUserModalStore";
 
 const RequestedUser: React.FC = () => {
-    const [filterStatus, setFilterStatus] = useState("전체"); // 상태 필터 (전체, 거절됨, 미확인)
-    const [searchTerm, setSearchTerm] = useState("");
-    const [isUserModalOpen, setIsUserModalOpen] = useState(false);
-    const [isUserSmallModalOpen, setIsUserSmallModalOpen] = useState(false);
-    const [selectedUser, setSelectedUser] = useState<any>(null);
-    const [rejectReason, setRejectReason] = useState("");
+    const {
+        openModal,
+        closeModal,
+        selectedUser,
+        isSmallModalOpen,
+        openSmallModal,
+        closeSmallModal,
+    } = useUserModalStore();
+
+    const [filterStatus, setFilterStatus] = useState<string>("전체");
+    const [searchTerm, setSearchTerm] = useState<string>("");
     const [users, setUsers] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const loadUsers = async () => {
+            setIsLoading(true);
             try {
                 const data = await fetchRequestedUsers();
                 const filteredData = data.filter((user) => user.role !== "MEMBER");
                 setUsers(filteredData);
             } catch (error) {
                 console.error("Failed to load users:", error);
+            } finally {
+                setIsLoading(false);
             }
         };
         loadUsers();
     }, []);
 
-    const getUserStatus = (role: string) => {
+    const getUserStatus = (role: string): string => {
         switch (role) {
             case "WAIT":
                 return "미확인";
@@ -40,7 +50,7 @@ const RequestedUser: React.FC = () => {
         }
     };
 
-    const filterUsers = () => {
+    const filterUsers = (): any[] => {
         let filtered = users;
 
         if (filterStatus !== "전체") {
@@ -58,90 +68,31 @@ const RequestedUser: React.FC = () => {
         return filtered;
     };
 
-    const handleFilterChange = (status: string) => {
-        setFilterStatus(status);
-    };
-
-    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(e.target.value);
-    };
-
-    const handleOpenUserModal = (user: any) => {
-        setSelectedUser(user);
-        setIsUserModalOpen(true);
-    };
-
-    const handleCloseUserModal = () => {
-        setIsUserModalOpen(false);
-        setSelectedUser(null);
-    };
-
-    const handleOpenUserSmallModal = () => {
-        setIsUserSmallModalOpen(true);
-    };
-
-    const handleCloseUserSmallModal = () => {
-        setIsUserSmallModalOpen(false);
-        setRejectReason("");
-    };
-
-    const handleSaveRejectReason = async (reason: string) => {
+    const handleApprove = async () => {
         if (selectedUser) {
-            const requestBody = {
-                member: {
-                    memberId: selectedUser.memberId,
-                    username: selectedUser.username,
-                    role: selectedUser.role,
-                    memberName: selectedUser.memberName,
-                    phoneNumber: selectedUser.phoneNumber,
-                    apartmentName: selectedUser.apartmentName,
-                    apartmentBuildingNumber: selectedUser.apartmentBuildingNumber,
-                    profileImage: selectedUser.profileImage,
-                    authDocument: selectedUser.authDocument,
-                },
-                rejection: reason,
-                createAt: new Date().toISOString(),
-            };
-
             try {
-                await rejectUser(requestBody);
-                alert("회원가입이 거절되었습니다.");
-
-                const updatedUsers = users.filter((user) => user.memberId !== selectedUser.memberId);
-                setUsers(updatedUsers);
-                handleCloseUserModal();
-                setRejectReason("");
+                await approveUser(selectedUser);
+                alert("승인되었습니다.");
+                setUsers((prev) => prev.filter((user) => user.memberId !== selectedUser.memberId));
+                closeModal();
             } catch (error) {
-                console.error("거절 중 오류 발생:", error);
-                alert("회원가입 거절에 실패했습니다.");
+                console.error("승인 중 오류 발생:", error);
+                alert("승인에 실패했습니다.");
             }
         }
     };
 
-    const handleApprove = async () => {
+    const handleSaveRejectReason = async (reason: string) => {
         if (selectedUser) {
-            const requestBody = {
-                memberId: selectedUser.memberId,
-                username: selectedUser.username,
-                role: selectedUser.role,
-                memberName: selectedUser.memberName,
-                phoneNumber: selectedUser.phoneNumber,
-                apartmentName: selectedUser.apartmentName,
-                apartmentBuildingNumber: selectedUser.apartmentBuildingNumber,
-                profileImage: selectedUser.profileImage,
-                authDocument: selectedUser.authDocument,
-            };
-
             try {
-                await approveUser(requestBody);
-                alert("승인되었습니다.");
-
-                const updatedUsers = users.filter((user) => user.memberId !== selectedUser.memberId);
-                setUsers(updatedUsers);
-                setIsUserModalOpen(false);
+                await rejectUser({ ...selectedUser, rejection: reason });
+                alert("거절되었습니다.");
+                setUsers((prev) => prev.filter((user) => user.memberId !== selectedUser.memberId));
+                closeSmallModal();
+                closeModal();
             } catch (error) {
-                console.error("승인 중 오류 발생:", error);
-                alert("승인에 실패했습니다.");
+                console.error("거절 중 오류 발생:", error);
+                alert("거절에 실패했습니다.");
             }
         }
     };
@@ -152,51 +103,63 @@ const RequestedUser: React.FC = () => {
             <Styled.ContentArea>
                 <Sidebar />
                 <Styled.MainContent>
-                    <H1 text='입주 예정자 신청 관리' />
+                    <H1 text="입주 예정자 신청 관리" />
                     <Styled.FilterAndSearchContainer>
                         <Styled.FilterButtons>
                             <Styled.FilterButton
-                                onClick={() => handleFilterChange("전체")}
+                                onClick={() => setFilterStatus("전체")}
                                 active={filterStatus === "전체"}
                             >
                                 전체
                             </Styled.FilterButton>
                             <Styled.FilterButton
-                                onClick={() => handleFilterChange("미확인")}
+                                onClick={() => setFilterStatus("미확인")}
                                 active={filterStatus === "미확인"}
                             >
                                 미확인
                             </Styled.FilterButton>
                             <Styled.FilterButton
-                                onClick={() => handleFilterChange("거절됨")}
+                                onClick={() => setFilterStatus("거절됨")}
                                 active={filterStatus === "거절됨"}
                             >
                                 거절됨
                             </Styled.FilterButton>
                         </Styled.FilterButtons>
-                        {/* 검색창 */}
                         <Styled.SearchContainer>
                             <Styled.SearchInput
-                                type='text'
-                                placeholder='검색어 입력'
+                                type="text"
+                                placeholder="검색어 입력"
                                 value={searchTerm}
-                                onChange={handleSearchChange}
+                                onChange={(e) => setSearchTerm(e.target.value)}
                             />
                         </Styled.SearchContainer>
                     </Styled.FilterAndSearchContainer>
 
                     <Styled.UserTable>
                         <thead>
-                            <tr>
-                                <th>입주 예정자 ID</th>
-                                <th>이름</th>
-                                <th>전화번호</th>
-                                <th>상태</th>
-                                <th>상세 정보</th>
-                            </tr>
+                        <tr>
+                            <th>입주 예정자 ID</th>
+                            <th>이름</th>
+                            <th>전화번호</th>
+                            <th>상태</th>
+                            <th>상세 정보</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {filterUsers().map((user) => (
+                        {isLoading ? (
+                            <tr>
+                                <td colSpan={5} style={{textAlign: "center"}}>
+                                    로딩 중입니다...
+                                </td>
+                            </tr>
+                        ) : filterUsers().length === 0 ? (
+                            <tr>
+                                <td colSpan={5} style={{textAlign: "center"}}>
+                                    검색 결과가 없습니다.
+                                </td>
+                            </tr>
+                        ) : (
+                            filterUsers().map((user) => (
                                 <tr key={user.memberId}>
                                     <td>{user.username}</td>
                                     <td>{user.memberName}</td>
@@ -207,29 +170,28 @@ const RequestedUser: React.FC = () => {
                                         </Styled.StatusText>
                                     </td>
                                     <td>
-                                        <button onClick={() => handleOpenUserModal(user)}>신청서 열람하기</button>
+                                        <button onClick={() => openModal(user)}>신청서 열람하기</button>
                                     </td>
                                 </tr>
-                            ))}
+                            ))
+                        )}
                         </tbody>
                     </Styled.UserTable>
                 </Styled.MainContent>
             </Styled.ContentArea>
 
-            {/* 신청서 모달 */}
-            {isUserModalOpen && selectedUser && (
-                <UserModal
-                    onClose={handleCloseUserModal}
-                    onReject={handleOpenUserSmallModal}
-                    onApprove={handleApprove}
-                    selectedUser={selectedUser}
-                    isRejected={selectedUser.role === "DENY"}
-                />
-            )}
+            <UserModal
+                onApprove={handleApprove}
+                onReject={() => {
+                    openSmallModal();
+                }}
+            />
 
-            {/* 거절 사유 모달 */}
-            {isUserSmallModalOpen && (
-                <UserSmallModal onClose={handleCloseUserSmallModal} onSave={handleSaveRejectReason} />
+            {isSmallModalOpen && (
+                <UserSmallModal
+                    onClose={closeSmallModal}
+                    onSave={handleSaveRejectReason}
+                />
             )}
         </Styled.PageContainer>
     );
