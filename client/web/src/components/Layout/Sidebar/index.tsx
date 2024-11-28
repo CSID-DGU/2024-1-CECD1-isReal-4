@@ -47,12 +47,12 @@ const Sidebar: React.FC = () => {
                     승인된 하자 데이터 관리
                 </Styled.MenuItem>
                 <Styled.MenuItem>
-                    <Styled.MenuIcon src={qna} alt='Q&A 게시판 (오픈 예정)' />
-                    Q&A 게시판 (오픈 예정)
+                    <Styled.MenuIcon src={qna} alt='Q&A 게시판' />
+                    Q&A 게시판
                 </Styled.MenuItem>
                 <Styled.MenuItem>
-                    <Styled.MenuIcon src={notice} alt='공지사항 게시판 (오픈 예정)' />
-                    공지사항 게시판 (오픈 예정)
+                    <Styled.MenuIcon src={notice} alt='공지사항 게시판' />
+                    공지사항 게시판
                 </Styled.MenuItem>
                 {/* 슈퍼 어드민 전용 메뉴(navigate의 경우 초기 화면이 공백으로 표시되는 문제가 있어 Link로 교체) */}
                 {isSuperAdmin && (
