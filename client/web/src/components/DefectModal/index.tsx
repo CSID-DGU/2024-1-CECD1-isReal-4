@@ -51,9 +51,6 @@ const DefectModal: React.FC<ModalProps> = ({ title, defectData, onClose, onAppro
     if (!defectData) return null;
 
     const renderItems = (items: ChecklistItem[] | ChecklistItem | null) => {
-        // 데이터 타입 확인
-        console.log("Rendering Items:", items);
-
         // items가 null 또는 undefined인 경우 처리
         if (!items) {
             return <p>항목 없음</p>;
