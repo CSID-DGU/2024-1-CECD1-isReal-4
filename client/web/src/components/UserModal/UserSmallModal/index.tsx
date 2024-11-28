@@ -10,7 +10,7 @@ const UserSmallModal: React.FC<UserSmallModalProps> = ({ onClose, onSave }) => {
     const [rejectReason, setRejectReason] = useState("");
 
     const handleSave = () => {
-        if (rejectReason.trim()) { // 공백 입력 방지
+        if (rejectReason.trim()) {
             onSave(rejectReason);
         } else {
             alert("거절 사유를 입력해주세요.");

@@ -21,15 +21,19 @@ const RequestedUser: React.FC = () => {
     const [filterStatus, setFilterStatus] = useState<string>("전체");
     const [searchTerm, setSearchTerm] = useState<string>("");
     const [users, setUsers] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const loadUsers = async () => {
+            setIsLoading(true);
             try {
                 const data = await fetchRequestedUsers();
                 const filteredData = data.filter((user) => user.role !== "MEMBER");
                 setUsers(filteredData);
             } catch (error) {
                 console.error("Failed to load users:", error);
+            } finally {
+                setIsLoading(false);
             }
         };
         loadUsers();
@@ -142,21 +146,35 @@ const RequestedUser: React.FC = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {filterUsers().map((user) => (
-                            <tr key={user.memberId}>
-                                <td>{user.username}</td>
-                                <td>{user.memberName}</td>
-                                <td>{user.phoneNumber}</td>
-                                <td>
-                                    <Styled.StatusText status={user.role}>
-                                        {getUserStatus(user.role)}
-                                    </Styled.StatusText>
-                                </td>
-                                <td>
-                                    <button onClick={() => openModal(user)}>신청서 열람하기</button>
+                        {isLoading ? (
+                            <tr>
+                                <td colSpan={5} style={{textAlign: "center"}}>
+                                    로딩 중입니다...
                                 </td>
                             </tr>
-                        ))}
+                        ) : filterUsers().length === 0 ? (
+                            <tr>
+                                <td colSpan={5} style={{textAlign: "center"}}>
+                                    검색 결과가 없습니다.
+                                </td>
+                            </tr>
+                        ) : (
+                            filterUsers().map((user) => (
+                                <tr key={user.memberId}>
+                                    <td>{user.username}</td>
+                                    <td>{user.memberName}</td>
+                                    <td>{user.phoneNumber}</td>
+                                    <td>
+                                        <Styled.StatusText status={user.role}>
+                                            {getUserStatus(user.role)}
+                                        </Styled.StatusText>
+                                    </td>
+                                    <td>
+                                        <button onClick={() => openModal(user)}>신청서 열람하기</button>
+                                    </td>
+                                </tr>
+                            ))
+                        )}
                         </tbody>
                     </Styled.UserTable>
                 </Styled.MainContent>
