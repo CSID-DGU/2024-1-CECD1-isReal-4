@@ -13,6 +13,22 @@ interface UserModalProps {
 const UserModal: React.FC<UserModalProps> = ({ onClose, onReject, onApprove, selectedUser, isRejected }) => {
     if (!selectedUser) return null;
 
+    const handleDownloadDocument = (document: string, type: string, index: number) => {
+        const contentType = type === "pdf" ? "application/pdf" : "image/png";
+        const byteCharacters = atob(document);
+        const byteNumbers = new Array(byteCharacters.length).fill(0).map((_, i) => byteCharacters.charCodeAt(i));
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: contentType });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `auth_document_${index + 1}.${type === "pdf" ? "pdf" : "png"}`;
+        link.click();
+
+        URL.revokeObjectURL(url);
+    };
+
     return (
         <Styled.ModalOverlay>
             <Styled.ModalContent>
@@ -22,30 +38,6 @@ const UserModal: React.FC<UserModalProps> = ({ onClose, onReject, onApprove, sel
                 </Styled.ModalHeader>
 
                 <Styled.ModalBody>
-                    <Styled.ImageContainer>
-                        <Styled.ImageList>
-                            {/* 인증 문서 파일 처리 */}
-                            {selectedUser.authDocument && (
-                                <Styled.ImageItem>
-                                    {selectedUser.authDocumentType === "pdf" ? (
-                                        <a
-                                            href={`data:application/pdf;base64,${selectedUser.authDocument}`}
-                                            target='_blank'
-                                            rel='noopener noreferrer'
-                                        >
-                                            PDF 문서 보기
-                                        </a>
-                                    ) : (
-                                        <img
-                                            src={`data:image/png;base64,${selectedUser.authDocument}`}
-                                            alt='인증 문서'
-                                        />
-                                    )}
-                                </Styled.ImageItem>
-                            )}
-                        </Styled.ImageList>
-                    </Styled.ImageContainer>
-
                     <Styled.UserInfo>
                         <label>이름</label>
                         <input type='text' value={selectedUser.memberName} readOnly />
@@ -62,6 +54,20 @@ const UserModal: React.FC<UserModalProps> = ({ onClose, onReject, onApprove, sel
                         <label>아파트 정보</label>
                         <input type='text' value={selectedUser.apartmentBuildingNumber} readOnly />
                     </Styled.UserInfo>
+
+                    {/* 인증 문서 다운로드 */}
+                    <Styled.DocumentSection>
+                        <p>인증 문서 개수: {selectedUser.authDocuments?.length || 0}개</p>
+                        {selectedUser.authDocuments && selectedUser.authDocuments.length > 0 ? (
+                            selectedUser.authDocuments.map((doc: any, index: number) => (
+                                <button key={index} onClick={() => handleDownloadDocument(doc.base64, doc.type, index)}>
+                                    문서 {index + 1} 다운로드
+                                </button>
+                            ))
+                        ) : (
+                            <p>다운로드할 문서가 없습니다.</p>
+                        )}
+                    </Styled.DocumentSection>
                 </Styled.ModalBody>
 
                 {!isRejected && (

@@ -51,39 +51,6 @@ export const ModalBody = styled.div`
     width: 100%;
 `;
 
-export const ImageContainer = styled.div`
-    width: 100%;
-    max-width: 480px;
-    overflow-x: auto;
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 20px;
-    padding: 10px 0;
-`;
-
-export const ImageList = styled.div`
-    display: flex;
-    gap: 10px;
-    padding: 0 10px;
-`;
-
-export const ImageItem = styled.div`
-    width: 400px;
-    height: 400px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    flex-shrink: 0;
-
-    img {
-        max-width: 100%;
-        max-height: 100%;
-        border-radius: 8px;
-    }
-`;
-
 export const UserInfo = styled.div`
     width: 100%;
     display: flex;
@@ -104,6 +71,32 @@ export const UserInfo = styled.div`
     }
 `;
 
+export const DocumentSection = styled.div`
+    width: 100%;
+    margin-top: 20px;
+    text-align: left;
+
+    p {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    button {
+        padding: 8px 12px;
+        margin: 5px 0;
+        background-color: #444;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover {
+            background-color: #333;
+        }
+    }
+`;
+
 export const ModalFooter = styled.div`
     width: 100%;
     display: flex;
@@ -121,9 +114,17 @@ export const ModalFooter = styled.div`
 export const RejectButton = styled.button`
     background-color: #666;
     color: white;
+
+    &:hover {
+        background-color: #555;
+    }
 `;
 
 export const ApproveButton = styled.button`
     background-color: #444;
     color: white;
+
+    &:hover {
+        background-color: #333;
+    }
 `;
